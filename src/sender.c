@@ -63,7 +63,7 @@ void rsend(char* hostname,
     }
     printf("Done with binding\n");
 
-    int orderIndex = 0;
+    unsigned short int orderIndex = 0;
 
     while (bytesRead < bytesToTransfer) {
 
@@ -119,7 +119,7 @@ int main(int argc, char** argv) {
     // Get values from commandline
     hostname = argv[1];
     hostUDPport = (unsigned short int) atoi(argv[2]);
-    filename = argv[3];
+    filename = (char) argv[3];
     bytesToTransfer = atoll(argv[4]);
 
     // Call sender function

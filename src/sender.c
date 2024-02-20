@@ -27,7 +27,7 @@ void rsend(char* hostname,
 
 
     // Open file for reading
-    FILE* file = fopen(filename, "rb"); // Open the file in binary mode for reading
+    FILE* file = fopen(filename, "r"); // Open the file in binary mode for reading
     if (file == NULL) {
         perror("Error opening file");
         exit(EXIT_FAILURE);
@@ -53,9 +53,10 @@ void rsend(char* hostname,
 
     struct sockaddr_in server_addr;
     server_addr.sin_family = AF_INET;
-    server_addr.sin_port = hostUDPport;
-    server_addr.sin_addr.s_addr = htonl(INADDR_ANY);
+    server_addr.sin_port = hostUDPport; //Check later
+    server_addr.sin_addr.s_addr = htonl(INADDR_ANY); //Check later
 
+    // Note the client/sender should not need to bind to anything:
     // Bind to the set port and IP:
     if (bind(socket_desc, (struct sockaddr*)&server_addr, sizeof(server_addr)) < 0) {
         printf("Couldn't bind to the port\n");
@@ -63,38 +64,53 @@ void rsend(char* hostname,
     }
     printf("Done with binding\n");
 
-    unsigned short int orderIndex = 0;
+    unsigned short orderIndex = 0;
+
+    //message = ACK;
+    //sendto(socket_desc, message, strlen(message), 0, (struct sockaddr*)&server_addr, server_struct_length) < 0);
 
     while (bytesRead < bytesToTransfer) {
 
+        // if( first byte of received message == ACK){
 
-        // Read bytes from the file
-        payload = fread(buffer, 1, max_packet_size, file)
-        // Keep track of how many bytes were read
-        bytesRead += max_packet_size;
+                // Read bytes from the file
+                payload = fread(buffer, 1, max_payload_size, file)
+                // Keep track of how many bytes were read
+                bytesRead += max_payload_size;
+        
+                // Check for read errors
+                if (ferror(file)) {
+                    perror("Error reading from file");
+                }
+        
+                // Add order index and concatenate message
+                message = orderIndex;
+                strcat(message, payload); //Check later
+                orderIndex++;                
+                
+                // Send the message to server:
+                if (sendto(socket_desc, message, strlen(message), 0,
+                    (struct sockaddr*)&server_addr, server_struct_length) < 0) {
+                    printf("Unable to send message\n");
+                    return -1;
+                }
 
-        // Check for read errors
-        if (ferror(file)) {
-            perror("Error reading from file");
         }
 
-        // Add order index and concatenate message
-        message = orderIndex;
-        strcat(message, payload);
-        orderIndex++;
-
-        // Send the message to server:
-        if (sendto(socket_desc, message, strlen(message), 0,
-            (struct sockaddr*)&server_addr, server_struct_length) < 0) {
-            printf("Unable to send message\n");
-            return -1;
+    //check for NACK(send again), timeout(send again), else wait
+        //else if (time == TIMEOUT length) {
+            
         }
 
     }
 
+    
+
     // Clean up
     free(buffer);
     fclose(file);
+
+    //send FIN
 
     // Close the socket:
     close(socket_desc);
@@ -109,7 +125,7 @@ int main(int argc, char** argv) {
     int hostUDPport;
     unsigned long long int bytesToTransfer;
     char* hostname = NULL;
-    const char* filename;
+    char* filename;
 
     if (argc != 5) {
         fprintf(stderr, "usage: %s receiver_hostname receiver_port filename_to_xfer bytes_to_xfer\n\n", argv[0]);

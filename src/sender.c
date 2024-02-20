@@ -56,6 +56,7 @@ void rsend(char* hostname,
     server_addr.sin_port = hostUDPport; //Check later
     server_addr.sin_addr.s_addr = htonl(INADDR_ANY); //Check later
 
+    // Note the client/sender should not need to bind to anything:
     // Bind to the set port and IP:
     if (bind(socket_desc, (struct sockaddr*)&server_addr, sizeof(server_addr)) < 0) {
         printf("Couldn't bind to the port\n");

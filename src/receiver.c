@@ -58,7 +58,7 @@ void rrecv(unsigned short int myUDPport,
     FILE *write_file = fopen(destinationFile, "w"); // write only
     if (write_file == NULL){  
         printf("Error! Could not open file\n");
-        exit(-1); // must include stdlib.h
+        exit(EXIT_FAILURE); // must include stdlib.h
         }
 
     //Static buffer for receiving data
@@ -68,21 +68,21 @@ void rrecv(unsigned short int myUDPport,
     struct sockaddr_in address, client_addr;
     address.sin_family = AF_INET;
     address.sin_port = htons(myUDPport);
-    // Sin address = any open ip on your system
+    address.sin_addr.s_addr = htonl(INADDR_ANY);   
     int client_struct_length = sizeof(client_addr);
 
     // Create UDP socket and check it exists
     int socket_desc = socket(AF_INET, SOCK_DGRAM, 0);
     if(socket_desc < 0){
         printf("Error while creating socket\n");
-        exit(-1);
+        exit(EXIT_FAILURE);
     }
     printf("Socket created successfully\n");
 
     // Bind socket to the receive address
     if(bind(socket_desc, (struct sockaddr*)&address, sizeof(address)) < 0){
         printf("Couldn't bind to the port\n");
-        exit(-1);
+        exit(EXIT_FAILURE);
     }
     printf("Done with binding\n");
 
@@ -92,12 +92,13 @@ void rrecv(unsigned short int myUDPport,
     if (recvfrom(socket_desc, buffer, sizeof(buffer), 0,
          (struct sockaddr*)&address, &client_struct_length) < 0){
         printf("Couldn't receive\n");
-        return -1;
+        exit(EXIT_FAILURE);
     }
     // else 
     // check order (first 2 byes of the package)
     // if order doesnt match then send nack
     // if order matches send ack 
+        // write to file
         // wipe buffer 
 
     /* 
@@ -113,7 +114,7 @@ void rrecv(unsigned short int myUDPport,
     //Condition to ignore writeRate for now
     if (writeRate != 0){
         printf("Error Have not yet implemented Task 8\n");
-        exit(-1);
+        exit(EXIT_FAILURE);
     }
 }
 

@@ -58,17 +58,26 @@ void rsend(char* hostname,
 
     unsigned short orderIndex = 0;
     char buffer[max_packet_size];
+    size = sizeof(bytesToTransfer/max_payload_size);
+
+    //send the number of packets to the server
+    message = size;
+    if (sendto(socket_desc, message, strlen(message), 0,
+        (struct sockaddr*)&server_addr, sizeof(struct sockaddr_in)) < 0) {
+        printf("Unable to send message\n");
+        return -1;
+    }
 
     recvfrom(socket_desc, buffer, sizeof(buffer), 0, (struct sockaddr*)&address, &client_struct_length)
     //message = ACK;
     if (buffer[0] == "ACK") {
         
-        sendto(socket_desc, message, strlen(message), 0, (struct sockaddr*)&server_addr, server_struct_length);
+        sendto(socket_desc, message, strlen(message), 0, (struct sockaddr*)&server_addr, sizeof(struct sockaddr_in));
         // Clear the contents of the buffer
-        memset(buffer, 0, sizeof(buffer));
+        free(buffer);
 
     }
-    //sendto(socket_desc, message, strlen(message), 0, (struct sockaddr*)&server_addr, server_struct_length);
+    //sendto(socket_desc, message, strlen(message), 0, (struct sockaddr*)&server_addr, sizeof(struct sockaddr_in));
 
     while (bytesRead < bytesToTransfer) {
 
@@ -92,13 +101,13 @@ void rsend(char* hostname,
                 
                 // Send the message to server:
                 if (sendto(socket_desc, message, strlen(message), 0,
-                    (struct sockaddr*)&server_addr, server_struct_length) < 0) {
+                    (struct sockaddr*)&server_addr, sizeof(struct sockaddr_in)) < 0) {
                     printf("Unable to send message\n");
                     return -1;
                 }
 
                 // Clear the contents of the buffer
-                memset(buffer, 0, sizeof(buffer));
+                free(buffer);
 
     //check for NACK(send again), timeout(send again), else wait
         //else if (time == TIMEOUT length) {
@@ -109,13 +118,13 @@ void rsend(char* hostname,
 
             // Send the message to server:
             if (sendto(socket_desc, message, strlen(message), 0,
-                (struct sockaddr*)&server_addr, server_struct_length) < 0) {
+                (struct sockaddr*)&server_addr, sizeof(struct sockaddr_in)) < 0) {
                 printf("Unable to send message\n");
                 return -1;
             }
 
             // Clear the contents of the buffer
-            memset(buffer, 0, sizeof(buffer));
+            free(buffer);
 
 
         }
@@ -127,13 +136,13 @@ void rsend(char* hostname,
 
                 // Send the message to server:
                 if (sendto(socket_desc, message, strlen(message), 0,
-                    (struct sockaddr*)&server_addr, server_struct_length) < 0) {
+                    (struct sockaddr*)&server_addr, sizeof(struct sockaddr_in)) < 0) {
                     printf("Unable to send message\n");
                     return -1;
                 }
 
                 // Clear the contents of the buffer
-                memset(buffer, 0, sizeof(buffer));
+                free(buffer);
 
             }
 

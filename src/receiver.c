@@ -1,12 +1,9 @@
 /** @file receiver.c
- *  @brief Server functionality for a more secure UDP Protocol. 
+ *  @brief Server functionality for a more reliable file transfer using UDP Protocol. 
  *
- *  This contains the prototypes for the console
- *  driver and eventually any macros, constants,
- *  or global variables you will need.
+ *  The server/reciever part of the reliable file transfer using UDP. 
  *
  *  @author Ana Bandari (anabandari)
- *  @author 
  *  @bug No known bugs.
  */
 
@@ -42,8 +39,6 @@ Loop: Start recieving packets
     - Check if packet is in order 
         - add to buffer in correct position 
         - send ack
-    - If packet is unordered place in correct order in buffer
-        - send ack 
     - If nothing recieved in {timeout (~40ms)} send an ack for the last packet it has 
 
 */
@@ -89,8 +84,8 @@ void rrecv(unsigned short int myUDPport,
     printf("Listening for incoming messages...\n\n");
 
     // Receive client's message:
-    if (recvfrom(socket_desc, buffer, sizeof(buffer), 0,
-         (struct sockaddr*)&address, &client_struct_length) < 0){
+    int client_message = recvfrom(socket_desc, buffer, sizeof(buffer), 0, (struct sockaddr*)&address, &client_struct_length);  
+    if (client_message < 0){
         printf("Couldn't receive\n");
         exit(EXIT_FAILURE);
     }
@@ -100,12 +95,6 @@ void rrecv(unsigned short int myUDPport,
     // if order matches send ack 
         // write to file
         // wipe buffer 
-
-    /* 
-    //Testing to ensure file writing is working as expected 
-    int integer = 22;
-    fprintf(write_file, "this is a test %d\n", integer); // write to file
-    */
 
     // Must close file and socket
     fclose(write_file);

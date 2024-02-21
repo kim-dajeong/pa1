@@ -43,7 +43,6 @@ void rsend(char* hostname,
 
     // Create UDP socket:
     socket_desc = socket(AF_INET, SOCK_DGRAM, 0);
-
     if (socket_desc < 0) {
         printf("Error while creating socket\n");
         return -1;
@@ -53,27 +52,30 @@ void rsend(char* hostname,
 
     struct sockaddr_in server_addr;
     server_addr.sin_family = AF_INET;
-    server_addr.sin_port = hostUDPport; //Check later
-    server_addr.sin_addr.s_addr = htonl(INADDR_ANY); //Check later
+    server_addr.sin_port = htons(hostUDPport); //Check later
 
     // Note the client/sender should not need to bind to anything:
-    // Bind to the set port and IP:
-    if (bind(socket_desc, (struct sockaddr*)&server_addr, sizeof(server_addr)) < 0) {
-        printf("Couldn't bind to the port\n");
-        return -1;
-    }
-    printf("Done with binding\n");
 
     unsigned short orderIndex = 0;
+    char buffer[max_packet_size];
 
+    recvfrom(socket_desc, buffer, sizeof(buffer), 0, (struct sockaddr*)&address, &client_struct_length)
     //message = ACK;
-    //sendto(socket_desc, message, strlen(message), 0, (struct sockaddr*)&server_addr, server_struct_length) < 0);
+    if (buffer[0] == "ACK") {
+        
+        sendto(socket_desc, message, strlen(message), 0, (struct sockaddr*)&server_addr, server_struct_length);
+        // Clear the contents of the buffer
+        memset(buffer, 0, sizeof(buffer));
+
+    }
+    //sendto(socket_desc, message, strlen(message), 0, (struct sockaddr*)&server_addr, server_struct_length);
 
     while (bytesRead < bytesToTransfer) {
 
-        // if( first byte of received message == ACK){
+        recvfrom(socket_desc, buffer, sizeof(buffer), 0, (struct sockaddr*)&address, &client_struct_length)
+        if (buffer[0] == "ACK") {
 
-                // Read bytes from the file
+            // Read bytes from the file
                 payload = fread(buffer, 1, max_payload_size, file)
                 // Keep track of how many bytes were read
                 bytesRead += max_payload_size;
@@ -95,11 +97,46 @@ void rsend(char* hostname,
                     return -1;
                 }
 
-        }
+                // Clear the contents of the buffer
+                memset(buffer, 0, sizeof(buffer));
 
     //check for NACK(send again), timeout(send again), else wait
         //else if (time == TIMEOUT length) {
             
+        }
+
+        else if (buffer[0] == "NACK") {
+
+            // Send the message to server:
+            if (sendto(socket_desc, message, strlen(message), 0,
+                (struct sockaddr*)&server_addr, server_struct_length) < 0) {
+                printf("Unable to send message\n");
+                return -1;
+            }
+
+            // Clear the contents of the buffer
+            memset(buffer, 0, sizeof(buffer));
+
+
+        }
+
+        else {
+
+            usleep(500000); //500 miliseconds
+            if (buffer[0] == "NACK") {
+
+                // Send the message to server:
+                if (sendto(socket_desc, message, strlen(message), 0,
+                    (struct sockaddr*)&server_addr, server_struct_length) < 0) {
+                    printf("Unable to send message\n");
+                    return -1;
+                }
+
+                // Clear the contents of the buffer
+                memset(buffer, 0, sizeof(buffer));
+
+            }
+
         }
 
     }

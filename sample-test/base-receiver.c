@@ -11,27 +11,55 @@
 #include <pthread.h>
 #include <errno.h>
 
-#define max_packet_size 1024 //!<bytes
+/*
+Receiver Notes
+    Inputs: UDP Port, pointer to destination file, write rate (assume 0 for now)
+
+    Outputs: Write data to the destination file. 
+
+Receiver Algorithm Skeleton: 
+    - Open a file for writing <complete>
+    - Create large buffer <complete>
+        - Implementing a large static array.  
+    - Create Socket to recieve infomration from sender <in progress>
+
+Loop: Start recieving packets
+    - Check if packet is empty 
+        - send negative ack 
+    - Check if packet is in order 
+        - add to buffer in correct position 
+        - send ack
+    - If packet is unordered place in correct order in buffer
+        - send ack 
+    - If nothing recieved in {timeout (~40ms)} send an ack for the last packet it has 
+
+*/
+
+#define max_packet_size 1024 //total bytes for a udp data packet
+#define max_buffer_size 1024 //number of data bytes 
 
 void rrecv(unsigned short int myUDPport, 
             char* destinationFile, 
             unsigned long long int writeRate) {
-    // Initalizing file I/O and test that the file exists
-    FILE *write_file = fopen(destinationFile, "wb"); // write only
+    // Initalizing file I/O an testing for files not existing
+    FILE *write_file = fopen(destinationFile, "w"); // write only
     if (write_file == NULL){  
         printf("Error! Could not open file\n");
-        exit(EXIT_FAILURE); // must include stdlib.h
+        exit(-1); // must include stdlib.h
         }
+    
 
     //Static buffer for receiving data
-    int buffer[max_packet_size];
+    char buffer[max_buffer_size];
     
+
     // initalizing address struct and the structure of the clients address for receiving
     struct sockaddr_in address, client_addr;
     address.sin_family = AF_INET;
     address.sin_port = htons(myUDPport);
     address.sin_addr.s_addr = htonl(INADDR_ANY);   
     int client_struct_length = sizeof(client_addr);
+
 
     // Create UDP socket and check it exists
     int socket_desc = socket(AF_INET, SOCK_DGRAM, 0);
@@ -44,45 +72,66 @@ void rrecv(unsigned short int myUDPport,
     // Bind socket to the receive address
     if(bind(socket_desc, (struct sockaddr*)&address, sizeof(address)) < 0){
         printf("Couldn't bind to the port\n");
+        fclose(write_file);
+        close(socket_desc);
         exit(EXIT_FAILURE);
     }
     printf("Done with binding\n");
 
     printf("Listening for incoming messages...\n\n");
+/*
+    // Receive client's message
+    while (1) {
+        int recv_size = recvfrom(socket_desc, buffer, sizeof(buffer), 0, (struct sockaddr*)&client_addr, &client_struct_length);  
+        printf("%d",recv_size);
+        if (recv_size < 0) {
+            perror("Error receiving message");
+            fclose(write_file);
+            close(socket_desc);
+            exit(EXIT_FAILURE);
+        } else {
+            printf("Received message from IP: %s and port: %d\n", inet_ntoa(client_addr.sin_addr), ntohs(client_addr.sin_port));
+            fwrite(buffer, 1, recv_size, write_file);
+        }
+    }*/
 
-    // Receive client's message:
-    int client_message = recvfrom(socket_desc, buffer, sizeof(buffer), 0, (struct sockaddr*)&address, &client_struct_length);  
-    if (client_message < 0){
-        printf("Couldn't receive\n");
-        sendto(socket_desc,"NACK",strlen("NACK"),0,(struct sockaddr*)&address,sizeof(address));
-        exit(EXIT_FAILURE);
+ // Receiving the data and writing it into the file.
+  while (1){
+    int addr_size = sizeof(socklen_t);
+    int n = recvfrom(socket_desc, buffer, max_buffer_size, 0, (struct sockaddr*)&client_addr, &addr_size);
+
+    if (strcmp(buffer, "END") == 0)
+    {
+      break;
     }
 
-    else{
-        sendto(socket_desc,"ACK",strlen("ACK"),0,(struct sockaddr*)&address,sizeof(address));
-        //fprintf(write_file, client_message);
-        fwrite(&client_message, sizeof(client_message), 1, write_file);
-        int buffer[max_packet_size];
-    }
+    printf("[RECEVING] Data: %s", buffer);
+    fprintf(write_file, "%s", buffer);
+    bzero(buffer, max_buffer_size);
+  }
 
-    // Must close file and socket
+    //Testing to ensure file writing is working as expected 
+    //int integer = 22;
+    //fprintf(write_file, "%d", integer); // write to file
+
+    // Must close file
     fclose(write_file);
     close(socket_desc);
 
     //Condition to ignore writeRate for now
-    if (writeRate != 0){
+    if(writeRate != 0){
         printf("Error Have not yet implemented Task 8\n");
-        exit(EXIT_FAILURE);
+        exit(-1);
     }
 }
 
-/*! How To Run Main On Terminal:
+/* How To Run Main On Terminal:
     - Navigate to the repository 
     - cd to src folder
     - compile using: gcc -o base-receiver base-receiver.c
-    - run using: ./base-receiver <UDP port number> destinationFile.txt
-            echo -n 111 >/dev/udp/localhost/5000
+    - run using: ./base-receiver 8000 destinationFile.txt
 */
+
 int main(int argc, char** argv) {
     // This is a skeleton of a main function.
     // You should implement this function more completely

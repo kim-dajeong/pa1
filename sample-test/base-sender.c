@@ -35,7 +35,6 @@ void rsend(char* hostname,
     int socket_desc = socket(AF_INET, SOCK_DGRAM, 0);
     if (socket_desc < 0) {
         printf("Error while creating socket\n");
-        return -1;
     }
     else
         printf("Socket created\n");

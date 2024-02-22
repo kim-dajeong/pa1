@@ -24,7 +24,7 @@ void rsend(char* hostname,
         exit(EXIT_FAILURE);
     }
 
-    char message = "hello";
+    char message[] = "hello";
 
     struct sockaddr_in server_addr;
     server_addr.sin_family = AF_INET;

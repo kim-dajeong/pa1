@@ -42,7 +42,7 @@ void rsend(char* hostname,
     }
 
     // Create UDP socket:
-    socket_desc = socket(AF_INET, SOCK_DGRAM, 0);
+    int socket_desc = socket(AF_INET, SOCK_DGRAM, 0);
     if (socket_desc < 0) {
         printf("Error while creating socket\n");
         return -1;
@@ -67,9 +67,9 @@ void rsend(char* hostname,
         return -1;
     }
 
-    recvfrom(socket_desc, buffer, sizeof(buffer), 0, (struct sockaddr*)&address, &client_struct_length)
+    recvfrom(socket_desc, buffer, sizeof(buffer), 0, (struct sockaddr*)&address, &client_struct_length);
     //message = ACK;
-    if (buffer[0] == "ACK") {
+    if(buffer[0] == "ACK") {
         
         sendto(socket_desc, message, strlen(message), 0, (struct sockaddr*)&server_addr, server_struct_length);
         // Clear the contents of the buffer

@@ -78,9 +78,5 @@ int main(int argc, char** argv) {
     bytesToTransfer = atoll(argv[4]);
 
     // Call sender function
-    if (rsend(hostname, hostUDPport, filename, bytesToTransfer) == -1) {
-        return (EXIT_FAILURE);
-    }
-    else
-        return (EXIT_SUCCESS);
+   rsend(hostname, hostUDPport, filename, bytesToTransfer);
 }

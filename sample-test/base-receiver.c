@@ -114,7 +114,7 @@ void rrecv(unsigned short int myUDPport,
 
     if (strcmp(buffer, "END") == 0)
     {
-      exit(EXIT_FAILURE;
+      exit(EXIT_FAILURE);
     }
 
     printf("[RECEVING] Data: %s", buffer);

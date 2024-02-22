@@ -96,7 +96,7 @@ void rrecv(unsigned short int myUDPport,
     }*/
 
  // Receiving the data and writing it into the file.
-  while (1){
+
     int addr_size = sizeof(socklen_t);
     int n = recvfrom(socket_desc, buffer, max_buffer_size, 0, (struct sockaddr*)&client_addr, &addr_size);
 
@@ -108,7 +108,6 @@ void rrecv(unsigned short int myUDPport,
     printf("[RECEVING] Data: %s", buffer);
     fprintf(write_file, "%s", buffer);
     bzero(buffer, max_buffer_size);
-  }
 
     //Testing to ensure file writing is working as expected 
     //int integer = 22;

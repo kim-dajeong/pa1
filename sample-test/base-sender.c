@@ -39,9 +39,12 @@ void rsend(char* hostname,
     else
         printf("Socket created\n");
 
-    sendto(socket_desc, message, strlen(message), 0,
-        (struct sockaddr*)&server_addr, sizeof(struct sockaddr_in));
-
+    if (sendto(socket_desc, message, strlen(message), 0,
+        (struct sockaddr*)&server_addr, sizeof(struct sockaddr_in)) == -1) {
+            fprint("error");
+        }
+    else fprint("successfully sent message");
+    
     close(socket_desc);
     fclose(file);
 

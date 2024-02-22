@@ -32,7 +32,7 @@ void rsend(char* hostname,
         exit(EXIT_FAILURE);
     }
 
-    chaar message = "hello";
+    char message = "hello";
 
     struct sockaddr_in server_addr;
     server_addr.sin_family = AF_INET;
@@ -49,7 +49,7 @@ void rsend(char* hostname,
         printf("Socket created\n");
 
     sendto(socket_desc, message, strlen(message), 0,
-        (struct sockaddr*)&server_addr, sizeof(struct sockaddr_in))
+        (struct sockaddr*)&server_addr, sizeof(struct sockaddr_in));
 
     close(socket_desc);
 

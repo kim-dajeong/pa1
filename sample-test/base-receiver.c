@@ -1,3 +1,15 @@
+/* Testing Notes:
+
+wget -O base-receiver.c https://raw.githubusercontent.com/kim-dajeong/pa1/main/sample-test/base-receiver.c
+
+wget -O base-sender.c https://raw.githubusercontent.com/kim-dajeong/pa1/test/sample-test/base-sender.c
+
+gcc -o base-sender base-sender.c
+
+gcc -o base-receiver base-receiver.c
+
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -102,7 +114,7 @@ void rrecv(unsigned short int myUDPport,
 
     if (strcmp(buffer, "END") == 0)
     {
-      break;
+      exit(EXIT_FAILURE);
     }
 
     printf("[RECEVING] Data: %s", buffer);

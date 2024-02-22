@@ -24,14 +24,6 @@ void rsend(char* hostname,
         exit(EXIT_FAILURE);
     }
 
-       // Allocate a buffer to store the read bytes
-    char buffer = (char)malloc(bytesToRead);
-    if (buffer == NULL) {
-        perror("Memory allocation error");
-        fclose(file);
-        exit(EXIT_FAILURE);
-    }
-
     char message = "hello";
 
     struct sockaddr_in server_addr;

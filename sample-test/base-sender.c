@@ -32,7 +32,7 @@ void rsend(char* hostname,
         exit(EXIT_FAILURE);
     }
 
-    chaar message = "hello";
+    char message = "hello";
 
     struct sockaddr_in server_addr;
     server_addr.sin_family = AF_INET;
@@ -52,7 +52,7 @@ void rsend(char* hostname,
         (struct sockaddr*)&server_addr, sizeof(struct sockaddr_in))
 
     close(socket_desc);
-
+    fclose(file);
 
 
 
@@ -78,7 +78,7 @@ int main(int argc, char** argv) {
     bytesToTransfer = atoll(argv[4]);
 
     // Call sender function
-    if (rsend(hostname, hostUDPport, filename, bytesToTransfer)) == -1) {
+    if (rsend(hostname, hostUDPport, filename, bytesToTransfer) == -1) {
         return (EXIT_FAILURE);
     }
     else

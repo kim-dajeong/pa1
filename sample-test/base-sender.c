@@ -74,7 +74,7 @@ int main(int argc, char** argv) {
     }
     hostUDPport = (unsigned short int) atoi(argv[2]);
     hostname = argv[1];
-    filename = (char) argv[3];
+    filename = argv[3];
     bytesToTransfer = atoll(argv[4]);
 
     // Call sender function

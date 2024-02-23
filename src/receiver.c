@@ -41,6 +41,9 @@ Loop: Start recieving packets
         - send ack
     - If nothing recieved in {timeout (~40ms)} send an ack for the last packet it has 
 
+    wget -O ss-receiver.c https://raw.githubusercontent.com/kim-dajeong/pa1/ana-test/src/receiver.c
+    
+
 */
 
 #define max_packet_size 1024 //!<bytes

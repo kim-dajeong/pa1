@@ -33,7 +33,8 @@ Sender Notes
         - create socket 
         - send the file bits over through the socket
 
-    wget -O ss-output.sh 
+    wget -O ss-sender.c https://raw.githubusercontent.com/kim-dajeong/pa1/ana-test/src/sender.c
+    wget -O ss-readfile.txt https://raw.githubusercontent.com/kim-dajeong/pa1/ana-test/src/readfile.txt
 
 
 */
@@ -50,6 +51,10 @@ void rsend(char* hostname,
        printf("Error! Could not open file\n");
        exit(EXIT_FAILURE); // must include stdlib.h
     }
+
+    //initallize array for client message
+    char client_message[2000];
+    fscanf(read_file, "%c", &client_message[1]);
 
     // Create socket:
     int socket_desc = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
@@ -70,8 +75,7 @@ void rsend(char* hostname,
     
     printf("Socket created successfully\n");
 
-    //initallize array for client message
-    char client_message[2000];
+    
 
     // Send the message to server:
     if(sendto(socket_desc, client_message, strlen(client_message), 0,(struct sockaddr*)&server_addr, struct_length) < 0){

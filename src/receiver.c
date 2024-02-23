@@ -92,6 +92,13 @@ void rrecv(unsigned short int myUDPport,
         printf("Couldn't receive\n");
         exit(EXIT_FAILURE);
     }
+
+    int written;
+    written = fwrite(buffer, sizeof(char), sizeof(buffer), write_file);
+    if (written == 0) {
+    printf("Error during writing to file !");
+    }   
+
     // else 
     // check order (first 2 byes of the package)
     // if order doesnt match then send nack

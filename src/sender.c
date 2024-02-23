@@ -110,6 +110,6 @@ int main(int argc, char** argv) {
     bytesToTransfer = atoll(argv[4]);
 
     // Call sender function
-   rsend(hostname, hostUDPport, filename, bytesToTransfer);
+   rsend(hostname, hostUDPport, argv[3], bytesToTransfer);
    return(EXIT_SUCCESS);
 } 

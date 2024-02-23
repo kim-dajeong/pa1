@@ -68,6 +68,7 @@ void rsend(char* hostname,
     memset(&server_addr, 0, sizeof(server_addr));
     server_addr.sin_family = AF_INET;
     server_addr.sin_port = htons(hostUDPport);
+    server_addr.sin_addr.s_addr = htonl(INADDR_ANY);
     if (inet_aton(hostname, &server_addr.sin_addr) == 0) {
         fprintf(stderr, "inet_aton() failed\n");
         exit(EXIT_FAILURE);

@@ -53,11 +53,11 @@ void rsend(char* hostname,
        exit(EXIT_FAILURE); // must include stdlib.h
     }
 
-    //initallize array for client message
-    char client_message[2000];
+    //initallize array for sender message
+    char sender_message[2000];
 
-    fgets(client_message, max_buffer_size, read_file);
-    printf("String read: %s\n", client_message);
+    fgets(sender_message, max_buffer_size, read_file);
+    printf("String read: %s\n", sender_message);
 
     // Create socket:
     int socket_desc = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
@@ -81,7 +81,7 @@ void rsend(char* hostname,
 
 
     // Send the message to server:
-    if(sendto(socket_desc, client_message, strlen(client_message), 0,(struct sockaddr*)&server_addr, struct_length) < 0){
+    if(sendto(socket_desc, sender_message, strlen(sender_message), 0,(struct sockaddr*)&server_addr, struct_length) < 0){
         printf("Unable to send message\n");
         exit(EXIT_FAILURE);
     }

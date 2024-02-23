@@ -94,12 +94,15 @@ void rrecv(unsigned short int myUDPport,
         exit(EXIT_FAILURE);
     }
 
-    int written;
-    written = fwrite(buffer, sizeof(char), sizeof(buffer), write_file);
-    if (written == 0) {
-    printf("Error during writing to file !");
-    }   
+    // Determine the actual size of the received data
+    size_t received_size = client_message;
 
+    // Write only the received data to the file
+    int written = fwrite(buffer, sizeof(char), received_size, write_file);
+    if (written < received_size) {
+        printf("Error during writing to file!");
+    }
+    
     // else 
     // check order (first 2 byes of the package)
     // if order doesnt match then send nack

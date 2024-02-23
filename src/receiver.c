@@ -53,7 +53,7 @@ void rrecv(unsigned short int myUDPport,
             char* destinationFile, 
             unsigned long long int writeRate) {
     // Initalizing file I/O and test that the file exists
-    FILE *write_file = fopen(destinationFile, "w"); // write only
+    FILE *write_file = fopen(destinationFile, "wb"); // write only
     if (write_file == NULL){  
         printf("Error! Could not open file\n");
         exit(EXIT_FAILURE); // must include stdlib.h

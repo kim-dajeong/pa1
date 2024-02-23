@@ -39,6 +39,7 @@ Sender Notes
 
 */
 
+#define max_buffer_size 1000 //! == payload
 
 void rsend(char* hostname, 
             unsigned short int hostUDPport, 
@@ -53,8 +54,10 @@ void rsend(char* hostname,
     }
 
     //initallize array for client message
-    char client_message[5];
-    fscanf(read_file, "%c", &client_message[0]);
+    char client_message[2000];
+
+    fgets(client_message, max_buffer_size, read_file);
+    printf("String read: %s\n", client_message);
 
     // Create socket:
     int socket_desc = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);

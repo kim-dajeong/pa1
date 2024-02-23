@@ -53,8 +53,8 @@ void rsend(char* hostname,
     }
 
     //initallize array for client message
-    char client_message[2000];
-    fscanf(read_file, "%c", &client_message[1]);
+    char client_message[5];
+    fscanf(read_file, "%c", &client_message[0]);
 
     // Create socket:
     int socket_desc = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
@@ -76,7 +76,6 @@ void rsend(char* hostname,
     
     printf("Socket created successfully\n");
 
-    
 
     // Send the message to server:
     if(sendto(socket_desc, client_message, strlen(client_message), 0,(struct sockaddr*)&server_addr, struct_length) < 0){

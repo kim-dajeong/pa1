@@ -30,7 +30,11 @@ Sender Notes
     Sender Algorithm Skeleton: 
         - Read from File 
         - Splice the file into sendable bits
-        - 
+        - create socket 
+        - send the file bits over through the socket
+
+    wget -O ss-output.sh 
+
 
 */
 
@@ -40,15 +44,43 @@ void rsend(char* hostname,
             char* filename, 
             unsigned long long int bytesToTransfer) {
 
-        /* Open the file */
+     // Open the file: 
     FILE *read_file = fopen(filename, "rb");
     if (read_file == NULL){
        printf("Error! Could not open file\n");
        exit(EXIT_FAILURE); // must include stdlib.h
     }
 
-    
+    // Create socket:
+    int socket_desc = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+    if(socket_desc < 0){
+        printf("Error while creating socket\n");
+        exit(EXIT_FAILURE);
+    }
 
+    struct sockaddr_in address, server_addr;
+    int struct_length = sizeof(server_addr);
+    memset(&server_addr, 0, sizeof(server_addr));
+    server_addr.sin_family = AF_INET;
+    server_addr.sin_port = htons(hostUDPport);
+    if (inet_aton(hostname, &server_addr.sin_addr) == 0) {
+        fprintf(stderr, "inet_aton() failed\n");
+        exit(EXIT_FAILURE);
+    }
+    
+    printf("Socket created successfully\n");
+
+    //initallize array for client message
+    char client_message[2000];
+
+    // Send the message to server:
+    if(sendto(socket_desc, client_message, strlen(client_message), 0,(struct sockaddr*)&server_addr, struct_length) < 0){
+        printf("Unable to send message\n");
+        exit(EXIT_FAILURE);
+    }
+
+    close(socket_desc);
+    fclose(read_file);
 
 }
 
@@ -71,10 +103,9 @@ int main(int argc, char** argv) {
     // Get values from commandline
     hostname = argv[1];
     hostUDPport = (unsigned short int) atoi(argv[2]);
-    filename = (char) argv[3];
     bytesToTransfer = atoll(argv[4]);
 
     // Call sender function
    rsend(hostname, hostUDPport, filename, bytesToTransfer);
-   return (EXIT_SUCCESS);
+   return(EXIT_SUCCESS);
 } 

@@ -46,7 +46,7 @@ void rsend(char* hostname,
             char* filename, 
             unsigned long long int bytesToTransfer) {
 
-     // Open the file: 
+    // Initalizing file I/O and test that the file exists
     FILE *read_file = fopen(filename, "rb");
     if (read_file == NULL){
        printf("Error! Could not open file\n");

@@ -52,6 +52,7 @@ Loop: Start recieving packets
 void rrecv(unsigned short int myUDPport, 
             char* destinationFile, 
             unsigned long long int writeRate) {
+    
     // Initalizing file I/O and test that the file exists
     FILE *write_file = fopen(destinationFile, "wb"); // write only
     if (write_file == NULL){  
@@ -67,7 +68,7 @@ void rrecv(unsigned short int myUDPport,
     address.sin_family = AF_INET;
     address.sin_port = htons(myUDPport);
     address.sin_addr.s_addr = htonl(INADDR_ANY);   
-    int client_struct_length = sizeof(client_addr);
+    unsigned int client_struct_length = sizeof(client_addr);
 
     // Create UDP socket and check it exists
     int socket_desc = socket(AF_INET, SOCK_DGRAM, 0);
@@ -122,6 +123,7 @@ void rrecv(unsigned short int myUDPport,
     - cd to src folder
     - compile using: gcc -o receiver receiver.c
     - run using: ./receiver <UDP port number> destinationFile.txt
+    - hostname -i
 */
 int main(int argc, char** argv) {
     // This is a skeleton of a main function.

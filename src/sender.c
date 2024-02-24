@@ -43,7 +43,7 @@ Sender Notes
 
 */
 
-#define PAYLOAD_SIZE 1024 //! == payload
+#define PAYLOAD_SIZE 16 //! == payload
 #define MAX_BUFFER_SIZE 20000
 
 void rsend(char* hostname, 

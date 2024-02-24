@@ -94,14 +94,9 @@ void rrecv(unsigned short int myUDPport,
         exit(EXIT_FAILURE);
     }
 
-    // Determine the size of the payload data
-    size_t udp_header_size = 8; // UDP header size is typically 8 bytes
-    size_t payload_size = client_message; // - udp_header_size;
-    printf("there are %d characters",payload_size);
-
     // Write only the payload data to the file
-    int written = fwrite(buffer, sizeof(char), 30, write_file);
-    if (written < payload_size) {
+    int written = fwrite(buffer, sizeof(char), client_message, write_file);
+    if (written < client_message) {
         printf("Error during writing to file!");
     }
 

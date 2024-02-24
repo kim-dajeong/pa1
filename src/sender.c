@@ -2,6 +2,8 @@
  *  @brief Client side for a more reliable file transfer using UDP Protocol. 
  *
  *  The client/sender part of the reliable file transfer using UDP. 
+ * 
+ *   HARD CODING THE READFILE JUST WANT TO TEST THE FUNCTION OF THE STRUCTURED PACKETS!!!!!!
  *
  *  @author Ana Bandari (abandari)
  *          Dajeong Kim 
@@ -37,9 +39,11 @@ Sender Notes
         - create socket 
         - send the file bits over through the socket
 
-    wget -O sender.c https://raw.githubusercontent.com/kim-dajeong/pa1/ana-test/src/sender.c
-    wget -O readfile.txt https://raw.githubusercontent.com/kim-dajeong/pa1/ana-test/src/readfile.txt
-
+    Test Commands:
+    wget -O sender.c https://raw.githubusercontent.com/kim-dajeong/pa1/ana-struct-test/src/sender.c
+    wget -O readfile.txt https://raw.githubusercontent.com/kim-dajeong/pa1/ana-struct-test/src/readfile
+    gcc -o sender sender.c
+    ./sender hostname 8000 readfile bytes to transfer
 
 */
 

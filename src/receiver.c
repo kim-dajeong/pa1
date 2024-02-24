@@ -2,6 +2,8 @@
  *  @brief Server functionality for a more reliable file transfer using UDP Protocol. 
  *
  *  The server/reciever part of the reliable file transfer using UDP. 
+ * 
+ *  NOTE THIS IS HARD CODED ONLY TO TEST THE FUNCTIONALITY OF THE STRUCTURES. 
  *
  *  @author Ana Bandari (anabandari)
  *  @bug Be able to recieve muliple packets
@@ -42,8 +44,11 @@ Loop: Start recieving packets
         - send ack
     - If nothing recieved in {timeout (~40ms)} send an ack for the last packet it has 
 
-    wget -O receiver.c https://raw.githubusercontent.com/kim-dajeong/pa1/ana-test/src/receiver.c
-
+    Test Commands:
+    wget -O receiver.c https://raw.githubusercontent.com/kim-dajeong/pa1/ana-struct-test/src/receiver.c
+    hostname -i
+    gcc -o receiver receiver.c
+    ./receiver 8000 destinationFile
 
 */
 
@@ -88,7 +93,7 @@ void rrecv(unsigned short int myUDPport,
 
     printf("Listening for incoming messages...\n\n");
 
-    while(1){
+
     // Receive client's message:
     size_t client_message = recvfrom(socket_desc, buffer, sizeof(buffer), 0, (struct sockaddr*)&address, &client_struct_length);  
     if (client_message < 0){
@@ -100,12 +105,6 @@ void rrecv(unsigned short int myUDPport,
     int written = fwrite(buffer, sizeof(char), client_message, write_file);
     if (written < client_message) {
         printf("Error during writing to file!");
-    }
-
-     /*if (client_message = "FIN"){
-        break;
-        }*/
-
     }
 
     // else 

@@ -98,7 +98,7 @@ void rrecv(unsigned short int myUDPport,
     while(1){
 
     // Determine number of bytes to read
-    //byteNumber = (PAYLOAD_SIZE < (bytesToTransfer - bytesRead)) ? PAYLOAD_SIZE : (bytesToTransfer - bytesRead);
+    byteNumber = (PAYLOAD_SIZE < (bytesToTransfer - bytesRead)) ? PAYLOAD_SIZE : (bytesToTransfer - bytesRead);
 
     // Receive client's message:
     size_t client_message = recvfrom(socket_desc, buffer, sizeof(buffer), 0, (struct sockaddr*)&address, &client_struct_length); 
@@ -117,11 +117,15 @@ void rrecv(unsigned short int myUDPport,
         printf("Error during writing to file!");
     }
 
+    if(bytesRead >= bytesToTransfer) {
+        break;
+    }
+
      /*if (client_message = "FIN"){
         break;
         }*/
 
-    //bytesRead += byteNumber;
+    bytesRead += byteNumber;
 
     }
 

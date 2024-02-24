@@ -88,7 +88,7 @@ void rsend(char* hostname,
     int byteNumber = 0;
     char sendermessage[MAX_BUFFER_SIZE];
     char* readStart;
-    int indexPointer[4];
+    char indexPointer[4];
 
     while(bytesRead < bytesToTransfer) {
 
@@ -99,7 +99,7 @@ void rsend(char* hostname,
         fseek(read_file, bytesRead, SEEK_SET);
         fread(senderBuffer, sizeof(char), byteNumber, read_file);
 
-        indexPointer[0] = index;
+        indexPointer[0] = (char)index;
 
         sendermessage = strcat(indexPointer,senderBuffer);
 

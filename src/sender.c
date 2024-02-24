@@ -92,29 +92,24 @@ void rsend(char* hostname,
         // Determine number of bytes to read
         byteNumber = (PAYLOAD_SIZE < (bytesToTransfer - bytesRead)) ? PAYLOAD_SIZE : (bytesToTransfer - bytesRead);
 
+        char* startRead = sender_message + byteNumber;
+
         // Read byteNumber size of file
-        fread(sender_message, 1, byteNumber, read_file);
+        fread(startRead, sizeof(char), byteNumber, read_file);
         printf("String read: %s, packet number: %d\n", sender_message, index);
 
             // Send the message to server:
-        if(sendto(socket_desc, sender_message, strlen(sender_message), 0,(struct sockaddr*)&server_addr, struct_length) < 0){
-            printf("Unable to send message\n");
-            exit(EXIT_FAILURE);
-        }
+        sendto(socket_desc, sender_message, strlen(sender_message), 0, (struct sockaddr*)&server_addr, struct_length) 
 
-        index++;
+        index += index;
+
         bytesRead += byteNumber;
 
     }
 
 
-    // Send the message to server:
-    if(sendto(socket_desc, sender_message, strlen(sender_message), 0,(struct sockaddr*)&server_addr, struct_length) < 0){
-        printf("Unable to send message\n");
-        exit(EXIT_FAILURE);
-    }
-
     close(socket_desc);
+    fprint("conenciton closed");
     fclose(read_file);
 
 }

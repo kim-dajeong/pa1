@@ -100,7 +100,7 @@ void rrecv(unsigned short int myUDPport,
     printf("there are %d characters",payload_size);
 
     // Write only the payload data to the file
-    int written = fwrite(buffer, sizeof(char), 12, write_file);
+    int written = fwrite(buffer, sizeof(char), 30, write_file);
     if (written < payload_size) {
         printf("Error during writing to file!");
     }

@@ -90,8 +90,8 @@ void rsend(char* hostname,
     char* readStart;
     char indexPointer[4];
 
-    senderBuffer[0] = bytesToTransfer;
-    sendto(socket_desc, senderBuffer, strlen(senderBuffer), 0, (struct sockaddr*)&server_addr, struct_length);
+    //senderBuffer[0] = bytesToTransfer;
+    //sendto(socket_desc, senderBuffer, strlen(senderBuffer), 0, (struct sockaddr*)&server_addr, struct_length);
 
     while(bytesRead < bytesToTransfer) {
 

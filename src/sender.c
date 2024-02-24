@@ -5,7 +5,11 @@
  *
  *  @author Ana Bandari (abandari)
  *          Dajeong Kim 
- *  @bug No known bugs.
+ * 
+ *  @bug Steps: 
+ *        1. Only works for small strings, test with large binary files? (binary is of type int!)
+ *        2. Currently not using the bytes to transfer.
+ *        3. Ack and Fin functionality/struct variables (one structure)
  */
 
 
@@ -39,7 +43,7 @@ Sender Notes
 
 */
 
-#define max_buffer_size 1000 //! == payload
+#define max_buffer_size 1024 //! == payload
 
 void rsend(char* hostname, 
             unsigned short int hostUDPport, 

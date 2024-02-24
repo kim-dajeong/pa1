@@ -95,7 +95,7 @@ void rrecv(unsigned short int myUDPport,
     int bytesRead = 0;   
     int byteNumber = 0;
 
-    for(int i = 0; i < bytesToTransfer; i++){
+    while(bytesRead < bytesToTransfer){
 
     // Determine number of bytes to read
     byteNumber = (PAYLOAD_SIZE < (bytesToTransfer - bytesRead)) ? PAYLOAD_SIZE : (bytesToTransfer - bytesRead);
@@ -103,9 +103,10 @@ void rrecv(unsigned short int myUDPport,
     // Receive client's message:
     size_t client_message = recvfrom(socket_desc, buffer, sizeof(buffer), 0, (struct sockaddr*)&address, &client_struct_length); 
      // Printing elements using a loop
-    printf("message: %s\n", buffer);
+    printf("%s\n", buffer);
 
     //printf("packet message: *%s*", buffer);
+    
     if (client_message < 0){
     printf("Couldn't receive\n");
         exit(EXIT_FAILURE);

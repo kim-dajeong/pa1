@@ -117,6 +117,7 @@ void rrecv(unsigned short int myUDPport,
 
     // Write only the payload data to the file
     fseek(write_file, bytesRead, SEEK_SET);
+
     int written = fwrite(buffer, sizeof(char), client_message, write_file);
     if (written < client_message) {
         printf("Error during writing to file!");
@@ -127,6 +128,7 @@ void rrecv(unsigned short int myUDPport,
         }*/
 
     bytesRead += byteNumber;
+    memset(buffer, 0, sizeof(buffer)); 
 
     }
 

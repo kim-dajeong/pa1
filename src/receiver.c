@@ -66,7 +66,7 @@ void rrecv(unsigned short int myUDPport,
         }
 
     //Static buffer for receiving data
-    char buffer[bytesToTransfer];
+    char buffer[max_packet_size];
     
     // initalizing address struct and the structure of the clients address for receiving
     struct sockaddr_in address, client_addr;

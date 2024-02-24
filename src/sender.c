@@ -97,8 +97,8 @@ void rsend(char* hostname,
 
         // Read byteNumber size of file
         fread(startRead, sizeof(char), byteNumber, read_file);
-        for (size_t i = startRead; i < startRead + byteNumber; i++) {
-            printf("%02X ", (unsigned char)senderBuffer[i]);
+        for (size_t i = 0; i < byteNumber; i++) {
+            printf("%02X ", (unsigned char)startRead[i]);
         }
 
             // Send the message to server:

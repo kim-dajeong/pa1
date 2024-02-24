@@ -51,7 +51,7 @@ Loop: Start recieving packets
 #define max_buffer_size 1000 //! == payload
 #define PAYLOAD_SIZE 16 //! == payload
 
-#define bytesToTransfer 200 // value needs to be received from sender
+//#define bytesToTransfer 200 // value needs to be received from sender
 
 
 void rrecv(unsigned short int myUDPport, 
@@ -94,6 +94,9 @@ void rrecv(unsigned short int myUDPport,
 
     int bytesRead = 0;   
     int byteNumber = 0;
+
+    recvfrom(socket_desc, buffer, sizeof(buffer), 0, (struct sockaddr*)&address, &client_struct_length); 
+    int bytesToTransfer = buffer[0];
 
     while(1){
 

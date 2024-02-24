@@ -58,12 +58,6 @@ void rsend(char* hostname,
        exit(EXIT_FAILURE); // must include stdlib.h
     }
 
-    //initallize array for sender message
-    char senderBuffer[MAX_BUFFER_SIZE];
-    int bytesRead = 0;
-    int index = 0;
-    int byteNumber = 0;
-
     //fgets(sender_message, max_buffer_size, read_file);
     //printf("String read: %s\n", sender_message);
 
@@ -87,24 +81,30 @@ void rsend(char* hostname,
     
     printf("Socket created successfully\n");
 
+    //initallize array for sender message
+    char senderBuffer[MAX_BUFFER_SIZE];
+    int bytesRead = 0;
+    int index = 0;
+    int byteNumber = 0;
+    char sendermessage[];
+    char* readStart;
 
     while(bytesRead < bytesToTransfer) {
 
         // Determine number of bytes to read
         byteNumber = (PAYLOAD_SIZE < (bytesToTransfer - bytesRead)) ? PAYLOAD_SIZE : (bytesToTransfer - bytesRead);
 
-        char* startRead = senderBuffer + byteNumber;
-
         // Read byteNumber size of file
-        fread(startRead, sizeof(char), byteNumber, read_file);
-        for (size_t i = 0; i < byteNumber; i++) {
-            printf("%c", (unsigned char)startRead[i]);
-        }
+        fseek(read_file, bytesRead, SEEK_SET);
+        fread(senderBuffer, sizeof(char), byteNumber, read_file);
 
-            // Send the message to server:
-        sendto(socket_desc, startRead, strlen(startRead), 0, (struct sockaddr*)&server_addr, struct_length);
+        sendermessage = strcat((char)index,senderBuffer);
+        readStart = sendermessage;
 
-        index += index;
+        // Send the message to server:
+        sendto(socket_desc, sendermessage*, strlen(startRead), 0, (struct sockaddr*)&server_addr, struct_length);
+
+        index++;
 
         bytesRead += byteNumber;
 

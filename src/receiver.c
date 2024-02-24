@@ -49,6 +49,10 @@ Loop: Start recieving packets
 
 #define max_packet_size 1024 //!<bytes
 #define max_buffer_size 1000 //! == payload
+#define PAYLOAD_SIZE 16 //! == payload
+
+#define bytesToTransfer 200 //! == payload
+
 
 void rrecv(unsigned short int myUDPport, 
             char* destinationFile, 
@@ -88,11 +92,18 @@ void rrecv(unsigned short int myUDPport,
 
     printf("Listening for incoming messages...\n\n");
 
-    for(int i = 0; i < 2000; i++){
+    int bytesRead = 0;   
+    int byteNumber = 0;
+
+    for(int i = 0; i < 200; i++){
+
+    // Determine number of bytes to read
+    byteNumber = (PAYLOAD_SIZE < (bytesToTransfer - bytesRead)) ? PAYLOAD_SIZE : (bytesToTransfer - bytesRead);
+
     // Receive client's message:
     size_t client_message = recvfrom(socket_desc, buffer, sizeof(buffer), 0, (struct sockaddr*)&address, &client_struct_length); 
      // Printing elements using a loop
-    for (int i = 0; i < sizeof(buffer); i++) {
+    for (int i = 0; i < 16; i++) {
         printf("%c ", buffer[i]);
     }
 
@@ -105,6 +116,7 @@ void rrecv(unsigned short int myUDPport,
     }
 
     // Write only the payload data to the file
+    fseek(write_file, bytesRead, SEEK_SET);
     int written = fwrite(buffer, sizeof(char), client_message, write_file);
     if (written < client_message) {
         printf("Error during writing to file!");
@@ -113,6 +125,8 @@ void rrecv(unsigned short int myUDPport,
      /*if (client_message = "FIN"){
         break;
         }*/
+
+    bytesRead += byteNumber;
 
     }
 

@@ -98,10 +98,11 @@ void rsend(char* hostname,
         // Read byteNumber size of file
         fseek(read_file, bytesRead, SEEK_SET);
         fread(senderBuffer, sizeof(char), byteNumber, read_file);
+
         printf("message: %s, index: %d\n", senderBuffer, index);
 
-        indexPointer[0] = index;
-        strcat(senderBuffer, "indexPointer");
+        //indexPointer[0] = (char)index;
+        //strcat(senderBuffer, indexPointer);
 
         // Send the message to server:
         sendto(socket_desc, senderBuffer, strlen(senderBuffer), 0, (struct sockaddr*)&server_addr, struct_length);

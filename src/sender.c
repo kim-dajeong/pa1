@@ -112,7 +112,7 @@ void rsend(char* hostname,
         //strcat(senderBuffer, indexPointer);
 
         // Send the message to server:
-        sendto(socket_desc, senderBuffer, strlen(sendermessage), 0, (struct sockaddr*)&server_addr, struct_length);
+        sendto(socket_desc, senderBuffer, strlen(senderBuffer), 0, (struct sockaddr*)&server_addr, struct_length);
 
         index++;
 

@@ -43,8 +43,8 @@ Sender Notes
 
 */
 
-#define PAYLOAD_SIZE 10 //! == payload
-#define MAX_BUFFER_SIZE 2000
+#define PAYLOAD_SIZE 1024 //! == payload
+#define MAX_BUFFER_SIZE 20000
 
 void rsend(char* hostname, 
             unsigned short int hostUDPport, 
@@ -98,11 +98,11 @@ void rsend(char* hostname,
         // Read byteNumber size of file
         fread(startRead, sizeof(char), byteNumber, read_file);
         for (size_t i = 0; i < byteNumber; i++) {
-            printf("%02X ", (unsigned char)startRead[i]);
+            printf("%c", (unsigned char)startRead[i]);
         }
 
             // Send the message to server:
-        sendto(socket_desc, startRead, strlen(startRead), 0, (struct sockaddr*)&server_addr, struct_length);
+        sendto(socket_desc, startRead, strlen(byteNumber), 0, (struct sockaddr*)&server_addr, struct_length);
 
         index += index;
 

@@ -62,7 +62,7 @@ void rrecv(unsigned short int myUDPport,
         }
 
     //Static buffer for receiving data
-    int buffer[max_packet_size];
+    char buffer[max_packet_size];
     
     // initalizing address struct and the structure of the clients address for receiving
     struct sockaddr_in address, client_addr;
@@ -91,7 +91,7 @@ void rrecv(unsigned short int myUDPport,
     while(1){
     // Receive client's message:
     size_t client_message = recvfrom(socket_desc, buffer, sizeof(buffer), 0, (struct sockaddr*)&address, &client_struct_length); 
-    printf("packet message: *%ld*\n", client_message);
+    printf("packet message: *%c*", buffer);
     if (client_message < 0){
     printf("Couldn't receive\n");
         exit(EXIT_FAILURE);

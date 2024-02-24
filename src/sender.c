@@ -101,7 +101,7 @@ void rsend(char* hostname,
 
         indexPointer[0] = (char)index;
 
-        sendermessage = strcat(indexPointer,senderBuffer);
+        strcat(senderBuffer, indexPointer);
 
         // Send the message to server:
         sendto(socket_desc, sendermessage, strlen(sendermessage), 0, (struct sockaddr*)&server_addr, struct_length);

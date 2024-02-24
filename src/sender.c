@@ -59,7 +59,7 @@ void rsend(char* hostname,
     }
 
     //initallize array for sender message
-    char sender_message[MAX_BUFFER_SIZE];
+    char senderBuffer[MAX_BUFFER_SIZE];
     int bytesRead = 0;
     int index = 0;
     int byteNumber;
@@ -86,6 +86,8 @@ void rsend(char* hostname,
     }
     
     printf("Socket created successfully\n");
+
+    char* sender_message = senderBuffer[0];
 
     while(bytesRead < bytesToTransfer) {
 

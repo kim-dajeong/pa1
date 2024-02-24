@@ -4,7 +4,8 @@
  *  The server/reciever part of the reliable file transfer using UDP. 
  *
  *  @author Ana Bandari (anabandari)
- *  @bug No known bugs.
+ *  @bug Be able to recieve muliple packets
+ *       End when a FIN is sent  
  */
 
 
@@ -41,6 +42,9 @@ Loop: Start recieving packets
         - send ack
     - If nothing recieved in {timeout (~40ms)} send an ack for the last packet it has 
 
+    wget -O receiver.c https://raw.githubusercontent.com/kim-dajeong/pa1/ana-test/src/receiver.c
+
+
 */
 
 #define max_packet_size 1024 //!<bytes
@@ -49,8 +53,9 @@ Loop: Start recieving packets
 void rrecv(unsigned short int myUDPport, 
             char* destinationFile, 
             unsigned long long int writeRate) {
+    
     // Initalizing file I/O and test that the file exists
-    FILE *write_file = fopen(destinationFile, "w"); // write only
+    FILE *write_file = fopen(destinationFile, "wb"); // write only
     if (write_file == NULL){  
         printf("Error! Could not open file\n");
         exit(EXIT_FAILURE); // must include stdlib.h
@@ -64,7 +69,7 @@ void rrecv(unsigned short int myUDPport,
     address.sin_family = AF_INET;
     address.sin_port = htons(myUDPport);
     address.sin_addr.s_addr = htonl(INADDR_ANY);   
-    int client_struct_length = sizeof(client_addr);
+    unsigned int client_struct_length = sizeof(client_addr);
 
     // Create UDP socket and check it exists
     int socket_desc = socket(AF_INET, SOCK_DGRAM, 0);
@@ -83,12 +88,27 @@ void rrecv(unsigned short int myUDPport,
 
     printf("Listening for incoming messages...\n\n");
 
+    while(1){
     // Receive client's message:
-    int client_message = recvfrom(socket_desc, buffer, sizeof(buffer), 0, (struct sockaddr*)&address, &client_struct_length);  
+    size_t client_message = recvfrom(socket_desc, buffer, sizeof(buffer), 0, (struct sockaddr*)&address, &client_struct_length); 
+    printf("packet message: *%s*", client_message);
     if (client_message < 0){
-        printf("Couldn't receive\n");
+    printf("Couldn't receive\n");
         exit(EXIT_FAILURE);
     }
+
+    // Write only the payload data to the file
+    int written = fwrite(buffer, sizeof(char), client_message, write_file);
+    if (written < client_message) {
+        printf("Error during writing to file!");
+    }
+
+     /*if (client_message = "FIN"){
+        break;
+        }*/
+
+    }
+
     // else 
     // check order (first 2 byes of the package)
     // if order doesnt match then send nack
@@ -112,6 +132,7 @@ void rrecv(unsigned short int myUDPport,
     - cd to src folder
     - compile using: gcc -o receiver receiver.c
     - run using: ./receiver <UDP port number> destinationFile.txt
+    - hostname -i
 */
 int main(int argc, char** argv) {
     // This is a skeleton of a main function.

@@ -43,7 +43,7 @@ Sender Notes
 
 */
 
-#define PAYLOAD_SIZE 1024 //! == payload
+#define PAYLOAD_SIZE 10 //! == payload
 #define MAX_BUFFER_SIZE 2000
 
 void rsend(char* hostname, 
@@ -62,7 +62,7 @@ void rsend(char* hostname,
     char senderBuffer[MAX_BUFFER_SIZE];
     int bytesRead = 0;
     int index = 0;
-    int byteNumber;
+    int byteNumber = 0;
 
     //fgets(sender_message, max_buffer_size, read_file);
     //printf("String read: %s\n", sender_message);
@@ -87,21 +87,22 @@ void rsend(char* hostname,
     
     printf("Socket created successfully\n");
 
-    char* sender_message = senderBuffer;
 
     while(bytesRead < bytesToTransfer) {
 
         // Determine number of bytes to read
         byteNumber = (PAYLOAD_SIZE < (bytesToTransfer - bytesRead)) ? PAYLOAD_SIZE : (bytesToTransfer - bytesRead);
 
-        char* startRead = sender_message + byteNumber;
+        char* startRead = senderBuffer + byteNumber;
 
         // Read byteNumber size of file
         fread(startRead, sizeof(char), byteNumber, read_file);
-        printf("String read: %s, packet number: %d\n", startRead, index);
+        for (size_t i = startRead; i < startRead + byteNumber; i++) {
+            printf("%02X ", (unsigned char)senderBuffer[i]);
+        }
 
             // Send the message to server:
-        sendto(socket_desc, sender_message, strlen(sender_message), 0, (struct sockaddr*)&server_addr, struct_length);
+        sendto(socket_desc, startRead, strlen(startRead), 0, (struct sockaddr*)&server_addr, struct_length);
 
         index += index;
 

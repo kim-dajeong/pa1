@@ -77,7 +77,8 @@ void rsend(char* hostname,
         free(buffer);
 
     }
-    //sendto(socket_desc, message, strlen(message), 0, (struct sockaddr*)&server_addr, sizeof(struct sockaddr_in));
+
+    sendto(socket_desc, message, strlen(message), 0, (struct sockaddr*)&server_addr, sizeof(struct sockaddr_in));
 
     while (bytesRead < bytesToTransfer) {
 

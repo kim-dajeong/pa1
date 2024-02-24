@@ -104,7 +104,7 @@ void rrecv(unsigned short int myUDPport,
     size_t client_message = recvfrom(socket_desc, buffer, sizeof(buffer), 0, (struct sockaddr*)&address, &client_struct_length); 
      // Printing elements using a loop
     for (int i = 0; i < 16; i++) {
-        printf("%c ", buffer[i]);
+        printf("data: %c, packet number: %d", buffer[i], i);
     }
 
     printf("\n");

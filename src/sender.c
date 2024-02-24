@@ -99,6 +99,10 @@ void rsend(char* hostname,
         fseek(read_file, bytesRead, SEEK_SET);
         fread(senderBuffer, sizeof(char), byteNumber, read_file);
 
+        for (int i = 0; i < byteNumber; i++) {
+            printf("message: %c, packet number: %d", senderBuffer[i], index);
+        }
+
         indexPointer[0] = (char)index;
 
         strcat(senderBuffer, indexPointer);

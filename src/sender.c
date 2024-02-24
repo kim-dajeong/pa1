@@ -100,8 +100,7 @@ void rsend(char* hostname,
         fread(senderBuffer, sizeof(char), byteNumber, read_file);
         printf("message: %s, index: %d\n", senderBuffer, index);
 
-        indexPointer[0] = (char)index;
-        strcat(senderBuffer, ", index: ");
+        indexPointer[0] = index;
         strcat(senderBuffer, "indexPointer");
 
         // Send the message to server:

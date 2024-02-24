@@ -96,7 +96,7 @@ void rsend(char* hostname,
 
         // Read byteNumber size of file
         fread(startRead, sizeof(char), byteNumber, read_file);
-        fprintf("String read: %s, packet number: %d\n", sender_message, index);
+        printf("String read: %s, packet number: %d\n", sender_message, index);
 
             // Send the message to server:
         sendto(socket_desc, sender_message, strlen(sender_message), 0, (struct sockaddr*)&server_addr, struct_length);
@@ -109,7 +109,7 @@ void rsend(char* hostname,
 
 
     close(socket_desc);
-    fprint("conenciton closed");
+    printf("conenciton closed");
     fclose(read_file);
 
 }

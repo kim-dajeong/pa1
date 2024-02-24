@@ -99,7 +99,7 @@ void rsend(char* hostname,
         printf("String read: %s, packet number: %d\n", sender_message, index);
 
             // Send the message to server:
-        sendto(socket_desc, sender_message, strlen(sender_message), 0, (struct sockaddr*)&server_addr, struct_length) 
+        sendto(socket_desc, sender_message, strlen(sender_message), 0, (struct sockaddr*)&server_addr, struct_length);
 
         index += index;
 

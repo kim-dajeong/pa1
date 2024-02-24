@@ -43,8 +43,8 @@ Sender Notes
 
 */
 
-#define PAYLOAD_SIZE 1024; //! == payload
-#define MAX_BUFFER_SIZE 2000;
+#define PAYLOAD_SIZE 1024 //! == payload
+#define MAX_BUFFER_SIZE 2000
 
 void rsend(char* hostname, 
             unsigned short int hostUDPport, 
@@ -93,7 +93,7 @@ void rsend(char* hostname,
         byteNumber = (PAYLOAD_SIZE < (bytesToTransfer - bytesRead)) ? PAYLOAD_SIZE : (bytesToTransfer - bytesRead);
 
         // Read byteNumber size of file
-        freads(sender_message, 1, byteNumber, read_file);
+        fread(sender_message, 1, byteNumber, read_file);
         printf("String read: %s, packet number: %d\n", sender_message, index);
 
             // Send the message to server:

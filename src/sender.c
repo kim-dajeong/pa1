@@ -86,8 +86,9 @@ void rsend(char* hostname,
     int bytesRead = 0;
     int index = 0;
     int byteNumber = 0;
-    char sendermessage[];
+    char sendermessage[MAX_BUFFER_SIZE];
     char* readStart;
+    int indexPointer[4];
 
     while(bytesRead < bytesToTransfer) {
 
@@ -98,11 +99,12 @@ void rsend(char* hostname,
         fseek(read_file, bytesRead, SEEK_SET);
         fread(senderBuffer, sizeof(char), byteNumber, read_file);
 
-        sendermessage = strcat((char)index,senderBuffer);
-        readStart = sendermessage;
+        indexPointer[0] = index;
+
+        sendermessage = strcat(indexPointer,senderBuffer);
 
         // Send the message to server:
-        sendto(socket_desc, sendermessage*, strlen(startRead), 0, (struct sockaddr*)&server_addr, struct_length);
+        sendto(socket_desc, sendermessage, strlen(sendermessage), 0, (struct sockaddr*)&server_addr, struct_length);
 
         index++;
 

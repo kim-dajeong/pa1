@@ -105,7 +105,7 @@ void rsend(char* hostname,
         //}
         //printf("index: %d", index);
 
-        printf("message: %s, index: %d", senderBuffer, index);
+        printf("message: %s, index: %d\n", senderBuffer, index);
 
         indexPointer[0] = (char)index;
 

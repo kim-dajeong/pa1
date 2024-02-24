@@ -88,7 +88,7 @@ void rrecv(unsigned short int myUDPport,
 
     printf("Listening for incoming messages...\n\n");
 
-    while(1){
+    for(int i = 0; i < 2000; i++){
     // Receive client's message:
     size_t client_message = recvfrom(socket_desc, buffer, sizeof(buffer), 0, (struct sockaddr*)&address, &client_struct_length); 
     printf("packet message: *%s*", buffer);

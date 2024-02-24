@@ -100,6 +100,7 @@ void rrecv(unsigned short int myUDPport,
     printf("Couldn't receive\n");
         exit(EXIT_FAILURE);
     }
+    printf("%d", client_message);
 
     // Write only the payload data to the file
     int written = fwrite(buffer, sizeof(char), client_message, write_file);

@@ -9,7 +9,7 @@
  *          Dajeong Kim 
  * 
  *  @bug Steps: 
- *        1. Only works for small strings, test with large binary files? (binary is of type int!)
+ *        1. Only works for small strings, test with large chars/bytes. 
  *        2. Currently not using the bytes to transfer.
  *        3. Ack and Fin functionality/struct variables (one structure)
  */
@@ -93,6 +93,8 @@ void rsend(char* hostname,
         printf("Unable to send message\n");
         exit(EXIT_FAILURE);
     }
+
+    printf("Socket sent successfully\n");
 
     close(socket_desc);
     fclose(read_file);

@@ -95,7 +95,7 @@ void rrecv(unsigned short int myUDPport,
     int bytesRead = 0;   
     int byteNumber = 0;
 
-    while(bytesRead < bytesToTransfer){
+    while(1){
 
     // Determine number of bytes to read
     byteNumber = (PAYLOAD_SIZE < (bytesToTransfer - bytesRead)) ? PAYLOAD_SIZE : (bytesToTransfer - bytesRead);
@@ -106,7 +106,7 @@ void rrecv(unsigned short int myUDPport,
     printf("%s\n", buffer);
 
     //printf("packet message: *%s*", buffer);
-    
+
     if (client_message < 0){
     printf("Couldn't receive\n");
         exit(EXIT_FAILURE);

@@ -106,6 +106,8 @@ void rsend(char* hostname,
         fseek(read_file, bytesRead, SEEK_SET);
         fread(readfile_message, 1, byteNumber, read_file);
 
+        printf("%p", readfile_message);
+
         // Send the message to server:
         if(sendto(socket_desc, readfile_message, strlen(readfile_message), 0, (struct sockaddr*)&server_addr, struct_length)<0){
             printf("Unable to send message\n");

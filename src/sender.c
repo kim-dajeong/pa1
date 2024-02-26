@@ -38,8 +38,9 @@ Sender Notes
         - send the file bits over through the socket
 
     wget -O sender.c https://raw.githubusercontent.com/kim-dajeong/pa1/main/src/sender.c
-    wget -O readfile.txt https://raw.githubusercontent.com/kim-dajeong/pa1/main/src/readfile
-
+    wget -O readfile https://raw.githubusercontent.com/kim-dajeong/pa1/main/src/readfile
+    gcc -o sender sender.c
+    ./sender 130.127.132.208 8000 readfile 100
 
 */
 
@@ -117,6 +118,7 @@ void rsend(char* hostname,
     }
 
     //terminating connection 
+    const char *terminate[1];
     char terminate[0] = "FIN";
     if(sendto(socket_desc, terminate, strlen(terminate), 0, (struct sockaddr*)&server_addr, struct_length)<0){
             printf("Unable to send message\n");

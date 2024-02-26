@@ -42,7 +42,9 @@ Loop: Start recieving packets
         - send ack
     - If nothing recieved in {timeout (~40ms)} send an ack for the last packet it has 
 
-    wget -O receiver.c https://raw.githubusercontent.com/kim-dajeong/pa1/ana-test/src/receiver.c
+    wget -O receiver.c https://raw.githubusercontent.com/kim-dajeong/pa1/main/src/receiver.c
+    gcc -o receiver receiver.c
+    ./receiver 8000 destinationFile
 
 
 */

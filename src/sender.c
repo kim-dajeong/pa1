@@ -7,7 +7,7 @@
  *          Dajeong Kim 
  * 
  *  @bug Steps: 
- *        1. Only works for small strings, test with large binary files? (binary is of type int!)
+ *        1. Only works for small strings, test with raw data type
  *        2. Currently not using the bytes to transfer.
  *        3. Ack and Fin functionality/struct variables (one structure)
  */
@@ -55,6 +55,15 @@ void rsend(char* hostname,
     if (read_file == NULL){
        printf("Error! Could not open file\n");
        exit(EXIT_FAILURE); // must include stdlib.h
+    }
+
+    //determining max readfile bytes to check that bytes to transfer doesnt exceed the limit
+    fseek(read_file, 0, SEEK_END);
+    long readfile_size = ftell(read_file);
+    fseek(read_file,0, SEEK_SET); 
+    if(bytesToTransfer>readfile_size){
+        printf("There are only %d bytes in this file. Try again.\n", readfile_size);
+        exit(EXIT_FAILURE);
     }
 
     // Create socket:

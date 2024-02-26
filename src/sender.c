@@ -1,3 +1,18 @@
+/** @file sender.c
+ *  @brief Client side for a more reliable file transfer using UDP Protocol. 
+ *
+ *  The client/sender part of the reliable file transfer using UDP. 
+ *
+ *  @author Ana Bandari (abandari)
+ *          Dajeong Kim 
+ * 
+ *  @bug Steps: 
+ *        1. Only works for small strings, test with large binary files? (binary is of type int!)
+ *        2. Currently not using the bytes to transfer.
+ *        3. Ack and Fin functionality/struct variables (one structure)
+ */
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -11,158 +26,75 @@
 #include <pthread.h>
 #include <errno.h>
 
-#define max_packet_size 1024 //bytes
-#define max_payload_size 1000 //bytes
-#define max_buffer_size 100 //number of packets (array initalization)
+/*!
+Sender Notes
+    Inputs: hostname, hostUDP port, filename, 
+    Outputs:
 
-void rsend(char* hostname,
-    unsigned short int hostUDPport,
-    char* filename,
-    unsigned long long int bytesToTransfer)
-{
+    Sender Algorithm Skeleton: 
+        - Read from File 
+        - Splice the file into sendable bits
+        - create socket 
+        - send the file bits over through the socket
 
-    unsigned long long int bytesRead;
-    char payload;
-    char message[max_packet_size];
+    wget -O sender.c https://raw.githubusercontent.com/kim-dajeong/pa1/ana-test/src/sender.c
+    wget -O readfile.txt https://raw.githubusercontent.com/kim-dajeong/pa1/ana-test/src/readfile.txt
 
 
-    // Open file for reading
-    FILE* file = fopen(filename, "r"); // Open the file in binary mode for reading
-    if (file == NULL) {
-        perror("Error opening file");
-        exit(EXIT_FAILURE);
+*/
+
+#define max_buffer_size 1024 //! == payload
+
+void rsend(char* hostname, 
+            unsigned short int hostUDPport, 
+            char* filename, 
+            unsigned long long int bytesToTransfer) {
+
+    // Initalizing file I/O and test that the file exists
+    FILE *read_file = fopen(filename, "rb");
+    if (read_file == NULL){
+       printf("Error! Could not open file\n");
+       exit(EXIT_FAILURE); // must include stdlib.h
     }
 
-    // Allocate a buffer to store the read bytes
-    char* buffer = (char*)malloc(bytesToRead);
-    if (buffer == NULL) {
-        perror("Memory allocation error");
-        fclose(file);
-        exit(EXIT_FAILURE);
-    }
+    //initallize array for sender message
+    char sender_message[2000];
 
-    // Create UDP socket:
-    socket_desc = socket(AF_INET, SOCK_DGRAM, 0);
-    if (socket_desc < 0) {
+    fgets(sender_message, max_buffer_size, read_file);
+    printf("String read: %s\n", sender_message);
+
+    // Create socket:
+    int socket_desc = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+    if(socket_desc < 0){
         printf("Error while creating socket\n");
-        return -1;
+        exit(EXIT_FAILURE);
     }
-    else
-        printf("Socket created\n");
 
-    struct sockaddr_in server_addr;
+    struct sockaddr_in address, server_addr;
+    int struct_length = sizeof(server_addr);
+    memset(&server_addr, 0, sizeof(server_addr));
     server_addr.sin_family = AF_INET;
-    server_addr.sin_port = htons(hostUDPport); //Check later
-
-    // Note the client/sender should not need to bind to anything:
-
-    unsigned short orderIndex = 0;
-    char buffer[max_packet_size];
-    size = sizeof(bytesToTransfer/max_payload_size);
-
-    //send the number of packets to the server
-    message = size;
-    if (sendto(socket_desc, message, strlen(message), 0,
-        (struct sockaddr*)&server_addr, sizeof(struct sockaddr_in)) < 0) {
-        printf("Unable to send message\n");
-        return -1;
+    server_addr.sin_port = htons(hostUDPport);
+    server_addr.sin_addr.s_addr = htonl(INADDR_ANY);
+    if (inet_aton(hostname, &server_addr.sin_addr) == 0) {
+        fprintf(stderr, "inet_aton() failed\n");
+        exit(EXIT_FAILURE);
     }
-
-    recvfrom(socket_desc, buffer, sizeof(buffer), 0, (struct sockaddr*)&address, &client_struct_length)
-    //message = ACK;
-    if (buffer[0] == "ACK") {
-        
-        sendto(socket_desc, message, strlen(message), 0, (struct sockaddr*)&server_addr, sizeof(struct sockaddr_in));
-        // Clear the contents of the buffer
-        free(buffer);
-
-    }
-
-    sendto(socket_desc, message, strlen(message), 0, (struct sockaddr*)&server_addr, sizeof(struct sockaddr_in));
-
-    while (bytesRead < bytesToTransfer) {
-
-        recvfrom(socket_desc, buffer, sizeof(buffer), 0, (struct sockaddr*)&address, &client_struct_length)
-        if (buffer[0] == "ACK") {
-
-            // Read bytes from the file
-                payload = fread(buffer, 1, max_payload_size, file)
-                // Keep track of how many bytes were read
-                bytesRead += max_payload_size;
-        
-                // Check for read errors
-                if (ferror(file)) {
-                    perror("Error reading from file");
-                }
-        
-                // Add order index and concatenate message
-                message = orderIndex;
-                strcat(message, payload); //Check later
-                orderIndex++;                
-                
-                // Send the message to server:
-                if (sendto(socket_desc, message, strlen(message), 0,
-                    (struct sockaddr*)&server_addr, sizeof(struct sockaddr_in)) < 0) {
-                    printf("Unable to send message\n");
-                    return -1;
-                }
-
-                // Clear the contents of the buffer
-                free(buffer);
-
-    //check for NACK(send again), timeout(send again), else wait
-        //else if (time == TIMEOUT length) {
-            
-        }
-
-        else if (buffer[0] == "NACK") {
-
-            // Send the message to server:
-            if (sendto(socket_desc, message, strlen(message), 0,
-                (struct sockaddr*)&server_addr, sizeof(struct sockaddr_in)) < 0) {
-                printf("Unable to send message\n");
-                return -1;
-            }
-
-            // Clear the contents of the buffer
-            free(buffer);
-
-
-        }
-
-        else {
-
-            usleep(500000); //500 miliseconds
-            if (buffer[0] == "NACK") {
-
-                // Send the message to server:
-                if (sendto(socket_desc, message, strlen(message), 0,
-                    (struct sockaddr*)&server_addr, sizeof(struct sockaddr_in)) < 0) {
-                    printf("Unable to send message\n");
-                    return -1;
-                }
-
-                // Clear the contents of the buffer
-                free(buffer);
-
-            }
-
-        }
-
-    }
-
     
+    printf("Socket created successfully\n");
 
-    // Clean up
-    free(buffer);
-    fclose(file);
 
-    //send FIN
+    // Send the message to server:
+    if(sendto(socket_desc, sender_message, strlen(sender_message), 0,(struct sockaddr*)&server_addr, struct_length) < 0){
+        printf("Unable to send message\n");
+        exit(EXIT_FAILURE);
+    }
 
-    // Close the socket:
     close(socket_desc);
+    fclose(read_file);
 
 }
+
 
 int main(int argc, char** argv) {
     // This is a skeleton of a main function.
@@ -182,13 +114,9 @@ int main(int argc, char** argv) {
     // Get values from commandline
     hostname = argv[1];
     hostUDPport = (unsigned short int) atoi(argv[2]);
-    filename = (char) argv[3];
     bytesToTransfer = atoll(argv[4]);
 
     // Call sender function
-    if (rsend(hostname, hostUDPport, filename, bytesToTransfer)) == -1) {
-        return (EXIT_FAILURE);
-    }
-    else
-        return (EXIT_SUCCESS);
-}
+   rsend(hostname, hostUDPport, argv[3], bytesToTransfer);
+   return(EXIT_SUCCESS);
+} 

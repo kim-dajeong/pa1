@@ -101,7 +101,7 @@ void rsend(char* hostname,
         fseek(read_file, bytesRead, SEEK_SET);
         fread(readfile_message, sizeof(char), byteNumber, read_file);
 
-        printf("message: %s, index: %d\n", readfile_message, index);
+        //printf("message: %s, index: %d\n", readfile_message, index);
 
         //indexPointer[0] = (char)index;
         //strcat(readfile_message, indexPointer);

@@ -61,10 +61,6 @@ void rrecv(unsigned short int myUDPport,
         printf("Error! Could not open file\n");
         exit(EXIT_FAILURE); // must include stdlib.h
         }
-
-    //Static buffer for receiving data
-    void *buffer= malloc(max_payload_size);
-    memset(buffer, 0, max_payload_size);
     
     // initalizing address struct and the structure of the clients address for receiving
     struct sockaddr_in address, client_addr;
@@ -91,6 +87,10 @@ void rrecv(unsigned short int myUDPport,
 
     printf("Listening for incoming messages...\n\n");
 
+    //Static buffer for receiving data
+    void *buffer= malloc(max_payload_size);
+    memset(buffer, 0, max_payload_size);
+
     int index;
     while(1){
     // Receive client's message:
@@ -100,9 +100,7 @@ void rrecv(unsigned short int myUDPport,
         exit(EXIT_FAILURE);
     }
 
-    printf("%p", buffer);
-
-    if(strcmp(buffer, "FIN") == 0){ 
+    if(client_message == 3){ 
         break;
     }
 

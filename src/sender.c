@@ -106,7 +106,7 @@ void rsend(char* hostname,
         fseek(read_file, bytesRead, SEEK_SET);
         fread(readfile_message, 1, byteNumber, read_file);
 
-        printf("%p", readfile_message);
+        //printf("%p", readfile_message);
 
         // Send the message to server:
         if(sendto(socket_desc, readfile_message, strlen(readfile_message), 0, (struct sockaddr*)&server_addr, struct_length)<0){
@@ -119,13 +119,13 @@ void rsend(char* hostname,
         // memset(readfile_message, 0, max_payload_size);
     }
 
-    //terminating connection 
-    const char *terminate[1];
-    terminate[0] = "FIN";
-    if(sendto(socket_desc, terminate[0], strlen(terminate[0]), 0, (struct sockaddr*)&server_addr, struct_length)<0){
-            printf("Unable to send message\n");
-            exit(EXIT_FAILURE);
-        }
+    // Terminating connection 
+    const char *terminate = "FIN";
+    if (sendto(socket_desc, terminate, strlen(terminate), 0, (struct sockaddr*)&server_addr, struct_length) < 0) {
+    printf("Unable to send message\n");
+    exit(EXIT_FAILURE);
+    }
+
 
 
     close(socket_desc);

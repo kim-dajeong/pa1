@@ -100,7 +100,7 @@ void rrecv(unsigned short int myUDPport,
         exit(EXIT_FAILURE);
     }
 
-    printf("%s", buffer);
+    printf("%p", buffer);
 
     if(strcmp(buffer, "FIN") == 0){ 
         break;

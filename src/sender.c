@@ -114,7 +114,7 @@ void rsend(char* hostname,
 
         index++;
         bytesRead += byteNumber;
-        memset(readfile_message, 0, max_payload_size);
+        // memset(readfile_message, 0, max_payload_size);
     }
 
     //terminating connection 

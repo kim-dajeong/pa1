@@ -101,7 +101,9 @@ void rrecv(unsigned short int myUDPport,
     }
 
     if(strcmp(buffer,"FIN") == 0){
-        close(socket_desc);
+        fclose(write_file);
+        close(socket_desc); 
+        break;
     }
 
     // Write only the payload data to the file

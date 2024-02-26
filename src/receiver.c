@@ -100,7 +100,7 @@ void rrecv(unsigned short int myUDPport,
         exit(EXIT_FAILURE);
     }
 
-    printf("%d\n",(client_message));
+    printf("%ld\n",(client_message));
 
     if(client_message == 3){ 
         break;

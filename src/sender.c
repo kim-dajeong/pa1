@@ -112,7 +112,7 @@ void rsend(char* hostname,
             exit(EXIT_FAILURE);
         }
         
-        printf("%d\n",strlen(readfile_message));
+        printf("%ld\n",strlen(readfile_message));
 
         index++;
         bytesRead += byteNumber;

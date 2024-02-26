@@ -43,7 +43,7 @@ Sender Notes
 
 */
 
-#define max_buffer_size 1024 //! max data we can send over
+#define max_payload_size 1024 //! max data we can send over
 
 void rsend(char* hostname, 
             unsigned short int hostUDPport, 
@@ -62,7 +62,7 @@ void rsend(char* hostname,
     long readfile_size = ftell(read_file);
     fseek(read_file,0, SEEK_SET); 
     if(bytesToTransfer>readfile_size){
-        printf("There are only %d bytes in this file. Try again.\n", readfile_size);
+        printf("There are only %ld bytes in this file. Try again.\n", readfile_size);
         exit(EXIT_FAILURE);
     }
 
@@ -89,8 +89,8 @@ void rsend(char* hostname,
 
 
     //initallize void pointer for sender message to get raw bytes from the file
-    void *readfile_message = malloc(max_buffer_size);
-    memset(readfile_message, 0, max_buffer_size);
+    void *readfile_message = malloc(max_payload_size);
+    memset(readfile_message, 0, max_payload_size);
 
     //initallize the sending while loop
     int bytesRead = 0;
@@ -99,7 +99,7 @@ void rsend(char* hostname,
 
     while(bytesRead < bytesToTransfer) {
         // Determine number of bytes to read
-        byteNumber = (max_buffer_size < (bytesToTransfer - bytesRead)) ? max_buffer_size : (bytesToTransfer - bytesRead);
+        byteNumber = (max_payload_size < (bytesToTransfer - bytesRead)) ? max_payload_size : (bytesToTransfer - bytesRead);
 
         // Read byteNumber size of file
         fseek(read_file, bytesRead, SEEK_SET);
@@ -113,7 +113,7 @@ void rsend(char* hostname,
 
         index++;
         bytesRead += byteNumber;
-        memset(readfile_message, 0, max_buffer_size);
+        memset(readfile_message, 0, max_payload_size);
     }
 
     close(socket_desc);

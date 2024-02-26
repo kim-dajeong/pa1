@@ -62,7 +62,7 @@ void rrecv(unsigned short int myUDPport,
     
 
     //Static buffer for receiving data
-    char buffer[max_buffer_size];
+    char buffer[max_payload_size];
     
 
     // initalizing address struct and the structure of the clients address for receiving
@@ -110,7 +110,7 @@ void rrecv(unsigned short int myUDPport,
  // Receiving the data and writing it into the file.
 
     int addr_size = sizeof(socklen_t);
-    int n = recvfrom(socket_desc, buffer, max_buffer_size, 0, (struct sockaddr*)&client_addr, &addr_size);
+    int n = recvfrom(socket_desc, buffer, max_payload_size, 0, (struct sockaddr*)&client_addr, &addr_size);
 
     if (strcmp(buffer, "END") == 0)
     {
@@ -119,7 +119,7 @@ void rrecv(unsigned short int myUDPport,
 
     printf("[RECEVING] Data: %s", buffer);
     fprintf(write_file, "%s", buffer);
-    bzero(buffer, max_buffer_size);
+    bzero(buffer, max_payload_size);
 
     //Testing to ensure file writing is working as expected 
     //int integer = 22;

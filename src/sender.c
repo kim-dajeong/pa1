@@ -28,6 +28,8 @@
 #include <pthread.h>
 #include <errno.h>
 
+#include <math.h>
+
 /*!
 Sender Notes
     Inputs: hostname, hostUDP port, filename, 
@@ -47,13 +49,23 @@ Sender Notes
 
 */
 
-#define max_buffer_size 1024 //! == payload
+#define max_buffer_size 1024 //Is equal to the bytes of the max UDP data payload we'll use
+
+struct senderPacket     
+  {
+       char messageType[1];                           /* the type of message being sent  */
+       // mesage type 1 ==data,  2== ack,  3==nack, 4 ==fin 
+       char packetOrder[1];                           /* the order of packet being sent  */
+       // whatever order you so choose idk what to do past 9??? 
+       char packetData[1023];                           /* Data from the readFile in 1022 byte bites!*/
+  };
 
 void rsend(char* hostname, 
             unsigned short int hostUDPport, 
             char* filename, 
             unsigned long long int bytesToTransfer) {
 
+    struct senderPacket newpack;
     // Initalizing file I/O and test that the file exists
     FILE *read_file = fopen(filename, "rb");
     if (read_file == NULL){
@@ -64,8 +76,10 @@ void rsend(char* hostname,
     //initallize array for sender message
     char sender_message[2000];
 
-    fgets(sender_message, max_buffer_size, read_file);
-    printf("String read: %s\n", sender_message);
+    int total_num_packets = ceil(1.0 * bytesToTransfer / max_buffer_size);
+    printf("The total number of packets needed to send your message is: %d", total_num_packets);
+    
+    int packet_index = 0;
 
     // Create socket:
     int socket_desc = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
@@ -88,6 +102,31 @@ void rsend(char* hostname,
     printf("Socket created successfully\n");
 
 
+    while(packet_index <= total_num_packets){
+    // Move the file pointer to the desired position
+    if (fseek(read_file, packet_index*1022, SEEK_SET) != 0) { // SEEK_SET sets the offset from the beginning of the file
+        perror("Error seeking in file");
+        fclose(read_file);
+        exit(EXIT_FAILURE);
+    }
+    size_t bytes_read;
+
+    // Read data from the current position
+    bytes_read = fread(newpack.packetData, 1, sizeof(buffer) - 1, read_file);
+    if (bytes_read == 0) {
+        if (feof(read_file)) {
+            printf("Reached end of file\n");
+        } else {
+            perror("Error reading file");
+        }
+    } else {
+        // Null-terminate the buffer to use it as a string if needed
+        buffer[bytes_read] = '\0';
+        printf("Read %zu bytes: %s\n", bytes_read, buffer);
+    }
+    
+    strcat(sender_message, newpack.packetData);
+    
     // Send the message to server:
     if(sendto(socket_desc, sender_message, strlen(sender_message), 0,(struct sockaddr*)&server_addr, struct_length) < 0){
         printf("Unable to send message\n");
@@ -95,7 +134,9 @@ void rsend(char* hostname,
     }
 
     printf("Socket sent successfully\n");
-
+    packet_index++; 
+    }
+    
     close(socket_desc);
     fclose(read_file);
 

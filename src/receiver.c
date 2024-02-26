@@ -24,6 +24,8 @@
 #include <pthread.h>
 #include <errno.h>
 
+#include <math.h>
+
 /*!
 Receiver Notes
     Inputs: UDP Port, pointer to destination file, write rate (assume 0 for now)
@@ -93,7 +95,7 @@ void rrecv(unsigned short int myUDPport,
 
     printf("Listening for incoming messages...\n\n");
 
-
+    while(1){
     // Receive client's message:
     size_t client_message = recvfrom(socket_desc, buffer, sizeof(buffer), 0, (struct sockaddr*)&address, &client_struct_length);  
     if (client_message < 0){
@@ -102,12 +104,26 @@ void rrecv(unsigned short int myUDPport,
     }
     printf("%d", client_message);
 
+    /*
+        if buffer[0] == 1/2/3/4 
+            Do this 
+        
+
+        eg. if buffer[0] == 1
+                if buffer[1]== index //(check for order)
+                    strcat(send_message, struct.datatype)//send ack with datatype 2
+                else 
+                   strcat(send_message, struct.datatype) //send nack datatype 3
+
+    
+    */
+
     // Write only the payload data to the file
     int written = fwrite(buffer, sizeof(char), client_message, write_file);
     if (written < client_message) {
         printf("Error during writing to file!");
     }
-
+    }
     // else 
     // check order (first 2 byes of the package)
     // if order doesnt match then send nack

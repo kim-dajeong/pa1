@@ -43,7 +43,8 @@ Sender Notes
 
 */
 
-#define max_buffer_size 1024 //! == payload
+#define max_buffer_size 1024 //! max data we can send over
+#define payload_size 2000
 
 void rsend(char* hostname, 
             unsigned short int hostUDPport, 
@@ -57,9 +58,7 @@ void rsend(char* hostname,
        exit(EXIT_FAILURE); // must include stdlib.h
     }
 
-    //initallize void pointer for sender message to get raw bytes from the file
-    void *readfile_message = malloc(max_buffer_size);
-    memset(readfile_message, 0, max_buffer_size);
+
 
     // Create socket:
     int socket_desc = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
@@ -82,10 +81,39 @@ void rsend(char* hostname,
     printf("Socket created successfully\n");
 
 
-    // Send the message to server:
-    if(sendto(socket_desc, sender_message, strlen(sender_message), 0,(struct sockaddr*)&server_addr, struct_length) < 0){
-        printf("Unable to send message\n");
-        exit(EXIT_FAILURE);
+    //initallize void pointer for sender message to get raw bytes from the file
+    void *readfile_message = malloc(max_buffer_size);
+    memset(readfile_message, 0, max_buffer_size);
+
+    //initallize array for sender message
+    int bytesRead = 0;
+    int index = 0;
+    int byteNumber = 0;
+    char* readStart;
+    char indexPointer[4];
+
+
+    while(bytesRead < bytesToTransfer) {
+        // Determine number of bytes to read
+        byteNumber = (payload_size < (bytesToTransfer - bytesRead)) ? payload_size : (bytesToTransfer - bytesRead);
+
+        // Read byteNumber size of file
+        fseek(read_file, bytesRead, SEEK_SET);
+        fread(readfile_message, sizeof(char), byteNumber, read_file);
+
+        printf("message: %s, index: %d\n", readfile_message, index);
+
+        //indexPointer[0] = (char)index;
+        //strcat(readfile_message, indexPointer);
+
+        // Send the message to server:
+        if(sendto(socket_desc, readfile_message, strlen(readfile_message), 0, (struct sockaddr*)&server_addr, struct_length)<0){
+            printf("Unable to send message\n");
+            exit(EXIT_FAILURE);
+        }
+
+        index++;
+        bytesRead += byteNumber;
     }
 
     close(socket_desc);

@@ -100,7 +100,7 @@ void rrecv(unsigned short int myUDPport,
         exit(EXIT_FAILURE);
     }
 
-    if(client_message == sizeof("FIN")){
+    if(strcmp(buffer, "FIN") == 0){
         fclose(write_file);
         close(socket_desc); 
         break;

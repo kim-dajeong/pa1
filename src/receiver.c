@@ -62,7 +62,8 @@ void rrecv(unsigned short int myUDPport,
         }
 
     //Static buffer for receiving data
-    int buffer[max_packet_size];
+    void *buffer= malloc(max_packet_size);
+    memset(buffer, 0, max_buffer_size);
     
     // initalizing address struct and the structure of the clients address for receiving
     struct sockaddr_in address, client_addr;
@@ -102,6 +103,11 @@ void rrecv(unsigned short int myUDPport,
         printf("Error during writing to file!");
     }
 
+    memset(buffer, 0, max_buffer_size);
+
+    if(client_message != 1024){
+        break;
+    }
      /*if (client_message = "FIN"){
         break;
         }*/

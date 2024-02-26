@@ -104,6 +104,7 @@ void rsend(char* hostname,
 
         index++;
         bytesRead += byteNumber;
+        memset(readfile_message, 0, max_buffer_size);
     }
 
     close(socket_desc);

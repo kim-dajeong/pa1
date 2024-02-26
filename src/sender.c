@@ -29,10 +29,10 @@
 /*!
 Sender Notes
     Inputs: hostname, hostUDP port, filename, 
-    Outputs:
+    Outputs: N/A
 
     Sender Algorithm Skeleton: 
-        - Read from File 
+        - Read from File (raw data)
         - Splice the file into sendable bits
         - create socket 
         - send the file bits over through the socket
@@ -57,11 +57,9 @@ void rsend(char* hostname,
        exit(EXIT_FAILURE); // must include stdlib.h
     }
 
-    //initallize array for sender message
-    char sender_message[2000];
-
-    fgets(sender_message, max_buffer_size, read_file);
-    printf("String read: %s\n", sender_message);
+    //initallize void pointer for sender message to get raw bytes from the file
+    void *readfile_message = malloc(max_buffer_size);
+    memset(readfile_message, 0, max_buffer_size);
 
     // Create socket:
     int socket_desc = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);

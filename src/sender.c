@@ -38,7 +38,7 @@ Sender Notes
         - send the file bits over through the socket
 
     wget -O sender.c https://raw.githubusercontent.com/kim-dajeong/pa1/main/src/sender.c
-    wget -O readfile.txt https://raw.githubusercontent.com/kim-dajeong/pa1/main/src/readfile.txt
+    wget -O readfile.txt https://raw.githubusercontent.com/kim-dajeong/pa1/main/src/readfile
 
 
 */

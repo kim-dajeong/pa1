@@ -94,7 +94,7 @@ void rrecv(unsigned short int myUDPport,
     int index;
     while(1){
     // Receive client's message:
-    size_t client_message = recvfrom(socket_desc, buffer, sizeof(buffer), 0, (struct sockaddr*)&address, &client_struct_length);  
+    size_t client_message = recvfrom(socket_desc, buffer, max_payload_size, 0, (struct sockaddr*)&address, &client_struct_length);  
     if (client_message < 0){
     printf("Couldn't receive\n");
         exit(EXIT_FAILURE);

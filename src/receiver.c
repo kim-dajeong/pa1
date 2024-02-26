@@ -105,7 +105,7 @@ void rrecv(unsigned short int myUDPport,
 
     memset(buffer, 0, max_buffer_size);
 
-    if(client_message != 1024){
+    if(client_message == 1024){
         break;
     }
      /*if (client_message = "FIN"){

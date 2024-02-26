@@ -88,7 +88,7 @@ void rrecv(unsigned short int myUDPport,
 
     printf("Listening for incoming messages...\n\n");
 
-    //while(1){
+    while(1){
     // Receive client's message:
     size_t client_message = recvfrom(socket_desc, buffer, sizeof(buffer), 0, (struct sockaddr*)&address, &client_struct_length);  
     if (client_message < 0){
@@ -106,7 +106,7 @@ void rrecv(unsigned short int myUDPport,
         break;
         }*/
 
-    //}
+    }
 
     // else 
     // check order (first 2 byes of the package)

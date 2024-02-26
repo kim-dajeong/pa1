@@ -44,7 +44,6 @@ Sender Notes
 */
 
 #define max_buffer_size 1024 //! max data we can send over
-#define payload_size 2000
 
 void rsend(char* hostname, 
             unsigned short int hostUDPport, 
@@ -58,8 +57,6 @@ void rsend(char* hostname,
        exit(EXIT_FAILURE); // must include stdlib.h
     }
 
-
-
     // Create socket:
     int socket_desc = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
     if(socket_desc < 0){
@@ -67,6 +64,7 @@ void rsend(char* hostname,
         exit(EXIT_FAILURE);
     }
 
+    // setting up hostname connection on sender
     struct sockaddr_in address, server_addr;
     int struct_length = sizeof(server_addr);
     memset(&server_addr, 0, sizeof(server_addr));
@@ -85,26 +83,18 @@ void rsend(char* hostname,
     void *readfile_message = malloc(max_buffer_size);
     memset(readfile_message, 0, max_buffer_size);
 
-    //initallize array for sender message
+    //initallize the sending while loop
     int bytesRead = 0;
     int index = 0;
     int byteNumber = 0;
-    char* readStart;
-    char indexPointer[4];
-
 
     while(bytesRead < bytesToTransfer) {
         // Determine number of bytes to read
-        byteNumber = (payload_size < (bytesToTransfer - bytesRead)) ? payload_size : (bytesToTransfer - bytesRead);
+        byteNumber = (max_buffer_size < (bytesToTransfer - bytesRead)) ? max_buffer_size : (bytesToTransfer - bytesRead);
 
         // Read byteNumber size of file
         fseek(read_file, bytesRead, SEEK_SET);
-        fread(readfile_message, sizeof(char), byteNumber, read_file);
-
-        //printf("message: %s, index: %d\n", readfile_message, index);
-
-        //indexPointer[0] = (char)index;
-        //strcat(readfile_message, indexPointer);
+        fread(readfile_message, 1, byteNumber, read_file);
 
         // Send the message to server:
         if(sendto(socket_desc, readfile_message, strlen(readfile_message), 0, (struct sockaddr*)&server_addr, struct_length)<0){

@@ -102,6 +102,10 @@ void rsend(char* hostname,
         // Determine number of bytes to read
         byteNumber = (max_payload_size < (bytesToTransfer - bytesRead)) ? max_payload_size : (bytesToTransfer - bytesRead);
 
+        //initallize void pointer for sender message to get raw bytes from the file
+        void *readfile_message = malloc(byteNumber);
+        memset(readfile_message, 0, byteNumber);
+
         // Read byteNumber size of file
         fseek(read_file, bytesRead, SEEK_SET);
         fread(readfile_message, 1, byteNumber, read_file);
@@ -116,7 +120,6 @@ void rsend(char* hostname,
 
         index++;
         bytesRead += byteNumber;
-        // memset(readfile_message, 0, max_payload_size);
     }
 
     // Terminating connection 

@@ -120,7 +120,7 @@ void rsend(char* hostname,
     //terminating connection 
     const char *terminate[1];
     terminate[0] = "FIN";
-    if(sendto(socket_desc, terminate, strlen(terminate), 0, (struct sockaddr*)&server_addr, struct_length)<0){
+    if(sendto(socket_desc, terminate[0], strlen(terminate[0]), 0, (struct sockaddr*)&server_addr, struct_length)<0){
             printf("Unable to send message\n");
             exit(EXIT_FAILURE);
         }

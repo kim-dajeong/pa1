@@ -88,7 +88,7 @@ void rrecv(unsigned short int myUDPport,
 
     printf("Listening for incoming messages...\n\n");
 
-    while(1){
+    //while(1){
     // Receive client's message:
     size_t client_message = recvfrom(socket_desc, buffer, sizeof(buffer), 0, (struct sockaddr*)&address, &client_struct_length);  
     if (client_message < 0){
@@ -97,7 +97,7 @@ void rrecv(unsigned short int myUDPport,
     }
 
     // Write only the payload data to the file
-    int written = fwrite(buffer, sizeof(char), client_message, write_file);
+    int written = fwrite(buffer, 1, client_message, write_file);
     if (written < client_message) {
         printf("Error during writing to file!");
     }
@@ -106,7 +106,7 @@ void rrecv(unsigned short int myUDPport,
         break;
         }*/
 
-    }
+    //}
 
     // else 
     // check order (first 2 byes of the package)
@@ -120,7 +120,7 @@ void rrecv(unsigned short int myUDPport,
     close(socket_desc);
 
     //Condition to ignore writeRate for now
-    if (writeRate != 0){
+    if(writeRate != 0){
         printf("Error Have not yet implemented Task 8\n");
         exit(EXIT_FAILURE);
     }

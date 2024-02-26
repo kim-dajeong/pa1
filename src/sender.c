@@ -116,6 +116,14 @@ void rsend(char* hostname,
         memset(readfile_message, 0, max_payload_size);
     }
 
+    //terminating connection 
+    char terminate[0] = "FIN";
+    if(sendto(socket_desc, terminate, strlen(terminate), 0, (struct sockaddr*)&server_addr, struct_length)<0){
+            printf("Unable to send message\n");
+            exit(EXIT_FAILURE);
+        }
+
+
     close(socket_desc);
     fclose(read_file);
 

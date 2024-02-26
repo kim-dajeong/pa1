@@ -47,12 +47,11 @@ Loop: Start recieving packets
 
 */
 
-#define max_packet_size 1024 //!<bytes
-#define max_buffer_size 1000 //! == payload
+#define max_payload_size 1024 //! the total amount of data we want to send over our UDP socket in one packet
 
 void rrecv(unsigned short int myUDPport, 
             char* destinationFile, 
-            unsigned long long int writeRate) {
+            unsigned long long int writeRate){
     
     // Initalizing file I/O and test that the file exists
     FILE *write_file = fopen(destinationFile, "wb"); // write only
@@ -62,7 +61,7 @@ void rrecv(unsigned short int myUDPport,
         }
 
     //Static buffer for receiving data
-    void *buffer= malloc(max_packet_size);
+    void *buffer= malloc(max_payload_size);
     memset(buffer, 0, max_payload_size);
     
     // initalizing address struct and the structure of the clients address for receiving
@@ -78,6 +77,7 @@ void rrecv(unsigned short int myUDPport,
         printf("Error while creating socket\n");
         exit(EXIT_FAILURE);
     }
+
     printf("Socket created successfully\n");
 
     // Bind socket to the receive address
@@ -90,12 +90,16 @@ void rrecv(unsigned short int myUDPport,
     printf("Listening for incoming messages...\n\n");
 
     int index;
-    while(index<20){
+    while(1){
     // Receive client's message:
     size_t client_message = recvfrom(socket_desc, buffer, sizeof(buffer), 0, (struct sockaddr*)&address, &client_struct_length);  
     if (client_message < 0){
     printf("Couldn't receive\n");
         exit(EXIT_FAILURE);
+    }
+
+    if(strcmp(buffer,"FIN") == 0){
+        close(socket_desc);
     }
 
     // Write only the payload data to the file
@@ -105,6 +109,7 @@ void rrecv(unsigned short int myUDPport,
     }
 
     index++;
+    }
 
     // else 
     // check order (first 2 byes of the package)
@@ -131,7 +136,7 @@ void rrecv(unsigned short int myUDPport,
     - run using: ./receiver <UDP port number> destinationFile.txt
     - hostname -i
 */
-int main(int argc, char** argv) {
+int main(int argc, char** argv){
     // This is a skeleton of a main function.
     // You should implement this function more completely
     // so that one can invoke the file transfer from the

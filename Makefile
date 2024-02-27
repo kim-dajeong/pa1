@@ -56,18 +56,26 @@ obj/%.o: src/%.c
 obj:
 	mkdir -p obj
 
-getsender: wget -O sender.c https://raw.githubusercontent.com/kim-dajeong/pa1/test/src/sender.c
+getsender: 
+	wget -O sender.c https://raw.githubusercontent.com/kim-dajeong/pa1/test/src/sender.c
 
-getreceiver: wget -O receiver.c https://raw.githubusercontent.com/kim-dajeong/pa1/test/src/receiver.c
+getreceiver: 
+	wget -O receiver.c https://raw.githubusercontent.com/kim-dajeong/pa1/test/src/receiver.c
 
-getreadfile: wget -O readFile.txt https://raw.githubusercontent.com/kim-dajeong/pa1/test/src/readFile.txt
+getreadfile: 
+	wget -O readFile.txt https://raw.githubusercontent.com/kim-dajeong/pa1/test/src/readFile.txt
 
-getdestfile: wget -O destinationFile.txt https://raw.githubusercontent.com/kim-dajeong/pa1/test/src/destinationFile.txt
+getdestfile: 
+	wget -O destinationFile.txt https://raw.githubusercontent.com/kim-dajeong/pa1/test/src/destinationFile.txt
 
-compsender: gcc -o sender sender.c
+compsender: 
+	gcc -o sender sender.c
 
-compreceiver: gcc -o receiver receiver.c
+compreceiver: 
+	gcc -o receiver receiver.c
 
-runsender: ./sender 128.110.223.17 8000 readFile.txt 500
+runsender: 
+	./sender 128.110.223.17 8000 readFile.txt 500
 
-runreceiver: ./receiver 8000 destinationFile.txt
+runreceiver: 
+	./receiver 8000 destinationFile.txt

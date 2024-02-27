@@ -137,8 +137,9 @@ void rrecv(unsigned short int myUDPport,
     //end three way handshake
 
 
-    int index;
-    while(1){
+    int index = 0;
+
+    while(bytesRead < bytesToTransfer){
     // Receive client's message:
     size_t client_message = recvfrom(socket_desc, buffer, max_payload_size, 0, (struct sockaddr*)&address, &client_struct_length);  
     if (client_message < 0){

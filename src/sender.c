@@ -183,7 +183,7 @@ void rsend(char* hostname,
 
     //initiate(bytesToTransfer, &server_addr);
 
-    senderBuffer[0] = bytesToTransfer;
+    senderBuffer[0] = htonll(bytesToTransfer);;
     printf("bytesToTransfer: %lld\n", bytesToTransfer);
     sendto(socket_desc, senderBuffer, sizeof(senderBuffer), 0, (struct sockaddr*)&server_addr, struct_length);
     printf("bytesToTransfer info sent\n");

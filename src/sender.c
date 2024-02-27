@@ -180,16 +180,11 @@ void rsend(char* hostname,
     }
     
     printf("Socket created successfully\n");
-    
-    printf("initiate startubng\n");
 
-    initiate(bytesToTransfer, &server_addr);
+    //initiate(bytesToTransfer, &server_addr);
 
-    printf("initiate finished\n");
-
-
-    //senderBuffer[0] = bytesToTransfer;
-    //sendto(socket_desc, senderBuffer, strlen(senderBuffer), 0, (struct sockaddr*)&server_addr, struct_length);
+    senderBuffer[0] = bytesToTransfer;
+    sendto(socket_desc, senderBuffer, strlen(senderBuffer), 0, (struct sockaddr*)&server_addr, struct_length);
 
     while(bytesRead < bytesToTransfer) {
 

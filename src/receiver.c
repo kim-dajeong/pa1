@@ -225,9 +225,10 @@ void rrecv(unsigned short int myUDPport,
     }
     printf("Done with binding\n");
     
-    printf("initiate startubng\n");
-    int bytesToTransfer = initiate(&address);
-    //int bytesToTransfer = 400;
+    //printf("initiate startubng\n");
+    //int bytesToTransfer = initiate(&address);
+    int bytesToTransfer = 0; //400;
+    buffer[0] = -1;
 
     if(bytesToTransfer == -1) {
 
@@ -241,9 +242,15 @@ void rrecv(unsigned short int myUDPport,
     int bytesRead = 0;   
     int byteNumber = 0;
 
-    //recvfrom(socket_desc, buffer, sizeof(buffer), 0, (struct sockaddr*)&address, &client_struct_length); 
-    //int bytesToTransfer = buffer[0];
-    //printf("bytesToTransfer: %d", bytesToTransfer);
+    while(bytesToTransfer == -1) {
+
+        recvfrom(socket_desc, buffer, sizeof(buffer), 0, (struct sockaddr*)&address, &client_struct_length); 
+        int bytesToTransfer = buffer[0];
+
+    }
+
+    printf("bytesToTransfer: %d", bytesToTransfer);
+
 
     while( bytesRead < bytesToTransfer){
         printf("bytesRead: %d, bytesToTransfer: %d\n", bytesRead, bytesToTransfer);

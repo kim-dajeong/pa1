@@ -72,4 +72,7 @@ recv:
 .PHONY: mytarget
 
 mytarget:
-    @echo "The provided value is: $(MY_VALUE)"
+	hostname -i
+	@echo "The provided value is: $(MY_VALUE)"
+
+

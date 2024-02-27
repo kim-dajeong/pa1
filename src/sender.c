@@ -112,11 +112,11 @@ void rsend(char* hostname,
 
     while(bytesRead < bytesToTransfer) {
         // Determine number of bytes to read
-        byteNumber = (max_payload_size < (bytesToTransfer - bytesRead)) ? max_payload_size : (bytesToTransfer - bytesRead);
+        byteNumber = (max_data_size < (bytesToTransfer - bytesRead)) ? max_data_size : (bytesToTransfer - bytesRead);
 
         //initallize void pointer for sender message to get raw bytes from the file
         memset(readfile_data, 0, byteNumber);
-        memset(sender_buffer, 0, byteNumber);
+        memset(sender_buffer, 0, byteNumber+6);
 
         // Read byteNumber size of file
         fseek(read_file, bytesRead, SEEK_SET);
@@ -126,7 +126,7 @@ void rsend(char* hostname,
         uint8_t *ptr = (uint8_t *)sender_buffer;
         ptr[0] = 0;
         ptr[1] = 0;
-        memcpy(ptr + 2, readfile_data, byteNumber);
+        memcpy(ptr + 2, readfile_data, max_data_size);
 
 
         // Send the message to server:

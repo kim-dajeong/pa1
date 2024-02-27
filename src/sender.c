@@ -123,10 +123,11 @@ void rsend(char* hostname,
         fread(readfile_data, 1, byteNumber, read_file);
 
         // Copy the two uint8_t values to the start of the new buffer
-        uint8_t *ptr = (uint8_t *)sender_buffer;
-        ptr[0] = 0;
-        ptr[1] = 0;
-        memcpy(ptr + 2, readfile_data, byteNumber);
+        uint8_t *flag_ptr;
+        flag_ptr[0] = 0;
+        flag_ptr[1] = 0;
+        memcpy(sender_buffer, flag_ptr, 2);
+        memcpy(sender_buffer+2, readfile_data, byteNumber);
 
 
         // Send the message to server:

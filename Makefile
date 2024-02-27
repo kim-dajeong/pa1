@@ -60,7 +60,7 @@ obj:
 
 
 gethost:
-    @read -p "Enter the receiver hostname: " TARGET_HOST
+    read -p "Enter the receiver hostname: " TARGET_HOST
 	./gethost.sh
     source target_host.sh
 	@echo "export TARGET_HOST=$TARGET_HOST" > target_host.sh

@@ -40,7 +40,7 @@ Sender Notes
     wget -O sender.c https://raw.githubusercontent.com/kim-dajeong/pa1/main/src/sender.c
     wget -O readfile https://raw.githubusercontent.com/kim-dajeong/pa1/main/src/readfile
     gcc -o sender sender.c
-    ./sender 130.127.132.208 8000 readfile 100
+    ./sender 130.127.132.208 8000 readfile 2000
 
 */
 

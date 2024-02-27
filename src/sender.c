@@ -186,6 +186,14 @@ void rsend(char* hostname,
     senderBuffer[0] = bytesToTransfer;
     printf("bytesToTransfer: %d", bytesToTransfer);
     sendto(socket_desc, senderBuffer, strlen(senderBuffer), 0, (struct sockaddr*)&server_addr, struct_length);
+    printf("bytesToTransfer info sent");
+
+    while(senderBuffer[0] != 1) {
+
+        recvfrom(socket_desc, senderBuffer, sizeof(senderBuffer), 0, (struct sockaddr*)&server_addr, &struct_length); 
+
+    }
+    printf("ack received");
 
     while(bytesRead < bytesToTransfer) {
 

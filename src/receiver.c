@@ -230,12 +230,6 @@ void rrecv(unsigned short int myUDPport,
     int bytesToTransfer = -1; //400;
     buffer[0] = -1;
 
-    if(bytesToTransfer == -1) {
-
-        printf("Attempting to restablish conenction\n");
-        //bytesToTransfer = initiate(&address);
-
-    }
 
     printf("Listening for incoming messages...\n\n");
 
@@ -245,12 +239,14 @@ void rrecv(unsigned short int myUDPport,
     while(bytesToTransfer == -1) {
 
         recvfrom(socket_desc, buffer, sizeof(buffer), 0, (struct sockaddr*)&address, &client_struct_length); 
-        int bytesToTransfer = buffer[0];
+        bytesToTransfer = buffer[0];
 
     }
 
     printf("bytesToTransfer: %d", bytesToTransfer);
-
+    buffer[0] = 1;
+    sendto(socket_desc, buffer, strlen(buffer), 0, (struct sockaddr*)&address, client_struct_length);
+    printf("ack sent");
 
     while( bytesRead < bytesToTransfer){
         printf("bytesRead: %d, bytesToTransfer: %d\n", bytesRead, bytesToTransfer);

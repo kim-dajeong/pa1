@@ -102,6 +102,13 @@ void rrecv(unsigned short int myUDPport,
 
     printf("%ld\n",(client_message));
 
+    int Testval = 22;
+    void* test_val = &Testval; 
+    if (sendto(socket_desc, test_val, sizeof(test_val), 0, (struct sockaddr*)&address, client_struct_length) < 0) {
+    printf("Unable to send message\n");
+    exit(EXIT_FAILURE);
+    }
+
     // references the first address of the data buffer
     if(*(int*)buffer == 3){ 
         break;

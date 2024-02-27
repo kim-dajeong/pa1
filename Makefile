@@ -56,7 +56,7 @@ obj/%.o: src/%.c
 obj:
 	mkdir -p obj
 
-TARGET_HOST := $(hostname -i)
+TARGET_HOST := $(shell hostname -i)
 
 send: 
 	@echo "TARGET_HOST: $(TARGET_HOST)"

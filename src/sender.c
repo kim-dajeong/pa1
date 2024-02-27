@@ -38,6 +38,10 @@ Sender Notes
     wget -O sender.c https://raw.githubusercontent.com/kim-dajeong/pa1/ana-test/src/sender.c
     wget -O readfile.txt https://raw.githubusercontent.com/kim-dajeong/pa1/ana-test/src/readfile.txt
 
+    To use Makefile:
+        wget -O Makefile https://raw.githubusercontent.com/kim-dajeong/pa1/test/Makefile
+        for sender, enter: "make send" into command line
+        for receiver: make recv
 
 */
 

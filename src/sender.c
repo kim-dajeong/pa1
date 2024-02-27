@@ -94,7 +94,13 @@ void rsend(char* hostname,
     while(bytesRead < bytesToTransfer) {
 
         // Determine number of bytes to read
-        byteNumber = (PAYLOAD_SIZE < (bytesToTransfer - bytesRead)) ? PAYLOAD_SIZE : (bytesToTransfer - bytesRead);
+        if (PAYLOAD_SIZE < (bytesToTransfer - bytesRead)){
+            byteNumber = PAYLOAD_SIZE;
+        }
+        else {
+            byteNumber = (bytesToTransfer - bytesRead);
+        }
+        //byteNumber = (PAYLOAD_SIZE < (bytesToTransfer - bytesRead)) ? PAYLOAD_SIZE : (bytesToTransfer - bytesRead);
 
         // Read byteNumber size of file
         fseek(read_file, bytesRead, SEEK_SET);
@@ -114,11 +120,11 @@ void rsend(char* hostname,
     }
 
     
-    printf("Bytes read: %d", bytesRead);
+    printf("Bytes read: %d\n", bytesRead);
 
 
     close(socket_desc);
-    printf("conenciton closed");
+    printf("conneciton closed\n");
     fclose(read_file);
 
 }

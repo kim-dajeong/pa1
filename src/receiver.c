@@ -102,7 +102,13 @@ void rrecv(unsigned short int myUDPport,
     while(bytesRead >= bytesToTransfer){
 
     // Determine number of bytes to read
-    byteNumber = (PAYLOAD_SIZE < (bytesToTransfer - bytesRead)) ? PAYLOAD_SIZE : (bytesToTransfer - bytesRead);
+    //byteNumber = (PAYLOAD_SIZE < (bytesToTransfer - bytesRead)) ? PAYLOAD_SIZE : (bytesToTransfer - bytesRead);
+    if (PAYLOAD_SIZE < (bytesToTransfer - bytesRead)){
+            byteNumber = PAYLOAD_SIZE;
+        }
+        else {
+            byteNumber = (bytesToTransfer - bytesRead);
+        }
 
     // Receive client's message:
     size_t client_message = recvfrom(socket_desc, buffer, sizeof(buffer), 0, (struct sockaddr*)&address, &client_struct_length); 

@@ -246,7 +246,7 @@ void rrecv(unsigned short int myUDPport,
     printf("bytesToTransfer: %lld\n", bytesToTransfer);
 
     buffer[0] = 1;
-    sendto(socket_desc, buffer, strlen(buffer), 0, (struct sockaddr*)&address, client_struct_length);
+    sendto(socket_desc, buffer, sizeof(buffer), 0, (struct sockaddr*)&address, client_struct_length);
     printf("ack sent\n");
 
     while( bytesRead < bytesToTransfer){

@@ -228,7 +228,7 @@ void rrecv(unsigned short int myUDPport,
     //printf("initiate startubng\n");
     //int bytesToTransfer = initiate(&address);
     unsigned long long int bytesToTransfer = 0; //400;
-    buffer[0] = -1;
+    buffer[0] = 0;
 
 
     printf("Listening for incoming messages...\n\n");

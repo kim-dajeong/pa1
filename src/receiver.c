@@ -103,7 +103,7 @@ void rrecv(unsigned short int myUDPport,
     printf("%ld\n",(client_message));
 
     // references the first address of the data buffer
-    if(*(char*)buffer == "F"){ 
+    if(strcmp((char*)buffer,"F") == 0){ 
         break;
     }
 

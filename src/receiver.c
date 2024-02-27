@@ -109,19 +109,19 @@ int initiate(struct sockaddr_in *address) {
     //wait for SYN from sender
     while(checktime != -1) {
 
-        printf("checking timeout1");
+        printf("checking timeout1\n");
         checktime = timeout(TIMEOUT);
         int client_message = recvfrom(socket_desc, otherbuffer, sizeof(otherbuffer), 0, (struct sockaddr*)&address, &client_struct_length); 
  
         if(client_message > 0){
             
-            printf("first syn received");
+            printf("first syn received\n");
             break;
 
         }
 
         if(checktime == -1) {
-            printf("connection failed to establish, receiver unresponsive");
+            printf("connection failed to establish, receiver unresponsive\n");
             break;
         }
 
@@ -137,7 +137,7 @@ int initiate(struct sockaddr_in *address) {
     }
     else{
         
-            printf("connection failed to establish, SYN not received from sender");
+            printf("connection failed to establish, SYN not received from sender\n");
             return -1;
         //Try again - need to implement
         //sendto(socket_desc, mybuffer, strlen(mybuffer), 0, (struct sockaddr *)client_addr, sizeof(client_addr));
@@ -155,7 +155,7 @@ int initiate(struct sockaddr_in *address) {
         }
 
         if(checktime == -1) {
-            printf("connection failed to establish, receiver unresponsive");
+            printf("connection failed to establish, receiver unresponsive\n");
             break;
         }
 
@@ -172,14 +172,14 @@ int initiate(struct sockaddr_in *address) {
     }
     else{
         
-            printf("connection failed to establish, ACK not received from sender");
+            printf("connection failed to establish, ACK not received from sender\n");
             return -1;
         //Try again - need to implement
         //sendto(socket_desc, mybuffer, strlen(mybuffer), 0, (struct sockaddr *)client_addr, sizeof(client_addr));
 
     }
     
-    printf("Connection successfully established; Three way handshake completed. Data transfer starting...");
+    printf("Connection successfully established; Three way handshake completed. Data transfer starting...\n");
 
     return bytesToTransfer;
 
@@ -222,13 +222,13 @@ void rrecv(unsigned short int myUDPport,
     }
     printf("Done with binding\n");
     
-    printf("initiate startubng");
+    printf("initiate startubng\n");
     int bytesToTransfer = initiate(&address);
     //int bytesToTransfer = 400;
 
     if(bytesToTransfer == -1) {
 
-        printf("Attempting to restablish conenction");
+        printf("Attempting to restablish conenction\n");
         bytesToTransfer = initiate(&address);
 
     }
@@ -268,7 +268,7 @@ void rrecv(unsigned short int myUDPport,
 
     int written = fwrite(buffer, sizeof(char), client_message, write_file);
     if (written < client_message) {
-        printf("Error during writing to file!");
+        printf("Error during writing to file!\n");
     }
 
     bytesRead += byteNumber;

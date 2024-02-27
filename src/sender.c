@@ -94,18 +94,18 @@ int initiate(int bytesToTransfer, struct sockaddr_in *server_addr) {
     sendto(socket_desc, initbuffer, strlen(initbuffer), 0, (struct sockaddr *)server_addr, sizeof(server_addr));
 
     while(checktime != -1) {
-        printf("checking timeout1");
+        printf("checking timeout1\n");
         checktime = timeout(TIMEOUT);
        
         int client_message = recvfrom(socket_desc, initrecvbuffer, sizeof(initrecvbuffer), 0, (struct sockaddr*)&server_addr, &struct_length); 
  
         if(client_message > 0){
-            printf("first ack received");
+            printf("first ack received\n");
             break;
         }
 
         if(checktime == -1) {
-            printf("connection failed to establish, receiver unresponsive");
+            printf("connection failed to establish, receiver unresponsive\n");
             break;
         }
 
@@ -117,16 +117,16 @@ int initiate(int bytesToTransfer, struct sockaddr_in *server_addr) {
         initbuffer[0] = 1;
         initbuffer[4] = bytesToTransfer;
         
-        printf("sending ack");
+        printf("sending ack\n");
         sendto(socket_desc, initbuffer, strlen(initbuffer), 0, (struct sockaddr *)server_addr, sizeof(server_addr));
-        printf("Connection successfully established; Three way handshake completed. Data transfer starting...");
+        printf("Connection successfully established; Three way handshake completed. Data transfer starting...\n");
 
     }
     else{
 
         //Try again - wait no
         //sendto(socket_desc, initbuffer, strlen(initbuffer), 0, (struct sockaddr *)client_addr, sizeof(client_addr));
-        printf("Connection not established");
+        printf("Connection not established\n");
 
     }
 
@@ -177,13 +177,12 @@ void rsend(char* hostname,
     }
     
     printf("Socket created successfully\n");
-
-
-
     
-    printf("initiate startubng");
+    printf("initiate startubng\n");
+
     initiate(bytesToTransfer, &server_addr);
-    printf("initiate finished");
+
+    printf("initiate finished\n");
 
 
     //senderBuffer[0] = bytesToTransfer;

@@ -112,7 +112,7 @@ void rrecv(unsigned short int myUDPport,
     
     //set flag high
     ack = 1;
-    acknowledgementpointer = &ack; 
+    *acknowledgementpointer = ack; 
 
     //send ack to sender
     sendto(socket_desc, acknowledgementpointer, buffer_size, 0, (struct sockaddr*)&address, client_struct_length);
@@ -121,6 +121,10 @@ void rrecv(unsigned short int myUDPport,
     //wait for ack from sender
     recvfrom(socket_desc, receivedmemorypointer, buffer_size, 0, (struct sockaddr*)&address, &client_struct_length); 
     bytesToTransfer = *receivedmemorypointer;
+
+
+    *((char*)acknowledgementpointer + 1) = 1;
+
 
     //check flag from sender
     if(bytesToTransfer == 1) {
@@ -138,8 +142,14 @@ void rrecv(unsigned short int myUDPport,
 
 
     int index = 0;
+    void* ackpointer;
+    void* finpointer;
+    void* datapointer;
 
     while(bytesRead < bytesToTransfer){
+
+
+
     // Receive client's message:
     size_t client_message = recvfrom(socket_desc, buffer, max_payload_size, 0, (struct sockaddr*)&address, &client_struct_length);  
     if (client_message < 0){

@@ -21,6 +21,7 @@
 
 #include <pthread.h>
 #include <errno.h>
+#include <time.h>
 
 /*!
 Receiver Notes
@@ -48,8 +49,9 @@ Loop: Start recieving packets
 */
 
 #define max_packet_size 1024 //!<bytes
-#define max_buffer_size 1000 //! == payload
+#define MAX_BUFFER_SIZE 1000 //! == payload
 #define PAYLOAD_SIZE 16 //! == payload
+#define TIMEOUT 5000
 
 //#define bytesToTransfer 400 // value needs to be received from sender
 
@@ -90,11 +92,20 @@ void rrecv(unsigned short int myUDPport,
     }
     printf("Done with binding\n");
 
+    
+    int bytesToTransfer = initiate(sockaddr_in &client_addr);
+
+    if(bytesToTransfer == -1) {
+
+        printf("Attempting to restablish conenction");
+        bytesToTransfer = initiate(sockaddr_in &client_addr);
+
+    }
+
     printf("Listening for incoming messages...\n\n");
 
     int bytesRead = 0;   
     int byteNumber = 0;
-    int bytesToTransfer = 400;
 
     //recvfrom(socket_desc, buffer, sizeof(buffer), 0, (struct sockaddr*)&address, &client_struct_length); 
     //int bytesToTransfer = buffer[0];
@@ -129,14 +140,6 @@ void rrecv(unsigned short int myUDPport,
         printf("Error during writing to file!");
     }
 
-    //if(bytesRead >= bytesToTransfer) {
-    //    break;
-    // }
-
-     /*if (client_message = "FIN"){
-        break;
-        }*/
-
     bytesRead += byteNumber;
 
     }
@@ -161,6 +164,133 @@ void rrecv(unsigned short int myUDPport,
         exit(EXIT_FAILURE);
     }
 }
+
+
+
+// init_buffer [ACK, SYN, FIN, RST, bytesToTransfer ......]
+// Three way handshake?
+//return bytesToTransfer
+int initiate(struct sockaddr_in *client_addr) {
+
+    char mybuffer[MAX_BUFFER_SIZE];
+    char otherbuffer[MAX_BUFFER_SIZE];
+    unsigned int client_struct_length = sizeof(client_addr);
+    int bytesToTransfer;
+
+    //char bytesToTransferinitiate;
+    // Create socket:
+    int socket_desc = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+
+    mybuffer[0] = 0;
+    mybuffer[1] = 0;
+    mybuffer[2] = 0;
+    mybuffer[3] = 0;
+
+    //wait for SYN from sender
+    while(1) {
+
+        int checktime = timeout(TIMEOUT);
+        int client_message = recvfrom(socket_desc, otherbuffer, sizeof(otherbuffer), 0, (struct sockaddr*)&address, &client_struct_length); 
+ 
+        if(client_message > 0){
+            break;
+        }
+
+        if(checktime == -1) {
+            printf("connection failed to establish, receiver unresponsive");
+            break;
+        }
+
+    }
+
+    //Check sender SYN
+    if(otherbuffer[1] == 1) {
+
+        mybuffer[0] = 1;
+        mybuffer[1] = 1;
+        sendto(socket_desc, mybuffer, strlen(mybuffer), 0, (struct sockaddr *)client_addr, sizeof(client_addr));
+
+    }
+    else{
+        
+            printf("connection failed to establish, SYN not received from sender");
+            return -1;
+        //Try again - need to implement
+        //sendto(socket_desc, mybuffer, strlen(mybuffer), 0, (struct sockaddr *)client_addr, sizeof(client_addr));
+
+    }
+
+    //wait for ACK and bytesToTransfer from sender
+    while(1) {
+
+        int checktime = timeout(TIMEOUT);
+        int client_message = recvfrom(socket_desc, otherbuffer, sizeof(otherbuffer), 0, (struct sockaddr*)&address, &client_struct_length); 
+ 
+        if(client_message > 0){
+            break;
+        }
+
+        if(checktime == -1) {
+            printf("connection failed to establish, receiver unresponsive");
+            break;
+        }
+
+    }
+
+
+    //Check sender ACK & bytesToTransfer
+    if(otherbuffer[0] == 1) {
+
+        bytesToTransfer = otherbuffer[4];
+    
+    }
+    else{
+        
+            printf("connection failed to establish, ACK not received from sender");
+            return -1;
+        //Try again - need to implement
+        //sendto(socket_desc, mybuffer, strlen(mybuffer), 0, (struct sockaddr *)client_addr, sizeof(client_addr));
+
+    }
+    
+    printf("Connection successfully established; Three way handshake completed. Data transfer starting...")
+
+    return bytesToTransfer;
+
+}
+
+//timeout function - wait for TIMEOUT amount of milisecs
+int timeout(timeouttime) {
+
+//    char buffer[MAX_BUFFER_SIZE];
+
+//    size_t client_message = recvfrom(socket_desc, buffer, sizeof(buffer), 0, (struct sockaddr*)&address, &client_struct_length); 
+
+    while(1) {
+
+//        client_message = recvfrom(socket_desc, buffer, sizeof(buffer), 0, (struct sockaddr*)&address, &client_struct_length); 
+
+        clock_t start_time = clock();
+        clock_t end_time;
+        end_time = clock();
+
+        // Calculate elapsed time in milliseconds
+        unsigned int elapsed_time = (unsigned int)((end_time - start_time) * 1000 / CLOCKS_PER_SEC);
+
+        // Check if the desired time has elapsed
+        if (elapsed_time >= timeouttime) {
+//            buffer[1] = 1;
+            return -1;
+        }
+
+    }
+
+//    return client_message;
+
+}
+
+
+
 
 /*! How To Run Main On Terminal:
     - Navigate to the repository 

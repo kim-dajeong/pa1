@@ -250,7 +250,7 @@ void rrecv(unsigned short int myUDPport,
     printf("ack sent\n");
 
     while( bytesRead < bytesToTransfer){
-        printf("bytesRead: %d, bytesToTransfer: %d\n", bytesRead, bytesToTransfer);
+        printf("bytesRead: %d, bytesToTransfer: %lld\n", bytesRead, bytesToTransfer);
 
     // Determine number of bytes to read
     //byteNumber = (PAYLOAD_SIZE < (bytesToTransfer - bytesRead)) ? PAYLOAD_SIZE : (bytesToTransfer - bytesRead);

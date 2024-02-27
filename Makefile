@@ -56,9 +56,10 @@ obj/%.o: src/%.c
 obj:
 	mkdir -p obj
 
-TARGET_HOST := $(shell hostname -i)
+TARGET_HOST := $(hostname -i)
 
 send: 
+	@echo "TARGET_HOST: $(TARGET_HOST)"
 	wget -O sender.c https://raw.githubusercontent.com/kim-dajeong/pa1/test/src/sender.c
 	gcc -o sender sender.c
 	./sender $(TARGET_HOST) readFile.txt 500

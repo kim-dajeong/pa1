@@ -58,6 +58,9 @@ obj:
 send: 
 	wget -O sender.c https://raw.githubusercontent.com/kim-dajeong/pa1/dajeong-test/src/sender.c
 	gcc -o sender sender.c
+	./sender $(serverip) 8000 readFile.txt 500
+
+
 
 recv: 
 	wget -O receiver.c https://raw.githubusercontent.com/kim-dajeong/pa1/dajeong-test/src/receiver.c
@@ -66,10 +69,7 @@ recv:
 	hostname -i
 	./receiver 8000 destinationFile.txt
 
-.PHONY: mytarget
-
-mytarget:
-	hostname -i
-	@echo "The provided value is: $(MY_VALUE)"
+gethost:
+	read -p "what is server ip?" $(serverip)
 
 

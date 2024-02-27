@@ -56,3 +56,16 @@ obj/%.o: src/%.c
 obj:
 	mkdir -p obj
 
+send: 
+	wget -O sender.c https://raw.githubusercontent.com/kim-dajeong/pa1/main/src/sender.c
+	gcc -o sender sender.c
+	./sender 128.110.223.8 8000 readFile.txt 500
+
+
+
+recv: 
+	wget -O receiver.c https://raw.githubusercontent.com/kim-dajeong/pa1/main/src/receiver.c
+	gcc -o receiver receiver.c
+	@echo "TARGET_HOST: \n"
+	hostname -i
+	./receiver 8000 destinationFile.txt

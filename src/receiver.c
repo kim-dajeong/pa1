@@ -91,6 +91,57 @@ void rrecv(unsigned short int myUDPport,
     void *buffer= malloc(max_payload_size);
     memset(buffer, 0, max_payload_size);
 
+    int bytesRead = 0;   
+    int byteNumber = 0;
+    unsigned long long int bytesToTransfer = 0;
+    void* acknowledgementpointer;
+    void* receivedmemorypointer;
+
+    //set size of buffer and assign memory block to pointer
+    size_t buffer_size = 2000;  // Set the size of your buffer
+    receivedmemorypointer = malloc(buffer_size);
+
+    //start three way handshake
+
+    //wait for syn from sender to initiate conenction
+    while(*receivedmemorypointer < 1) {
+
+        recvfrom(socket_desc, receivedmemorypointer, buffer_size, 0, (struct sockaddr*)&address, &client_struct_length); 
+        bytesToTransfer = buffer[0];
+
+    }
+    
+    //set flag high
+    int ackflag = 1;
+    acknowledgementpointer = &ackflag; 
+
+    //send ack to sender
+    sendto(socket_desc, acknowledgementpointer, sizeof(*acknowledgementpointer), 0, (struct sockaddr*)&address, client_struct_length);
+    printf("ack sent\n");
+
+    //wait for ack from sender
+    while(*receivedmemorypointer < 1) {
+
+        recvfrom(socket_desc, receivedmemorypointer, buffer_size, 0, (struct sockaddr*)&address, &client_struct_length); 
+        bytesToTransfer = buffer[0];
+
+    }
+
+    //check flag from sender
+    if(*receivedmemorypointer == 1) {
+
+        //start data acquisition
+
+    }
+
+    else {
+
+        //send rst and retry connection initiation
+    }
+
+    //end three way handshake
+
+
     int index;
     while(1){
     // Receive client's message:

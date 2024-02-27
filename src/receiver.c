@@ -236,17 +236,17 @@ void rrecv(unsigned short int myUDPport,
     int bytesRead = 0;   
     int byteNumber = 0;
 
-    while(bytesToTransfer == -1) {
+    while(bytesToTransfer < 0) {
 
         recvfrom(socket_desc, buffer, sizeof(buffer), 0, (struct sockaddr*)&address, &client_struct_length); 
         bytesToTransfer = buffer[0];
 
     }
 
-    printf("bytesToTransfer: %lld", bytesToTransfer);
+    printf("bytesToTransfer: %lld\n", bytesToTransfer);
     buffer[0] = 1;
     sendto(socket_desc, buffer, strlen(buffer), 0, (struct sockaddr*)&address, client_struct_length);
-    printf("ack sent");
+    printf("ack sent\n");
 
     while( bytesRead < bytesToTransfer){
         printf("bytesRead: %d, bytesToTransfer: %d\n", bytesRead, bytesToTransfer);

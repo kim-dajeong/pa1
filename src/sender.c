@@ -48,7 +48,7 @@ Sender Notes
 
 #define PAYLOAD_SIZE 16 //! == payload
 #define MAX_BUFFER_SIZE 20000
-#define TIMEOUT 5000
+#define TIMEOUT 10000
 
 int timeout(int timeouttime) {
 
@@ -73,7 +73,7 @@ int timeout(int timeouttime) {
 
 // init_buffer [ACK, SYN, FIN, RST, bytesToTransfer ......]
 // Three way handshake?
-void initiate(bytesToTransfer, struct sockaddr_in *client_addr) {
+int initiate(bytesToTransfer, struct sockaddr_in *client_addr) {
 
     char initbuffer[MAX_BUFFER_SIZE];
     char initrecvbuffer[MAX_BUFFER_SIZE];

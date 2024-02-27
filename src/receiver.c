@@ -51,7 +51,7 @@ Loop: Start recieving packets
 #define max_packet_size 1024 //!<bytes
 #define MAX_BUFFER_SIZE 1000 //! == payload
 #define PAYLOAD_SIZE 16 //! == payload
-#define TIMEOUT 5000
+#define TIMEOUT 10000
 
 //#define bytesToTransfer 400 // value needs to be received from sender
 

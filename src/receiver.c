@@ -155,6 +155,8 @@ int initiate(struct sockaddr_in *address) {
             break;
         }
 
+        return 1;
+
     }
 
 

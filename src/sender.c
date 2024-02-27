@@ -127,6 +127,8 @@ int initiate(int bytesToTransfer, struct sockaddr_in *client_addr) {
     sendto(socket_desc, initbuffer, strlen(initbuffer), 0, (struct sockaddr *)client_addr, sizeof(client_addr));
     printf("Connection successfully established; Three way handshake completed. Data transfer starting...");
 
+    return 1;
+    
 }
 
 

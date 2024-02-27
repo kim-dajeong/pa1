@@ -51,7 +51,7 @@ Loop: Start recieving packets
 #define max_buffer_size 1000 //! == payload
 #define PAYLOAD_SIZE 16 //! == payload
 
-#define bytesToTransfer 500 // value needs to be received from sender
+#define bytesToTransfer 400 // value needs to be received from sender
 
 
 void rrecv(unsigned short int myUDPport, 

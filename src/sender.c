@@ -79,6 +79,7 @@ int initiate(int bytesToTransfer, struct sockaddr_in *client_addr) {
     char initbuffer[MAX_BUFFER_SIZE];
     char initrecvbuffer[MAX_BUFFER_SIZE];
     unsigned int client_struct_length = sizeof(client_addr);
+    int checktime = 0;
 
     //char bytesToTransferinitiate;
     // Create socket:
@@ -92,12 +93,14 @@ int initiate(int bytesToTransfer, struct sockaddr_in *client_addr) {
     // Send SYN to receiver:
     sendto(socket_desc, initbuffer, strlen(initbuffer), 0, (struct sockaddr *)client_addr, sizeof(client_addr));
 
-    while(1) {
-
-        int checktime = timeout(TIMEOUT);
+    while(checktime != -1) {
+        printf("checking timeout1");
+        checktime = timeout(TIMEOUT);
+       
         int client_message = recvfrom(socket_desc, initrecvbuffer, sizeof(initrecvbuffer), 0, (struct sockaddr*)&client_addr, &client_struct_length); 
  
         if(client_message > 0){
+            printf("first ack received");
             break;
         }
 
@@ -111,24 +114,24 @@ int initiate(int bytesToTransfer, struct sockaddr_in *client_addr) {
     //Check for receiver SYN & ACK
     if(initrecvbuffer[0] == 1 && initrecvbuffer[1] == 1) {
 
-            sendto(socket_desc, initbuffer, strlen(initbuffer), 0, (struct sockaddr *)client_addr, sizeof(client_addr));
+        initbuffer[0] = 1;
+        initbuffer[4] = bytesToTransfer;
+        
+        printf("sending ack");
+        sendto(socket_desc, initbuffer, strlen(initbuffer), 0, (struct sockaddr *)client_addr, sizeof(client_addr));
+        printf("Connection successfully established; Three way handshake completed. Data transfer starting...");
 
     }
     else{
 
         //Try again - wait no
-        sendto(socket_desc, initbuffer, strlen(initbuffer), 0, (struct sockaddr *)client_addr, sizeof(client_addr));
+        //sendto(socket_desc, initbuffer, strlen(initbuffer), 0, (struct sockaddr *)client_addr, sizeof(client_addr));
+        printf("Connection not established");
 
     }
 
-    initbuffer[0] = 1;
-    initbuffer[4] = bytesToTransfer;
-
-    sendto(socket_desc, initbuffer, strlen(initbuffer), 0, (struct sockaddr *)client_addr, sizeof(client_addr));
-    printf("Connection successfully established; Three way handshake completed. Data transfer starting...");
-
     return 1;
-    
+
 }
 
 
@@ -178,6 +181,8 @@ void rsend(char* hostname,
     char indexPointer[4];
 
     initiate(bytesToTransfer, &client_addr);
+    printf("initiate finished");
+
 
     //senderBuffer[0] = bytesToTransfer;
     //sendto(socket_desc, senderBuffer, strlen(senderBuffer), 0, (struct sockaddr*)&server_addr, struct_length);

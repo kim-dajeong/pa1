@@ -95,7 +95,7 @@ int initiate(struct sockaddr_in *address) {
     char otherbuffer[MAX_BUFFER_SIZE];
     unsigned int client_struct_length = sizeof(address);
     int bytesToTransfer;
-    int checktime;
+    int checktime = 0;
 
     //char bytesToTransferinitiate;
     // Create socket:
@@ -107,13 +107,17 @@ int initiate(struct sockaddr_in *address) {
     mybuffer[3] = 0;
 
     //wait for SYN from sender
-    while(1) {
+    while(checktime != -1) {
 
+        printf("checking timeout1");
         checktime = timeout(TIMEOUT);
         int client_message = recvfrom(socket_desc, otherbuffer, sizeof(otherbuffer), 0, (struct sockaddr*)&address, &client_struct_length); 
  
         if(client_message > 0){
+            
+            printf("first syn received");
             break;
+
         }
 
         if(checktime == -1) {

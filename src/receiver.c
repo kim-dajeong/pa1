@@ -227,7 +227,7 @@ void rrecv(unsigned short int myUDPport,
     
     //printf("initiate startubng\n");
     //int bytesToTransfer = initiate(&address);
-    unsigned long long int bytesToTransfer = -1; //400;
+    unsigned long long int bytesToTransfer = 0; //400;
     buffer[0] = -1;
 
 
@@ -236,7 +236,7 @@ void rrecv(unsigned short int myUDPport,
     int bytesRead = 0;   
     int byteNumber = 0;
 
-    while(bytesToTransfer < 0) {
+    while(bytesToTransfer < 1) {
 
         recvfrom(socket_desc, buffer, sizeof(buffer), 0, (struct sockaddr*)&address, &client_struct_length); 
         bytesToTransfer = buffer[0];
@@ -244,6 +244,7 @@ void rrecv(unsigned short int myUDPport,
     }
 
     printf("bytesToTransfer: %lld\n", bytesToTransfer);
+
     buffer[0] = 1;
     sendto(socket_desc, buffer, strlen(buffer), 0, (struct sockaddr*)&address, client_struct_length);
     printf("ack sent\n");

@@ -205,7 +205,7 @@ void rrecv(unsigned short int myUDPport,
     address.sin_family = AF_INET;
     address.sin_port = htons(myUDPport);
     address.sin_addr.s_addr = htonl(INADDR_ANY);   
-    unsigned int client_struct_length = sizeof(client_addr);
+    unsigned int client_struct_length = sizeof(address);
 
     // Create UDP socket and check it exists
     int socket_desc = socket(AF_INET, SOCK_DGRAM, 0);
@@ -221,12 +221,10 @@ void rrecv(unsigned short int myUDPport,
         exit(EXIT_FAILURE);
     }
     printf("Done with binding\n");
-
-    
     
     printf("initiate startubng");
-    //int bytesToTransfer = initiate(&address);
-    int bytesToTransfer = 400;
+    int bytesToTransfer = initiate(&address);
+    //int bytesToTransfer = 400;
 
     if(bytesToTransfer == -1) {
 
@@ -244,7 +242,7 @@ void rrecv(unsigned short int myUDPport,
     //int bytesToTransfer = buffer[0];
     //printf("bytesToTransfer: %d", bytesToTransfer);
 
-    while( bytesRead <= bytesToTransfer){
+    while( bytesRead < bytesToTransfer){
         printf("bytesRead: %d, bytesToTransfer: %d\n", bytesRead, bytesToTransfer);
 
     // Determine number of bytes to read

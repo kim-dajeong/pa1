@@ -74,12 +74,12 @@ int timeout(int timeouttime) {
 
 // init_buffer [ACK, SYN, FIN, RST, bytesToTransfer ......]
 // Three way handshake?
-int initiate(int bytesToTransfer, struct sockaddr_in *client_addr) {
+int initiate(int bytesToTransfer, struct sockaddr_in *server_addr) {
 
     char initbuffer[MAX_BUFFER_SIZE];
     char initrecvbuffer[MAX_BUFFER_SIZE];
-    unsigned int client_struct_length = sizeof(client_addr);
     int checktime = 0;
+    int struct_length = sizeof(server_addr);
 
     //char bytesToTransferinitiate;
     // Create socket:
@@ -91,13 +91,13 @@ int initiate(int bytesToTransfer, struct sockaddr_in *client_addr) {
     initbuffer[3] = 0;
 
     // Send SYN to receiver:
-    sendto(socket_desc, initbuffer, strlen(initbuffer), 0, (struct sockaddr *)client_addr, sizeof(client_addr));
+    sendto(socket_desc, initbuffer, strlen(initbuffer), 0, (struct sockaddr *)server_addr, sizeof(server_addr));
 
     while(checktime != -1) {
         printf("checking timeout1");
         checktime = timeout(TIMEOUT);
        
-        int client_message = recvfrom(socket_desc, initrecvbuffer, sizeof(initrecvbuffer), 0, (struct sockaddr*)&client_addr, &client_struct_length); 
+        int client_message = recvfrom(socket_desc, initrecvbuffer, sizeof(initrecvbuffer), 0, (struct sockaddr*)&server_addr, &client_struct_length); 
  
         if(client_message > 0){
             printf("first ack received");
@@ -118,7 +118,7 @@ int initiate(int bytesToTransfer, struct sockaddr_in *client_addr) {
         initbuffer[4] = bytesToTransfer;
         
         printf("sending ack");
-        sendto(socket_desc, initbuffer, strlen(initbuffer), 0, (struct sockaddr *)client_addr, sizeof(client_addr));
+        sendto(socket_desc, initbuffer, strlen(initbuffer), 0, (struct sockaddr *)server_addr, sizeof(server_addr));
         printf("Connection successfully established; Three way handshake completed. Data transfer starting...");
 
     }
@@ -140,6 +140,13 @@ void rsend(char* hostname,
             unsigned short int hostUDPport, 
             char* filename, 
             unsigned long long int bytesToTransfer) {
+
+    //initallize array for sender message
+    char senderBuffer[MAX_BUFFER_SIZE];
+    int bytesRead = 0;
+    int index = 0;
+    int byteNumber = 0;
+    char indexPointer[4];
 
     // Initalizing file I/O and test that the file exists
     FILE *read_file = fopen(filename, "rb");
@@ -171,18 +178,11 @@ void rsend(char* hostname,
     
     printf("Socket created successfully\n");
 
-    //initallize array for sender message
-    char senderBuffer[MAX_BUFFER_SIZE];
-    int bytesRead = 0;
-    int index = 0;
-    int byteNumber = 0;
-    char sendermessage[MAX_BUFFER_SIZE];
-    char* readStart;
-    char indexPointer[4];
+
 
     
     printf("initiate startubng");
-    //initiate(bytesToTransfer, &client_addr);
+    initiate(bytesToTransfer, &server_addr);
     printf("initiate finished");
 
 

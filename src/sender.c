@@ -23,7 +23,7 @@
 #include <unistd.h>
 #include <pthread.h>
 #include <errno.h>
-#include <time.h>
+#include <sys/time.h>
 
 /*!
 Sender Notes

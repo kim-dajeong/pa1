@@ -239,7 +239,7 @@ void rrecv(unsigned short int myUDPport,
     while(bytesToTransfer < 1) {
 
         recvfrom(socket_desc, buffer, sizeof(buffer), 0, (struct sockaddr*)&address, &client_struct_length); 
-        bytesToTransfer = ntohl(buffer[0]);
+        bytesToTransfer = buffer[0];
     }
 
     printf("bytesToTransfer: %lld\n", bytesToTransfer);

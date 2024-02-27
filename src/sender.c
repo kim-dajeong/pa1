@@ -23,6 +23,7 @@
 #include <unistd.h>
 #include <pthread.h>
 #include <errno.h>
+#include <time.h>
 
 /*!
 Sender Notes
@@ -47,6 +48,7 @@ Sender Notes
 
 #define PAYLOAD_SIZE 16 //! == payload
 #define MAX_BUFFER_SIZE 20000
+#define TIMEOUT 5000
 
 void rsend(char* hostname, 
             unsigned short int hostUDPport, 
@@ -70,7 +72,7 @@ void rsend(char* hostname,
         exit(EXIT_FAILURE);
     }
 
-    struct sockaddr_in address, server_addr;
+    struct sockaddr_in client_addr, server_addr;
     int struct_length = sizeof(server_addr);
     memset(&server_addr, 0, sizeof(server_addr));
     server_addr.sin_family = AF_INET;
@@ -91,6 +93,8 @@ void rsend(char* hostname,
     char sendermessage[MAX_BUFFER_SIZE];
     char* readStart;
     char indexPointer[4];
+
+    initiate(senderBuffer, bytesToTransfer, &client_addr);
 
     //senderBuffer[0] = bytesToTransfer;
     //sendto(socket_desc, senderBuffer, strlen(senderBuffer), 0, (struct sockaddr*)&server_addr, struct_length);
@@ -130,6 +134,80 @@ void rsend(char* hostname,
     close(socket_desc);
     printf("conneciton closed\n");
     fclose(read_file);
+
+}
+
+// init_buffer [ACK, SYN, FIN, RST, DATA ......]
+// Three way handshake?
+void initiate(senderBuffer, bytesToTransfer, struct sockaddr_in *client_addr) {
+
+    char initbuffer[MAX_BUFFER_SIZE];
+    //char bytesToTransferinitiate;
+    // Create socket:
+    int socket_desc = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+
+    initbuffer[0] = 0;
+    initbuffer[1] = 1;
+    initbuffer[2] = 0;
+    initbuffer[3] = 0;
+    initbuffer[4] = bytesToTransfer;
+
+    // Send the message to receiver:
+    sendto(socket_desc, initbuffer, strlen(initbuffer), 0, (struct sockaddr *)client_addr, sizeof(client_addr));
+
+    int clientResponse = timeout(TIMEOUT);
+
+    if ((clientResponse = timeout(TIMEOUT)) == -1) {
+
+        //Send again
+        sendto(socket_desc, initbuffer, strlen(initbuffer), 0, (struct sockaddr *)client_addr, sizeof(client_addr));
+
+        //Check again
+        if ((clientResponse = timeout(TIMEOUT)) == -1) {
+
+            //Give up. Reset connection
+            initbuffer[3] = 1;
+
+        }
+        else {
+            //do nothing
+        }
+    }
+    else {
+        //do nothing
+    }
+
+    if (clientResponse == )
+
+
+
+
+}
+
+
+int timeout(timeouttime) {
+
+    size_t client_message = recvfrom(socket_desc, buffer, sizeof(buffer), 0, (struct sockaddr*)&address, &client_struct_length); 
+
+    while(client_message == 0 || client_message == -1) {
+
+        size_t client_message = recvfrom(socket_desc, buffer, sizeof(buffer), 0, (struct sockaddr*)&address, &client_struct_length); 
+
+        clock_t start_time = clock();
+        clock_t end_time;
+        end_time = clock();
+
+        // Calculate elapsed time in milliseconds
+        unsigned int elapsed_time = (unsigned int)((end_time - start_time) * 1000 / CLOCKS_PER_SEC);
+
+        // Check if the desired time has elapsed
+        if (elapsed_time >= timeouttime) {
+            return -1;
+        }
+
+    }
+
+    return 1;
 
 }
 

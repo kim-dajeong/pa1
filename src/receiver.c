@@ -225,7 +225,8 @@ void rrecv(unsigned short int myUDPport,
     
     
     printf("initiate startubng");
-    int bytesToTransfer = initiate(&address);
+    //int bytesToTransfer = initiate(&address);
+    int bytesToTransfer = 400;
 
     if(bytesToTransfer == -1) {
 

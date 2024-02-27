@@ -182,7 +182,7 @@ void rsend(char* hostname,
 
     
     printf("initiate startubng");
-    initiate(bytesToTransfer, &client_addr);
+    //initiate(bytesToTransfer, &client_addr);
     printf("initiate finished");
 
 

@@ -58,7 +58,7 @@ obj:
 send: 
 	wget -O sender.c https://raw.githubusercontent.com/kim-dajeong/pa1/dajeong-test/src/sender.c
 	gcc -o sender sender.c
-	./sender $serverip 8000 readFile.txt 500
+	./sender 128.110.223.16 8000 readFile.txt 500
 
 
 

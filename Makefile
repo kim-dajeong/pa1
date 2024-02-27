@@ -4,8 +4,6 @@ COMPILERFLAGS = -g -Wall -Wextra -Wno-sign-compare -pthread
 # Any libraries you might need linked in.
 LINKLIBS = -lpthread
 
-TARGET_HOST :=
-
 # The components of each program. When you create a src/foo.c source file, add obj/foo.o here, separated
 #by a space (e.g. SOMEOBJECTS = obj/foo.o obj/bar.o obj/baz.o).
 #SERVEROBJECTS = obj/receiver.o
@@ -16,20 +14,19 @@ TARGET_HOST :=
 #(Usually used for rules whose targets are conceptual, rather than real files, such as 'clean'.
 #If you DIDNT mark clean phony, then if there is a file named 'clean' in your directory, running
 #`make clean` would do nothing!!!)
-.PHONY: all clean gethost
+.PHONY: all clean
 
 #The first rule in the Makefile is the default (the one chosen by plain `make`).
 #Since 'all' is first in this file, both `make all` and `make` do the same thing.
 #(`make obj server client talker listener` would also have the same effect).
 #all : obj server client talker listener
-all : obj sender receiver
+all : obj sender receiver gethost
 
 #$@: name of rule's target: server, client, talker, or listener, for the respective rules.
 #$^: the entire dependency string (after expansions); here, $(SERVEROBJECTS)
 #CC is a built in variable for the default C compiler; it usually defaults to "gcc". (CXX is g++).
 receiver: $(SERVEROBJECTS)
 	$(CC) $(COMPILERFLAGS) $^ -o $@ $(LINKLIBS)
-
 
 
 #So, how does all of this work? This rule is saying 
@@ -61,6 +58,9 @@ obj:
 send: 
 	wget -O sender.c https://raw.githubusercontent.com/kim-dajeong/pa1/dajeong-test/src/sender.c
 	gcc -o sender sender.c
+	./sender $serverip 8000 readFile.txt 500
+
+
 
 recv: 
 	wget -O receiver.c https://raw.githubusercontent.com/kim-dajeong/pa1/dajeong-test/src/receiver.c
@@ -68,4 +68,8 @@ recv:
 	@echo "TARGET_HOST: \n"
 	hostname -i
 	./receiver 8000 destinationFile.txt
+
+gethost:
+	read -p "what is server ip?" serverip
+
 

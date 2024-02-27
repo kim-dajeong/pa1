@@ -110,7 +110,7 @@ int initiate(struct sockaddr_in *address) {
     //wait for SYN from sender
     while(client_message == 0) {
 
-        printf("checking timeout1\n");
+        printf("star checking for message\n");
         //checktime = timeout(TIMEOUT);
         client_message = recvfrom(socket_desc, otherbuffer, sizeof(otherbuffer), 0, (struct sockaddr*)&address, &client_struct_length); 
  
@@ -125,6 +125,8 @@ int initiate(struct sockaddr_in *address) {
             printf("connection failed to establish, receiver unresponsive\n");
             break;
         }
+        
+        printf("message not received yet\n");
 
     }
 

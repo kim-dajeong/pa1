@@ -95,7 +95,7 @@ int initiate(int bytesToTransfer, struct sockaddr_in *server_addr) {
     sendto(socket_desc, initbuffer, strlen(initbuffer), 0, (struct sockaddr *)server_addr, sizeof(server_addr));
 
     while(client_message == 0) {
-        printf("checking timeout1\n");
+        printf("start checking for message\n");
         //checktime = timeout(TIMEOUT);
        
         client_message = recvfrom(socket_desc, initrecvbuffer, sizeof(initrecvbuffer), 0, (struct sockaddr*)&server_addr, &struct_length); 
@@ -109,6 +109,8 @@ int initiate(int bytesToTransfer, struct sockaddr_in *server_addr) {
             printf("connection failed to establish, receiver unresponsive\n");
             break;
         }
+
+        printf("message not received yet\n");
 
     }
 

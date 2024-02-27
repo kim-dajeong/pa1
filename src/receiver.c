@@ -51,7 +51,7 @@ Loop: Start recieving packets
 #define max_buffer_size 1000 //! == payload
 #define PAYLOAD_SIZE 16 //! == payload
 
-#define bytesToTransfer 200 // value needs to be received from sender
+#define bytesToTransfer 500 // value needs to be received from sender
 
 
 void rrecv(unsigned short int myUDPport, 
@@ -132,6 +132,9 @@ void rrecv(unsigned short int myUDPport,
     bytesRead += byteNumber;
 
     }
+
+
+    printf("Bytes read: %d", bytesRead);
 
     // else 
     // check order (first 2 byes of the package)

@@ -18,11 +18,9 @@
 #include <string.h>
 #include <arpa/inet.h>
 #include <netinet/in.h>
-
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <unistd.h>
-
 #include <pthread.h>
 #include <errno.h>
 
@@ -114,6 +112,9 @@ void rsend(char* hostname,
         bytesRead += byteNumber;
 
     }
+
+    
+    printf("Bytes read: %d", bytesRead);
 
 
     close(socket_desc);

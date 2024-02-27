@@ -180,6 +180,8 @@ void rsend(char* hostname,
     char* readStart;
     char indexPointer[4];
 
+    
+    printf("initiate startubng");
     initiate(bytesToTransfer, &client_addr);
     printf("initiate finished");
 

@@ -223,6 +223,8 @@ void rrecv(unsigned short int myUDPport,
     printf("Done with binding\n");
 
     
+    
+    printf("initiate startubng");
     int bytesToTransfer = initiate(&address);
 
     if(bytesToTransfer == -1) {

@@ -95,7 +95,7 @@ int initiate(struct sockaddr_in *address) {
     char otherbuffer[MAX_BUFFER_SIZE];
     unsigned int client_struct_length = sizeof(address);
     int bytesToTransfer;
-    int checktime
+    int checktime;
 
     //char bytesToTransferinitiate;
     // Create socket:

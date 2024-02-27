@@ -50,7 +50,6 @@ Sender Notes
 #define MAX_BUFFER_SIZE 20000
 #define TIMEOUT 10000
 
-int initiate(int bytesToTransfer, struct sockaddr_in *client_addr);
 
 int timeout(int timeouttime) {
 

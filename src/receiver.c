@@ -91,39 +91,45 @@ void rrecv(unsigned short int myUDPport,
     void *buffer= malloc(max_payload_size);
     memset(buffer, 0, max_payload_size);
 
+    int8_t ack = 0;
+    uint8_t fin = 0;
+    int index = 0;
     int bytesRead = 0;   
     int byteNumber = 0;
     unsigned long long int bytesToTransfer = 0;
-    void* acknowledgementpointer;
+    void* sendmemorypointer;
     void* receivedmemorypointer;
-    uint8_t ack = 0;
-    uint8_t fin = 0;
+    void* ackpointer;
+    void* finpointer;
+    void* datapointer;
+    void* indexpointer;
 
     //set size of buffer and assign memory block to pointer
     size_t buffer_size = 2000;  // Set the size of your buffer
     receivedmemorypointer = malloc(buffer_size);
+    sendmemorypointer = malloc(buffer_size);
 
-    //start three way handshake
+    ackpointer = sendmemorypointer;
+    finpointer = ((char*)receivedmemorypointer + 1);
+    indexpointer = ((char*)receivedmemorypointer + 2);
+    datapointer = ((char*)receivedmemorypointer + 6);
 
-    //wait for syn from sender to initiate conenction
+    /*start three way handshake
+
+    //wait for ack from sender to initiate conenction
     recvfrom(socket_desc, receivedmemorypointer, buffer_size, 0, (struct sockaddr*)&address, &client_struct_length); 
-    bytesToTransfer = *receivedmemorypointer;
 
-    
     //set flag high
     ack = 1;
-    *acknowledgementpointer = ack; 
+    *sendmemorypointer = ack; 
 
     //send ack to sender
-    sendto(socket_desc, acknowledgementpointer, buffer_size, 0, (struct sockaddr*)&address, client_struct_length);
+    sendto(socket_desc, sendmemorypointer, buffer_size, 0, (struct sockaddr*)&address, client_struct_length);
     printf("ack sent\n");
 
     //wait for ack from sender
     recvfrom(socket_desc, receivedmemorypointer, buffer_size, 0, (struct sockaddr*)&address, &client_struct_length); 
-    bytesToTransfer = *receivedmemorypointer;
-
-
-    *((char*)acknowledgementpointer + 1) = 1;
+    bytesToTransfer = *((char*)receivedmemorypointer + 6);
 
 
     //check flag from sender
@@ -138,24 +144,27 @@ void rrecv(unsigned short int myUDPport,
         //send rst and retry connection initiation
     }
 
-    //end three way handshake
+    //end three way handshake */
 
 
-    int index = 0;
-    void* ackpointer;
-    void* finpointer;
-    void* datapointer;
+    while(1){ //bytesRead < bytesToTransfer
 
-    while(bytesRead < bytesToTransfer){
+        // Determine number of bytes to read
+        if (max_payload_size < (bytesToTransfer - bytesRead)){
+            byteNumber = max_payload_size;
+        }
+        else {
+            byteNumber = (bytesToTransfer - bytesRead);
+        }
 
+        // Receive sender's (client) message:
+        size_t client_message = recvfrom(socket_desc, buffer, max_payload_size, 0, (struct sockaddr*)&address, &client_struct_length);  
+        if (client_message < 0){
+        printf("Couldn't receive\n");
+            exit(EXIT_FAILURE);
+        }
 
-
-    // Receive client's message:
-    size_t client_message = recvfrom(socket_desc, buffer, max_payload_size, 0, (struct sockaddr*)&address, &client_struct_length);  
-    if (client_message < 0){
-    printf("Couldn't receive\n");
-        exit(EXIT_FAILURE);
-    }
+        
 
     printf("%ld\n",(client_message));
 

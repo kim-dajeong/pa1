@@ -104,8 +104,8 @@ void rrecv(unsigned short int myUDPport,
 
     int Testval = 22;
     void* test_val = &Testval; 
-    if (sendto(socket_desc, test_val, sizeof(test_val), 0, (struct sockaddr*)&client_addr, client_struct_length) < 0) {
-    printf("Unable to send message\n");
+    if (sendto(socket_desc, test_val, sizeof(test_val), 0, (struct sockaddr*)&address, client_struct_length) < 0) {
+    printf("Unable to send ack message\n");
     exit(EXIT_FAILURE);
     }
 

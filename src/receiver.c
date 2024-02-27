@@ -103,10 +103,10 @@ void rrecv(unsigned short int myUDPport,
     printf("%ld\n",(client_message));
 
     // references the first address of the data buffer
-    if(*(int*)buffer == 3){ 
+    if(*(char*)buffer == "F"){ 
         break;
     }
-    
+
     // Write only the payload data to the file
     int written = fwrite(buffer, 1, client_message, write_file);
     if (written < client_message) {

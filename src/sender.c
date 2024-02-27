@@ -95,7 +95,7 @@ int initiate(int bytesToTransfer, struct sockaddr_in *client_addr) {
     while(1) {
 
         int checktime = timeout(TIMEOUT);
-        int client_message = recvfrom(socket_desc, initrecvbuffer, sizeof(initrecvbuffer), 0, (struct sockaddr*)&address, &client_struct_length); 
+        int client_message = recvfrom(socket_desc, initrecvbuffer, sizeof(initrecvbuffer), 0, (struct sockaddr*)&client_addr, &client_struct_length); 
  
         if(client_message > 0){
             break;
@@ -125,7 +125,7 @@ int initiate(int bytesToTransfer, struct sockaddr_in *client_addr) {
     initbuffer[4] = bytesToTransfer;
 
     sendto(socket_desc, initbuffer, strlen(initbuffer), 0, (struct sockaddr *)client_addr, sizeof(client_addr));
-    printf("Connection successfully established; Three way handshake completed. Data transfer starting...")
+    printf("Connection successfully established; Three way handshake completed. Data transfer starting...");
 
 }
 

@@ -227,13 +227,13 @@ void rrecv(unsigned short int myUDPport,
     
     //printf("initiate startubng\n");
     //int bytesToTransfer = initiate(&address);
-    int bytesToTransfer = 0; //400;
+    int bytesToTransfer == -1; //400;
     buffer[0] = -1;
 
     if(bytesToTransfer == -1) {
 
         printf("Attempting to restablish conenction\n");
-        bytesToTransfer = initiate(&address);
+        //bytesToTransfer = initiate(&address);
 
     }
 

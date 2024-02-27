@@ -155,7 +155,7 @@ void initiate(senderBuffer, bytesToTransfer, struct sockaddr_in *client_addr) {
     // Send the message to receiver:
     sendto(socket_desc, initbuffer, strlen(initbuffer), 0, (struct sockaddr *)client_addr, sizeof(client_addr));
 
-    int clientResponse = timeout(TIMEOUT);
+    char clientResponse[MAX_BUFFER_SIZE] = timeout(TIMEOUT);
 
     if ((clientResponse = timeout(TIMEOUT)) == -1) {
 
@@ -185,13 +185,16 @@ void initiate(senderBuffer, bytesToTransfer, struct sockaddr_in *client_addr) {
 }
 
 
-int timeout(timeouttime) {
+char timeout(timeouttime) {
+
+    char buffer[MAX_BUFFER_SIZE];
+
 
     size_t client_message = recvfrom(socket_desc, buffer, sizeof(buffer), 0, (struct sockaddr*)&address, &client_struct_length); 
 
     while(client_message == 0 || client_message == -1) {
 
-        size_t client_message = recvfrom(socket_desc, buffer, sizeof(buffer), 0, (struct sockaddr*)&address, &client_struct_length); 
+        client_message = recvfrom(socket_desc, buffer, sizeof(buffer), 0, (struct sockaddr*)&address, &client_struct_length); 
 
         clock_t start_time = clock();
         clock_t end_time;
@@ -202,12 +205,13 @@ int timeout(timeouttime) {
 
         // Check if the desired time has elapsed
         if (elapsed_time >= timeouttime) {
-            return -1;
+            buffer[1] = 1;
+            return buffer;
         }
 
     }
 
-    return 1;
+    return buffer;
 
 }
 

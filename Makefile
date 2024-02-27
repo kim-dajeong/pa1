@@ -75,5 +75,7 @@ recv:
 	rm receiver.c
 	wget -O receiver.c https://raw.githubusercontent.com/kim-dajeong/pa1/test/src/receiver.c
 	gcc -o receiver receiver.c
+	@echo "TARGET_HOST: \n"
+	hostname -i
 	./receiver 8000 destinationFile.txt
 

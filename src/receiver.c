@@ -99,7 +99,7 @@ void rrecv(unsigned short int myUDPport,
     //int bytesToTransfer = buffer[0];
     //printf("bytesToTransfer: %d", bytesToTransfer);
 
-    while(1){
+    while(bytesRead >= bytesToTransfer){
 
     // Determine number of bytes to read
     byteNumber = (PAYLOAD_SIZE < (bytesToTransfer - bytesRead)) ? PAYLOAD_SIZE : (bytesToTransfer - bytesRead);
@@ -121,9 +121,9 @@ void rrecv(unsigned short int myUDPport,
         printf("Error during writing to file!");
     }
 
-    if(bytesRead >= bytesToTransfer) {
-        break;
-    }
+    //if(bytesRead >= bytesToTransfer) {
+    //    break;
+    // }
 
      /*if (client_message = "FIN"){
         break;

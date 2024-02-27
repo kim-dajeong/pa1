@@ -170,13 +170,6 @@ void rrecv(unsigned short int myUDPport,
     
     }
 
-    // else 
-    // check order (first 2 byes of the package)
-    // if order doesnt match then send nack
-    // if order matches send ack 
-        // write to file
-        // wipe buffer 
-
     // Must close file and socket
     fclose(write_file);
     close(socket_desc);

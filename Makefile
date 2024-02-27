@@ -4,6 +4,8 @@ COMPILERFLAGS = -g -Wall -Wextra -Wno-sign-compare -pthread
 # Any libraries you might need linked in.
 LINKLIBS = -lpthread
 
+TARGET_HOST :=
+
 # The components of each program. When you create a src/foo.c source file, add obj/foo.o here, separated
 #by a space (e.g. SOMEOBJECTS = obj/foo.o obj/bar.o obj/baz.o).
 #SERVEROBJECTS = obj/receiver.o
@@ -14,7 +16,7 @@ LINKLIBS = -lpthread
 #(Usually used for rules whose targets are conceptual, rather than real files, such as 'clean'.
 #If you DIDNT mark clean phony, then if there is a file named 'clean' in your directory, running
 #`make clean` would do nothing!!!)
-.PHONY: all clean
+.PHONY: all clean gethost
 
 #The first rule in the Makefile is the default (the one chosen by plain `make`).
 #Since 'all' is first in this file, both `make all` and `make` do the same thing.
@@ -56,7 +58,6 @@ obj/%.o: src/%.c
 obj:
 	mkdir -p obj
 
-TARGET_HOST :=
 
 gethost:
     @read -p "Enter the receiver hostname: " TARGET_HOST

@@ -50,6 +50,86 @@ Sender Notes
 #define MAX_BUFFER_SIZE 20000
 #define TIMEOUT 5000
 
+int timeout(int timeouttime) {
+
+    while(1) {
+
+        clock_t start_time = clock();
+        clock_t end_time;
+        end_time = clock();
+
+        // Calculate elapsed time in milliseconds
+        unsigned int elapsed_time = (unsigned int)((end_time - start_time) * 1000 / CLOCKS_PER_SEC);
+
+        // Check if the desired time has elapsed
+        if (elapsed_time >= timeouttime) {
+            
+            return -1;
+        }
+
+    }
+
+}
+
+// init_buffer [ACK, SYN, FIN, RST, bytesToTransfer ......]
+// Three way handshake?
+void initiate(bytesToTransfer, struct sockaddr_in *client_addr) {
+
+    char initbuffer[MAX_BUFFER_SIZE];
+    char initrecvbuffer[MAX_BUFFER_SIZE];
+    unsigned int client_struct_length = sizeof(client_addr);
+
+    //char bytesToTransferinitiate;
+    // Create socket:
+    int socket_desc = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+
+    initbuffer[0] = 0;
+    initbuffer[1] = 1;
+    initbuffer[2] = 0;
+    initbuffer[3] = 0;
+
+    // Send SYN to receiver:
+    sendto(socket_desc, initbuffer, strlen(initbuffer), 0, (struct sockaddr *)client_addr, sizeof(client_addr));
+
+    while(1) {
+
+        int checktime = timeout(TIMEOUT);
+        int client_message = recvfrom(socket_desc, initrecvbuffer, sizeof(initrecvbuffer), 0, (struct sockaddr*)&address, &client_struct_length); 
+ 
+        if(client_message > 0){
+            break;
+        }
+
+        if(checktime == -1) {
+            printf("connection failed to establish, receiver unresponsive");
+            break;
+        }
+
+    }
+
+    //Check for receiver SYN & ACK
+    if(initrecvbuffer[0] == 1 && initrecvbuffer[1] == 1) {
+
+            sendto(socket_desc, initbuffer, strlen(initbuffer), 0, (struct sockaddr *)client_addr, sizeof(client_addr));
+
+    }
+    else{
+
+        //Try again - wait no
+        sendto(socket_desc, initbuffer, strlen(initbuffer), 0, (struct sockaddr *)client_addr, sizeof(client_addr));
+
+    }
+
+    initbuffer[0] = 1;
+    initbuffer[4] = bytesToTransfer;
+
+    sendto(socket_desc, initbuffer, strlen(initbuffer), 0, (struct sockaddr *)client_addr, sizeof(client_addr));
+    printf("Connection successfully established; Three way handshake completed. Data transfer starting...")
+
+}
+
+
+
 void rsend(char* hostname, 
             unsigned short int hostUDPport, 
             char* filename, 
@@ -137,84 +217,7 @@ void rsend(char* hostname,
 
 }
 
-// init_buffer [ACK, SYN, FIN, RST, bytesToTransfer ......]
-// Three way handshake?
-void initiate(bytesToTransfer, struct sockaddr_in *client_addr) {
 
-    char initbuffer[MAX_BUFFER_SIZE];
-    char initrecvbuffer[MAX_BUFFER_SIZE];
-    unsigned int client_struct_length = sizeof(client_addr);
-
-    //char bytesToTransferinitiate;
-    // Create socket:
-    int socket_desc = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
-
-    initbuffer[0] = 0;
-    initbuffer[1] = 1;
-    initbuffer[2] = 0;
-    initbuffer[3] = 0;
-
-    // Send SYN to receiver:
-    sendto(socket_desc, initbuffer, strlen(initbuffer), 0, (struct sockaddr *)client_addr, sizeof(client_addr));
-
-    while(1) {
-
-        int checktime = timeout(TIMEOUT);
-        int client_message = recvfrom(socket_desc, initrecvbuffer, sizeof(initrecvbuffer), 0, (struct sockaddr*)&address, &client_struct_length); 
- 
-        if(client_message > 0){
-            break;
-        }
-
-        if(checktime == -1) {
-            printf("connection failed to establish, receiver unresponsive");
-            break;
-        }
-
-    }
-
-    //Check for receiver SYN & ACK
-    if(initrecvbuffer[0] == 1 && initrecvbuffer[1] == 1) {
-
-            sendto(socket_desc, initbuffer, strlen(initbuffer), 0, (struct sockaddr *)client_addr, sizeof(client_addr));
-
-    }
-    else{
-
-        //Try again - wait no
-        sendto(socket_desc, initbuffer, strlen(initbuffer), 0, (struct sockaddr *)client_addr, sizeof(client_addr));
-
-    }
-
-    initbuffer[0] = 1;
-    initbuffer[4] = bytesToTransfer;
-
-    sendto(socket_desc, initbuffer, strlen(initbuffer), 0, (struct sockaddr *)client_addr, sizeof(client_addr));
-    printf("Connection successfully established; Three way handshake completed. Data transfer starting...")
-
-}
-
-
-int timeout(timeouttime) {
-
-    while(1) {
-
-        clock_t start_time = clock();
-        clock_t end_time;
-        end_time = clock();
-
-        // Calculate elapsed time in milliseconds
-        unsigned int elapsed_time = (unsigned int)((end_time - start_time) * 1000 / CLOCKS_PER_SEC);
-
-        // Check if the desired time has elapsed
-        if (elapsed_time >= timeouttime) {
-            
-            return -1;
-        }
-
-    }
-
-}
 
 
 int main(int argc, char** argv) {

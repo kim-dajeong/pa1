@@ -97,7 +97,7 @@ int initiate(int bytesToTransfer, struct sockaddr_in *server_addr) {
         printf("checking timeout1");
         checktime = timeout(TIMEOUT);
        
-        int client_message = recvfrom(socket_desc, initrecvbuffer, sizeof(initrecvbuffer), 0, (struct sockaddr*)&server_addr, &client_struct_length); 
+        int client_message = recvfrom(socket_desc, initrecvbuffer, sizeof(initrecvbuffer), 0, (struct sockaddr*)&server_addr, &struct_length); 
  
         if(client_message > 0){
             printf("first ack received");

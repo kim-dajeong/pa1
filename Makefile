@@ -61,20 +61,23 @@ obj:
 
 gethost:
     @read -p "Enter the receiver hostname: " TARGET_HOST
+	./gethost.sh
+    source target_host.sh
+	@echo "export TARGET_HOST=$TARGET_HOST" > target_host.sh
 
 send: 
 
 	@echo "TARGET_HOST: $(TARGET_HOST)"
 	rm sender
 	rm sender.c
-	wget -O sender.c https://raw.githubusercontent.com/kim-dajeong/pa1/test/src/sender.c
+	wget -O sender.c https://raw.githubusercontent.com/kim-dajeong/pa1/dajeong-test/src/sender.c
 	gcc -o sender sender.c
 	./sender $(TARGET_HOST) readFile.txt 500
 
 recv: 
 	rm receiver
 	rm receiver.c
-	wget -O receiver.c https://raw.githubusercontent.com/kim-dajeong/pa1/test/src/receiver.c
+	wget -O receiver.c https://raw.githubusercontent.com/kim-dajeong/pa1/dajeong-test/src/receiver.c
 	gcc -o receiver receiver.c
 	@echo "TARGET_HOST: \n"
 	hostname -i

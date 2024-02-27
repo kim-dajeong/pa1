@@ -1,13 +1,13 @@
 # If you use threads, add -pthread here.
-COMPILERFLAGS = -g -Wall -Wextra -Wno-sign-compare 
+COMPILERFLAGS = -g -Wall -Wextra -Wno-sign-compare -pthread
 
 # Any libraries you might need linked in.
 LINKLIBS = -lpthread
 
 # The components of each program. When you create a src/foo.c source file, add obj/foo.o here, separated
 #by a space (e.g. SOMEOBJECTS = obj/foo.o obj/bar.o obj/baz.o).
-SERVEROBJECTS = obj/receiver.o
-CLIENTOBJECTS = obj/sender.o
+#SERVEROBJECTS = obj/receiver.o
+#CLIENTOBJECTS = obj/sender.o
 
 #Every rule listed here as .PHONY is "phony": when you say you want that rule satisfied,
 #Make knows not to bother checking whether the file exists, it just runs the recipes regardless.
@@ -56,3 +56,18 @@ obj/%.o: src/%.c
 obj:
 	mkdir -p obj
 
+get sender: wget -O sender.c https://raw.githubusercontent.com/kim-dajeong/pa1/test/src/sender.c
+
+get receiver: wget -O receiver.c https://raw.githubusercontent.com/kim-dajeong/pa1/test/src/receiver.c
+
+get readfile: wget -O readFile.txt https://raw.githubusercontent.com/kim-dajeong/pa1/test/src/readFile.txt
+
+get destfile: wget -O destinationFile.txt https://raw.githubusercontent.com/kim-dajeong/pa1/test/src/destinationFile.txt
+
+comp sender: gcc -o sender sender.c
+
+comp receiver: gcc -o receiver receiver.c
+
+run sender: ./sender 128.110.223.17 8000 readFile.txt 500
+
+run receiver: ./receiver 8000 destinationFile.txt

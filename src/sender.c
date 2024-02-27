@@ -142,6 +142,9 @@ void rsend(char* hostname,
 void initiate(senderBuffer, bytesToTransfer, struct sockaddr_in *client_addr) {
 
     char initbuffer[MAX_BUFFER_SIZE];
+    char initrecvbuffer[MAX_BUFFER_SIZE];
+    unsigned int client_struct_length = sizeof(client_addr);
+
     //char bytesToTransferinitiate;
     // Create socket:
     int socket_desc = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
@@ -150,34 +153,62 @@ void initiate(senderBuffer, bytesToTransfer, struct sockaddr_in *client_addr) {
     initbuffer[1] = 1;
     initbuffer[2] = 0;
     initbuffer[3] = 0;
-    initbuffer[4] = bytesToTransfer;
 
-    // Send the message to receiver:
+    // Send SYN to receiver:
     sendto(socket_desc, initbuffer, strlen(initbuffer), 0, (struct sockaddr *)client_addr, sizeof(client_addr));
 
-    char clientResponse[MAX_BUFFER_SIZE] = timeout(TIMEOUT);
+    while(1) {
 
-    if ((clientResponse = timeout(TIMEOUT)) == -1) {
+        int checktime = timeout(TIMEOUT);
+        int client_message = recvfrom(socket_desc, initrecvbuffer, sizeof(initrecvbuffer), 0, (struct sockaddr*)&address, &client_struct_length); 
+ 
+        if(client_message > 0){
+            break;
+        }
+
+        if(checktime == -1) {
+            printf("connection failed to establish, receiver unresponsive");
+            break;
+        }
+
+    }
+
+    //Check for receiver SYN & ACK
+    if(initrecvbuffer[0] == 1 && initrecvbuffer[1] == 1) {
+
+            sendto(socket_desc, initbuffer, strlen(initbuffer), 0, (struct sockaddr *)client_addr, sizeof(client_addr));
+
+    }
+
+    initbuffer[0] = 1;
+    initbuffer[4] = bytesToTransfer;
+
+    sendto(socket_desc, initbuffer, strlen(initbuffer), 0, (struct sockaddr *)client_addr, sizeof(client_addr));
+    printf("Connection successfully established; Three way handshake completed. Data transfer starting...")
+
+
+    //int clientResponse = timeout(TIMEOUT);
+
+    //if ((clientResponse = timeout(TIMEOUT)) == -1) {
 
         //Send again
-        sendto(socket_desc, initbuffer, strlen(initbuffer), 0, (struct sockaddr *)client_addr, sizeof(client_addr));
+    //    sendto(socket_desc, initbuffer, strlen(initbuffer), 0, (struct sockaddr *)client_addr, sizeof(client_addr));
 
         //Check again
-        if ((clientResponse = timeout(TIMEOUT)) == -1) {
+    //    if ((clientResponse = timeout(TIMEOUT)) == -1) {
 
             //Give up. Reset connection
-            initbuffer[3] = 1;
+    //        initbuffer[3] = 1;
 
-        }
-        else {
+    //    }
+    //    else {
             //do nothing
-        }
-    }
-    else {
+    //    }
+    //}
+    //else {
         //do nothing
-    }
+    //}
 
-    if (clientResponse == )
 
 
 
@@ -185,16 +216,15 @@ void initiate(senderBuffer, bytesToTransfer, struct sockaddr_in *client_addr) {
 }
 
 
-char timeout(timeouttime) {
+int timeout(timeouttime) {
 
-    char buffer[MAX_BUFFER_SIZE];
+//    char buffer[MAX_BUFFER_SIZE];
 
+//    size_t client_message = recvfrom(socket_desc, buffer, sizeof(buffer), 0, (struct sockaddr*)&address, &client_struct_length); 
 
-    size_t client_message = recvfrom(socket_desc, buffer, sizeof(buffer), 0, (struct sockaddr*)&address, &client_struct_length); 
+    while(1) {
 
-    while(client_message == 0 || client_message == -1) {
-
-        client_message = recvfrom(socket_desc, buffer, sizeof(buffer), 0, (struct sockaddr*)&address, &client_struct_length); 
+//        client_message = recvfrom(socket_desc, buffer, sizeof(buffer), 0, (struct sockaddr*)&address, &client_struct_length); 
 
         clock_t start_time = clock();
         clock_t end_time;
@@ -205,13 +235,13 @@ char timeout(timeouttime) {
 
         // Check if the desired time has elapsed
         if (elapsed_time >= timeouttime) {
-            buffer[1] = 1;
-            return buffer;
+//            buffer[1] = 1;
+            return -1;
         }
 
     }
 
-    return buffer;
+//    return client_message;
 
 }
 

@@ -56,15 +56,23 @@ obj/%.o: src/%.c
 obj:
 	mkdir -p obj
 
-TARGET_HOST := $(shell hostname -i)
+TARGET_HOST :=
+
+gethost:
+    @read -p "Enter the receiver hostname: " TARGET_HOST
 
 send: 
+
 	@echo "TARGET_HOST: $(TARGET_HOST)"
+	rm sender
+	rm sender.c
 	wget -O sender.c https://raw.githubusercontent.com/kim-dajeong/pa1/test/src/sender.c
 	gcc -o sender sender.c
 	./sender $(TARGET_HOST) readFile.txt 500
 
 recv: 
+	rm receiver
+	rm receiver.c
 	wget -O receiver.c https://raw.githubusercontent.com/kim-dajeong/pa1/test/src/receiver.c
 	gcc -o receiver receiver.c
 	./receiver 8000 destinationFile.txt

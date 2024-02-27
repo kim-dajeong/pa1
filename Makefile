@@ -56,26 +56,15 @@ obj/%.o: src/%.c
 obj:
 	mkdir -p obj
 
-getsender: 
+TARGET_HOST := $(shell hostname -i)
+
+send: 
 	wget -O sender.c https://raw.githubusercontent.com/kim-dajeong/pa1/test/src/sender.c
-
-getreceiver: 
-	wget -O receiver.c https://raw.githubusercontent.com/kim-dajeong/pa1/test/src/receiver.c
-
-getreadfile: 
-	wget -O readFile.txt https://raw.githubusercontent.com/kim-dajeong/pa1/test/src/readFile.txt
-
-getdestfile: 
-	wget -O destinationFile.txt https://raw.githubusercontent.com/kim-dajeong/pa1/test/src/destinationFile.txt
-
-compsender: 
 	gcc -o sender sender.c
+	./sender $(TARGET_HOST) readFile.txt 500
 
-compreceiver: 
+recv: 
+	wget -O receiver.c https://raw.githubusercontent.com/kim-dajeong/pa1/test/src/receiver.c
 	gcc -o receiver receiver.c
-
-runsender: 
-	./sender 128.110.223.17 8000 readFile.txt 500
-
-runreceiver: 
 	./receiver 8000 destinationFile.txt
+

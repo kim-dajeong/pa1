@@ -126,7 +126,7 @@ void rsend(char* hostname,
         uint8_t *ptr = (uint8_t *)sender_buffer;
         ptr[0] = 0;
         ptr[1] = 0;
-        memcpy(ptr + 2, readfile_data, max_data_size);
+        memcpy(ptr + 2, readfile_data, byteNumber);
 
 
         // Send the message to server:

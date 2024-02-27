@@ -96,6 +96,7 @@ int initiate(struct sockaddr_in *address) {
     unsigned int client_struct_length = sizeof(address);
     int bytesToTransfer;
     int checktime = 0;
+    int client_message = 0;
 
     //char bytesToTransferinitiate;
     // Create socket:
@@ -107,11 +108,11 @@ int initiate(struct sockaddr_in *address) {
     mybuffer[3] = 0;
 
     //wait for SYN from sender
-    while(checktime != -1) {
+    while(client_message == 0) {
 
         printf("checking timeout1\n");
-        checktime = timeout(TIMEOUT);
-        int client_message = recvfrom(socket_desc, otherbuffer, sizeof(otherbuffer), 0, (struct sockaddr*)&address, &client_struct_length); 
+        //checktime = timeout(TIMEOUT);
+        client_message = recvfrom(socket_desc, otherbuffer, sizeof(otherbuffer), 0, (struct sockaddr*)&address, &client_struct_length); 
  
         if(client_message > 0){
             
@@ -120,7 +121,7 @@ int initiate(struct sockaddr_in *address) {
 
         }
 
-        if(checktime == -1) {
+        if(client_message == -1) {
             printf("connection failed to establish, receiver unresponsive\n");
             break;
         }

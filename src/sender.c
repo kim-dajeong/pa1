@@ -80,6 +80,7 @@ int initiate(int bytesToTransfer, struct sockaddr_in *server_addr) {
     char initrecvbuffer[MAX_BUFFER_SIZE];
     int checktime = 0;
     int struct_length = sizeof(server_addr);
+    int client_message = 0;
 
     //char bytesToTransferinitiate;
     // Create socket:
@@ -93,18 +94,18 @@ int initiate(int bytesToTransfer, struct sockaddr_in *server_addr) {
     // Send SYN to receiver:
     sendto(socket_desc, initbuffer, strlen(initbuffer), 0, (struct sockaddr *)server_addr, sizeof(server_addr));
 
-    while(checktime != -1) {
+    while(client_message == 0) {
         printf("checking timeout1\n");
-        checktime = timeout(TIMEOUT);
+        //checktime = timeout(TIMEOUT);
        
-        int client_message = recvfrom(socket_desc, initrecvbuffer, sizeof(initrecvbuffer), 0, (struct sockaddr*)&server_addr, &struct_length); 
+        client_message = recvfrom(socket_desc, initrecvbuffer, sizeof(initrecvbuffer), 0, (struct sockaddr*)&server_addr, &struct_length); 
  
         if(client_message > 0){
             printf("first ack received\n");
             break;
         }
 
-        if(checktime == -1) {
+        if(client_message == -1) {
             printf("connection failed to establish, receiver unresponsive\n");
             break;
         }

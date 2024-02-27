@@ -20,7 +20,7 @@ LINKLIBS = -lpthread
 #Since 'all' is first in this file, both `make all` and `make` do the same thing.
 #(`make obj server client talker listener` would also have the same effect).
 #all : obj server client talker listener
-all : obj sender receiver mytarget
+all : obj sender receiver gethost
 
 #$@: name of rule's target: server, client, talker, or listener, for the respective rules.
 #$^: the entire dependency string (after expansions); here, $(SERVEROBJECTS)

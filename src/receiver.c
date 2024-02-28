@@ -110,46 +110,6 @@ void rrecv(unsigned short int myUDPport,
     indexpointer = ((char*)receivedmemorypointer + 2);
     datapointer = ((char*)receivedmemorypointer + 6);
 
-    /*start three way handshake
-
-    //wait for ack from sender to initiate conenction
-    recvfrom(socket_desc, receivedmemorypointer, buffer_size, 0, (struct sockaddr*)&address, &client_struct_length); 
-
-    //set flag high
-    ack = 1;
-    *sendmemorypointer = ack; 
-
-    //send ack to sender
-    sendto(socket_desc, sendmemorypointer, buffer_size, 0, (struct sockaddr*)&address, client_struct_length);
-    printf("ack sent\n");
-
-    //wait for ack from sender
-    recvfrom(socket_desc, receivedmemorypointer, buffer_size, 0, (struct sockaddr*)&address, &client_struct_length); 
-    bytesToTransfer = *((char*)receivedmemorypointer + 6);
-
-
-    //check flag from sender
-    if(bytesToTransfer == 1) {
-
-        //start data acquisition
-
-    }
-
-    else {
-
-        //send rst and retry connection initiation
-    }
-
-    //end three way handshake */
-
-    //while(1){
-
-    //    size_t client_message = recvfrom(socket_desc, receivedmemorypointer, max_payload_size, 0, (struct sockaddr*)&address, &client_struct_length);  
-
-    //    printf("%ld", client_message);
-
-    //}
-
 
     while(1){ //bytesRead < bytesToTransfer
 

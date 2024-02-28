@@ -157,8 +157,7 @@ void rsend(char* hostname,
             printf("Hello I Hear You!\n");
         }
 
-        //index++;
-        index =3; 
+        index++;
         bytesRead += byteNumber;
     }
 

@@ -127,7 +127,7 @@ void rsend(char* hostname,
         flag_ptr[0] = 0;
         flag_ptr[1] = 0;
         memcpy(sender_buffer, flag_ptr, 2);
-        memcpy(sender_buffer, &index, 4);
+        memcpy(sender_buffer+2, &index, 4);
         memcpy(sender_buffer+6, readfile_data, byteNumber);
 
 

@@ -146,7 +146,15 @@ void rrecv(unsigned short int myUDPport,
 
     //end three way handshake */
 
+    while(1){
 
+        size_t client_message = recvfrom(socket_desc, receivedmemorypointer, max_payload_size, 0, (struct sockaddr*)&address, &client_struct_length);  
+
+        printf("%ld", client_message);
+
+    }
+
+/*
     while(1){ //bytesRead < bytesToTransfer
 
         memset(sendmemorypointer, 0, buffer_size);
@@ -239,6 +247,7 @@ void rrecv(unsigned short int myUDPport,
         bytesRead += byteNumber;
     
     }
+    */
 
     // Must close file and socket
     fclose(write_file);

@@ -158,35 +158,72 @@ void rrecv(unsigned short int myUDPport,
         }
 
         // Receive sender's (client) message:
-        size_t client_message = recvfrom(socket_desc, buffer, max_payload_size, 0, (struct sockaddr*)&address, &client_struct_length);  
+        size_t client_message = recvfrom(socket_desc, receivedmemorypointer, max_payload_size, 0, (struct sockaddr*)&address, &client_struct_length);  
+
         if (client_message < 0){
-        printf("Couldn't receive\n");
-            exit(EXIT_FAILURE);
+
+            //error receiving message
+            //set flag low - nack?
+            ack = 0;
+            *ackpointer = ack; 
+
+            //send nack to sender
+            sendto(socket_desc, sendmemorypointer, buffer_size, 0, (struct sockaddr*)&address, client_struct_length);
+            printf("nack sent\n");
+
+        }
+        else if (*finpointer == 1) {
+
+            printf("fin received, ending conenction\n");
+
+            //set flag high - acknowledge fin
+            ack = 1;
+            *ackpointer = ack; 
+
+            //send ack to sender and exit while loop
+            sendto(socket_desc, sendmemorypointer, buffer_size, 0, (struct sockaddr*)&address, client_struct_length);
+            break;
+
+        }
+        else if(*indexpointer == index) {
+
+            //print received message
+            printf("%ld\n",(datapointer));
+
+            // Write only the payload data to the file
+            fseek(write_file, bytesRead, SEEK_SET);
+
+            //write to file and check
+            int written = fwrite(datapointer, sizeof(char), max_payload_size, write_file);
+            if (written < client_message) {
+
+                printf("Error during writing to file!");
+
+            }
+
+            //set flag high
+            ack = 1;
+            *ackpointer = ack; 
+
+            //send ack to sender
+            sendto(socket_desc, sendmemorypointer, buffer_size, 0, (struct sockaddr*)&address, client_struct_length);
+            printf("ack sent\n");
+
+        }
+        else {
+
+            //set flag low - nack?
+            ack = 0;
+            *ackpointer = ack; 
+
+            //send nack to sender
+            sendto(socket_desc, sendmemorypointer, buffer_size, 0, (struct sockaddr*)&address, client_struct_length);
+            printf("nack sent\n");
+
         }
 
-        
-
-    printf("%ld\n",(client_message));
-
-    int Testval = 22;
-    void* test_val = &Testval; 
-    if (sendto(socket_desc, test_val, sizeof(test_val), 0, (struct sockaddr*)&address, client_struct_length) < 0) {
-    printf("Unable to send ack message\n");
-    exit(EXIT_FAILURE);
-    }
-
-    // references the first address of the data buffer
-    if(*(int*)buffer == 3){ 
-        break;
-    }
-
-    // Write only the payload data to the file
-    int written = fwrite(buffer, 1, client_message, write_file);
-    if (written < client_message) {
-        printf("Error during writing to file!");
-    }
-
-    index++;
+        //increment index
+        index++;
     
     }
 
@@ -199,6 +236,7 @@ void rrecv(unsigned short int myUDPport,
         printf("Error Have not yet implemented Task 8\n");
         exit(EXIT_FAILURE);
     }
+
 }
 
 /*! How To Run Main On Terminal:

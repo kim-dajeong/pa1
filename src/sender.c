@@ -41,7 +41,7 @@ Sender Notes
     wget -O readfile.txt https://folger-main-site-assets.s3.amazonaws.com/uploads/2022/11/romeo-and-juliet_TXT_FolgerShakespeare.txt
     wget -O readfile https://raw.githubusercontent.com/kim-dajeong/pa1/acktest/src/readfile
     gcc -o sender sender.c
-    ./sender 130.127.132.208 8000 readfile 2000
+    ./sender 130.127.132.208 8000 readfile.txt 143000
 
 */
 

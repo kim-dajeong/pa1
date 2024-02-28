@@ -130,6 +130,8 @@ void rsend(char* hostname,
         memcpy(sender_buffer+2, &index, 4);
         memcpy(sender_buffer+6, readfile_data, byteNumber);
 
+        print("%d", index);
+        print("%d",flag_ptr);
 
         // Send the message to server:
         if(sendto(socket_desc, sender_buffer, byteNumber+6, 0, (struct sockaddr*)&server_addr, struct_length)<0){

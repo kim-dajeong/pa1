@@ -90,10 +90,10 @@ void rsend(char* hostname,
     printf("Socket created successfully\n");
 
     //sender_buffer total data with header
-    void *sender_buffer = malloc(max_payload_size+1);
+    void *sender_buffer = malloc(max_payload_size);
     printf("0");
 
-    memset(sender_buffer, 0, max_payload_size+1);
+    memset(sender_buffer, 0, max_payload_size);
     if (sender_buffer == NULL) {
         fprintf(stderr, "Memory allocation failed\n");
         exit(EXIT_FAILURE);

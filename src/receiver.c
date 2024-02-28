@@ -149,6 +149,9 @@ void rrecv(unsigned short int myUDPport,
 
     while(1){ //bytesRead < bytesToTransfer
 
+        memset(sendmemorypointer, 0, byteNumber);
+        memset(receivedmemorypointer, 0, byteNumber+6);
+
         // Determine number of bytes to read
         if (max_payload_size < (bytesToTransfer - bytesRead)){
             byteNumber = max_payload_size;
@@ -159,6 +162,11 @@ void rrecv(unsigned short int myUDPport,
 
         // Receive sender's (client) message:
         size_t client_message = recvfrom(socket_desc, receivedmemorypointer, max_payload_size, 0, (struct sockaddr*)&address, &client_struct_length);  
+
+        int fincomp;
+        int indexcomp;
+        memcpy(&fincomp, finpointer, 1);
+        memcpy(&indexcomp, indexcomp, 1);
 
         if (client_message < 0){
 
@@ -172,7 +180,7 @@ void rrecv(unsigned short int myUDPport,
             printf("nack sent\n");
 
         }
-        else if (*finpointer == 1) {
+        else if (fincomp == 1) {
 
             printf("fin received, ending conenction\n");
 
@@ -185,7 +193,7 @@ void rrecv(unsigned short int myUDPport,
             break;
 
         }
-        else if(*indexpointer == index) {
+        else if(indexcomp == index) {
 
             //print received message
             printf("%ld\n",(datapointer));
@@ -214,7 +222,7 @@ void rrecv(unsigned short int myUDPport,
 
             //set flag low - nack?
             ack = 0;
-             memcpy(ackpointer, &ack, 1);
+            memcpy(ackpointer, &ack, 1);
 
             //send nack to sender
             sendto(socket_desc, sendmemorypointer, buffer_size, 0, (struct sockaddr*)&address, client_struct_length);

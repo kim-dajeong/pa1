@@ -130,6 +130,8 @@ void rsend(char* hostname,
         memcpy(sender_buffer+2, &index, 4);
         memcpy(sender_buffer+6, readfile_data, byteNumber);
 
+        printf("%d", index);
+        printf("%hhn",flag_ptr);
 
         // Send the message to server:
         if(sendto(socket_desc, sender_buffer, byteNumber+6, 0, (struct sockaddr*)&server_addr, struct_length)<0){
@@ -153,9 +155,12 @@ void rsend(char* hostname,
     }
 
     // Terminating connection 
-    int FIN_val = 3;
-    void* terminate = &FIN_val; 
-    if (sendto(socket_desc, terminate, sizeof(terminate), 0, (struct sockaddr*)&server_addr, struct_length) < 0) {
+    void* terminate; 
+    uint8_t *flag_ptr;
+    flag_ptr[0] = 0;
+    flag_ptr[1] = 1;
+    memcpy(terminate, flag_ptr, 2);
+    if (sendto(socket_desc, terminate, 2, 0, (struct sockaddr*)&server_addr, struct_length) < 0) {
     printf("Unable to send message\n");
     exit(EXIT_FAILURE);
     }

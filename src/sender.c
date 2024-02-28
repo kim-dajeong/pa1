@@ -114,7 +114,6 @@ void rsend(char* hostname,
     while(bytesRead < bytesToTransfer) {
         // Determine number of bytes to read
         byteNumber = (max_data_size < (bytesToTransfer - bytesRead)) ? max_data_size : (bytesToTransfer - bytesRead);
-        printf("hello\n");
 
         //initallize void pointer for sender message to get raw bytes from the file
         memset(readfile_data, 0, max_data_size);

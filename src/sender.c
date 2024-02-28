@@ -111,7 +111,7 @@ void rsend(char* hostname,
     int index = 0;
     unsigned int byteNumber = 0;
 
-    while(1) {
+    while(bytesRead < bytesToTransfer) {
         // Determine number of bytes to read
         byteNumber = (max_data_size < (bytesToTransfer - bytesRead)) ? max_data_size : (bytesToTransfer - bytesRead);
 
@@ -143,11 +143,11 @@ void rsend(char* hostname,
             exit(EXIT_FAILURE);
         }
 
-        size_t client_message = recvfrom(socket_desc, ack_buffer, max_payload_size, 0, (struct sockaddr*)&server_addr, &struct_length);  
-        if (client_message < 0){
-            printf("Couldn't receive\n");
-        exit(EXIT_FAILURE);
-        }
+        // size_t client_message = recvfrom(socket_desc, ack_buffer, max_payload_size, 0, (struct sockaddr*)&server_addr, &struct_length);  
+       // if (client_message < 0){
+        //    printf("Couldn't receive\n");
+        //exit(EXIT_FAILURE);
+        //}
 
         // testing an ack backbone 
         if(*(int*)ack_buffer == 22){ 

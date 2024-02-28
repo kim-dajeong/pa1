@@ -96,7 +96,7 @@ void rrecv(unsigned short int myUDPport,
     int index = 0;
     int bytesRead = 0;   
     int byteNumber = 0;
-    unsigned long long int bytesToTransfer = 0;
+    unsigned long long int bytesToTransfer = 2000;
     void* sendmemorypointer;
     void* receivedmemorypointer;
     void* ackpointer;
@@ -163,13 +163,12 @@ void rrecv(unsigned short int myUDPport,
         // Receive sender's (client) message:
         size_t client_message = recvfrom(socket_desc, receivedmemorypointer, max_payload_size, 0, (struct sockaddr*)&address, &client_struct_length);  
 
+        printf("%ld", client_message);
+
         int fincomp;
         int indexcomp;
         memcpy(&fincomp, (int*)finpointer, 1);
         memcpy(&indexcomp, (int*)indexpointer, 1);
-        
-        printf("%ld", client_message);
-
 
 
         if (client_message < 0){

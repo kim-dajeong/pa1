@@ -148,6 +148,7 @@ void rsend(char* hostname,
             printf("Couldn't receive\n");
             exit(EXIT_FAILURE);
         }
+        printf("ack buffer client message: %d", client_message);
         
         uint8_t ack_message;
         memcpy(&ack_message, ack_buffer, 1);

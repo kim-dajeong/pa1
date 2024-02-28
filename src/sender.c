@@ -90,8 +90,8 @@ void rsend(char* hostname,
     printf("Socket created successfully\n");
 
     //sender_buffer total data with header
-    void *sender_buffer = malloc(max_payload_size);
-    memset(sender_buffer, 0, max_payload_size);
+    void *sender_buffer = malloc(max_payload_size+1);
+    memset(sender_buffer, 0, max_payload_size+1);
     if (sender_buffer == NULL) {
         fprintf(stderr, "Memory allocation failed\n");
         exit(EXIT_FAILURE);
@@ -131,7 +131,7 @@ void rsend(char* hostname,
 
 
         // Send the message to server:
-        if(sendto(socket_desc, sender_buffer, strlen(sender_buffer), 0, (struct sockaddr*)&server_addr, struct_length)<0){
+        if(sendto(socket_desc, sender_buffer, sizeof(sender_buffer), 0, (struct sockaddr*)&server_addr, struct_length)<0){
             printf("Unable to send message\n");
             exit(EXIT_FAILURE);
         }

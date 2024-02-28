@@ -200,12 +200,12 @@ void rrecv(unsigned short int myUDPport,
             sendto(socket_desc, sendmemorypointer, buffer_size, 0, (struct sockaddr*)&address, client_struct_length);
             break;
 
-        } /*
+        } 
         else if(indexcomp == index) {
 
             //print received message
-            char *strPointer = (int *)datapointer;
-            printf("%s\n", *strPointer);
+            // char *strPointer = (int *)datapointer;
+            // printf("%s\n", *strPointer);
 
             // Write only the payload data to the file
             fseek(write_file, bytesRead, SEEK_SET);
@@ -213,9 +213,7 @@ void rrecv(unsigned short int myUDPport,
             //write to file and check
             int written = fwrite(datapointer, sizeof(char), max_payload_size, write_file);
             if (written < client_message) {
-
                 printf("Error during writing to file!");
-
             }
 
             //set flag high
@@ -226,7 +224,7 @@ void rrecv(unsigned short int myUDPport,
             sendto(socket_desc, sendmemorypointer, buffer_size, 0, (struct sockaddr*)&address, client_struct_length);
             printf("ack sent\n");
 
-        }
+        }/*
         else {
 
             //set flag low - nack?

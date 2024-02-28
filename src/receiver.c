@@ -165,7 +165,7 @@ void rrecv(unsigned short int myUDPport,
             //error receiving message
             //set flag low - nack?
             ack = 0;
-            *ackpointer = ack; 
+            memcpy(ackpointer, &ack, 1);
 
             //send nack to sender
             sendto(socket_desc, sendmemorypointer, buffer_size, 0, (struct sockaddr*)&address, client_struct_length);
@@ -178,7 +178,7 @@ void rrecv(unsigned short int myUDPport,
 
             //set flag high - acknowledge fin
             ack = 1;
-            *ackpointer = ack; 
+             memcpy(ackpointer, &ack, 1);
 
             //send ack to sender and exit while loop
             sendto(socket_desc, sendmemorypointer, buffer_size, 0, (struct sockaddr*)&address, client_struct_length);
@@ -203,7 +203,7 @@ void rrecv(unsigned short int myUDPport,
 
             //set flag high
             ack = 1;
-            *ackpointer = ack; 
+             memcpy(ackpointer, &ack, 1);
 
             //send ack to sender
             sendto(socket_desc, sendmemorypointer, buffer_size, 0, (struct sockaddr*)&address, client_struct_length);
@@ -214,7 +214,7 @@ void rrecv(unsigned short int myUDPport,
 
             //set flag low - nack?
             ack = 0;
-            *ackpointer = ack; 
+             memcpy(ackpointer, &ack, 1);
 
             //send nack to sender
             sendto(socket_desc, sendmemorypointer, buffer_size, 0, (struct sockaddr*)&address, client_struct_length);

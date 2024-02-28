@@ -77,7 +77,7 @@ void rsend(char* hostname,
 
     // setting up hostname connection on sender
     struct sockaddr_in address, server_addr;
-    int struct_length = sizeof(server_addr);
+    unsigned int struct_length = sizeof(server_addr);
     memset(&server_addr, 0, sizeof(server_addr));
     server_addr.sin_family = AF_INET;
     server_addr.sin_port = htons(hostUDPport);
@@ -100,10 +100,9 @@ void rsend(char* hostname,
     //initallize void pointer for sender message to get raw bytes from the file (purpose is just to point to 1018 bytes of data)
     void *readfile_data = malloc(max_data_size);
     memset(readfile_data, 0, max_data_size);
-    printf("hello\n");
+    
 
-/*
-    //receive buffer setup
+    //receive buffer setup (buffer of max size to recieve the ack)
     void *ack_buffer= malloc(max_payload_size);
     memset(ack_buffer, 0, max_payload_size);
 
@@ -115,42 +114,47 @@ void rsend(char* hostname,
     while(bytesRead < bytesToTransfer) {
         // Determine number of bytes to read
         byteNumber = (max_data_size < (bytesToTransfer - bytesRead)) ? max_data_size : (bytesToTransfer - bytesRead);
+        printf("hello\n");
 
         //initallize void pointer for sender message to get raw bytes from the file
-        memset(readfile_data, 0, byteNumber);
-        printf("4");
-        memset(sender_buffer, 0, byteNumber+6);
-        printf("5");
+        memset(readfile_data, 0, max_data_size);
+        memset(sender_buffer, 0, max_payload_size);
+
         // Read byteNumber size of file
         fseek(read_file, bytesRead, SEEK_SET);
         fread(readfile_data, 1, byteNumber, read_file);
-
+        
         // Copy the two uint8_t values to the start of the new buffer
-        uint8_t flag_buffer[2];
-        uint8_t *flag_ptr = flag_buffer;
-        flag_ptr[0] = 0;
-        flag_ptr[1] = 0;
-        memcpy(sender_buffer, flag_ptr, 2);
+        uint8_t ack_flag=0;
+        uint8_t fin_flag=0;
+        memcpy(sender_buffer, &ack_flag, 1);
+        memcpy(sender_buffer+1, &fin_flag, 1);
+
         memcpy(sender_buffer+2, &index, 4);
         memcpy(sender_buffer+6, readfile_data, byteNumber);
-
-        printf("%d", index);
-        printf("%hhn",flag_ptr);
+        
+        printf("index: %d\n", index);
+        printf("bytenumber: %d\n", byteNumber);
+        //printf("%hhn",flag_ptr);
 
         // Send the message to server:
         if(sendto(socket_desc, sender_buffer, byteNumber+6, 0, (struct sockaddr*)&server_addr, struct_length)<0){
             printf("Unable to send message\n");
             exit(EXIT_FAILURE);
         }
+       
+        
+        size_t client_message = recvfrom(socket_desc, ack_buffer, max_payload_size, 0, (struct sockaddr*)&server_addr, &struct_length);  
+        if (client_message < 0){
+            printf("Couldn't receive\n");
+            exit(EXIT_FAILURE);
+        }
+        
 
-        // size_t client_message = recvfrom(socket_desc, ack_buffer, max_payload_size, 0, (struct sockaddr*)&server_addr, &struct_length);  
-       // if (client_message < 0){
-        //    printf("Couldn't receive\n");
-        //exit(EXIT_FAILURE);
-        //}
-
+        uint8_t ack_message;
+        memcpy(&ack_message, ack_buffer, 1);
         // testing an ack backbone 
-        if(*(int*)ack_buffer == 22){ 
+        if(ack_message == 1){ 
             printf("Hello I Hear You!\n");
         }
 
@@ -158,17 +162,16 @@ void rsend(char* hostname,
         bytesRead += byteNumber;
     }
 
+
     // Terminating connection 
-    void* terminate; 
-    uint8_t *flag_ptr;
-    flag_ptr[0] = 0;
-    flag_ptr[1] = 1;
-    memcpy(terminate, flag_ptr, 2);
-    if (sendto(socket_desc, terminate, 2, 0, (struct sockaddr*)&server_addr, struct_length) < 0) {
+    uint8_t ack_flag = 0;
+    uint8_t fin_flag = 1;
+    memcpy(sender_buffer, &ack_flag, 1);
+    memcpy(sender_buffer+1, &fin_flag, 1);
+    if (sendto(socket_desc, sender_buffer, 2, 0, (struct sockaddr*)&server_addr, struct_length) < 0) {
     printf("Unable to send message\n");
     exit(EXIT_FAILURE);
     }
-*/
 
 
     close(socket_desc);

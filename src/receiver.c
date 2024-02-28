@@ -207,7 +207,7 @@ void rrecv(unsigned short int myUDPport,
         else if(indexcomp == index) {
 
             //print received message
-            char *strPointer = (int *)datapointer;
+            char *strPointer = (char *)datapointer;
             printf("%s\n", *strPointer);
 
             // Write only the payload data to the file

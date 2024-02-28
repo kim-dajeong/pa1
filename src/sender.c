@@ -37,8 +37,8 @@ Sender Notes
         - create socket 
         - send the file bits over through the socket
 
-    wget -O sender.c https://raw.githubusercontent.com/kim-dajeong/pa1/main/src/sender.c
-    wget -O readfile https://raw.githubusercontent.com/kim-dajeong/pa1/main/src/readfile
+    wget -O sender.c https://raw.githubusercontent.com/kim-dajeong/pa1/acktest/src/sender.c
+    wget -O readfile https://raw.githubusercontent.com/kim-dajeong/pa1/acktest/src/readfile
     gcc -o sender sender.c
     ./sender 130.127.132.208 8000 readfile 2000
 
@@ -88,27 +88,25 @@ void rsend(char* hostname,
     }
     
     printf("Socket created successfully\n");
-    printf("mustprintthis");
-    //sender_buffer total data with header
-    void *sender_buffer = malloc(max_payload_size+1);
-    printf("0");
 
-    memset(sender_buffer, 0, max_payload_size+1);
-    printf("01");
+    //sender_buffer total data with header
+    void *sender_buffer = malloc(max_payload_size);
+    memset(sender_buffer, 0, max_payload_size);
     if (sender_buffer == NULL) {
         fprintf(stderr, "Memory allocation failed\n");
         exit(EXIT_FAILURE);
     }
 
-    printf("1");
-    //initallize void pointer for sender message to get raw bytes from the file
+    //initallize void pointer for sender message to get raw bytes from the file (purpose is just to point to 1018 bytes of data)
     void *readfile_data = malloc(max_data_size);
     memset(readfile_data, 0, max_data_size);
-    printf("2");
+    printf("hello\n");
+
+/*
     //receive buffer setup
     void *ack_buffer= malloc(max_payload_size);
     memset(ack_buffer, 0, max_payload_size);
-    printf("3");
+
     //initallize the sending while loop
     int bytesRead = 0;
     unsigned index = 0;
@@ -170,7 +168,7 @@ void rsend(char* hostname,
     printf("Unable to send message\n");
     exit(EXIT_FAILURE);
     }
-
+*/
 
 
     close(socket_desc);

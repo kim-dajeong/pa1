@@ -196,7 +196,7 @@ void rrecv(unsigned short int myUDPport,
         else if(indexcomp == index) {
 
             //print received message
-            printf("%ld\n",(*datapointer));
+            //printf("%ld\n",(*datapointer));
 
             // Write only the payload data to the file
             fseek(write_file, bytesRead, SEEK_SET);

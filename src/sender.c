@@ -131,7 +131,7 @@ void rsend(char* hostname,
 
 
         // Send the message to server:
-        if(sendto(socket_desc, sender_buffer, sizeof(sender_buffer), 0, (struct sockaddr*)&server_addr, struct_length)<0){
+        if(sendto(socket_desc, sender_buffer, byteNumber+6, 0, (struct sockaddr*)&server_addr, struct_length)<0){
             printf("Unable to send message\n");
             exit(EXIT_FAILURE);
         }
@@ -144,7 +144,7 @@ void rsend(char* hostname,
 
         // testing an ack backbone 
         if(*(int*)ack_buffer == 22){ 
-            printf("Hello I Hear You!");
+            printf("Hello I Hear You!\n");
         }
         
         printf("%ld\n",strlen(sender_buffer));

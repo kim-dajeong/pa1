@@ -105,7 +105,7 @@ void rrecv(unsigned short int myUDPport,
     void* indexpointer;
 
     //set size of buffer and assign memory block to pointer
-    size_t buffer_size = 2000;  // Set the size of your buffer
+    size_t buffer_size = 4000;  // Set the size of your buffer
     receivedmemorypointer = malloc(buffer_size);
     sendmemorypointer = malloc(buffer_size);
 
@@ -167,10 +167,8 @@ void rrecv(unsigned short int myUDPport,
         int indexcomp;
         memcpy(&fincomp, (int*)finpointer, 1);
         memcpy(&indexcomp, (int*)indexpointer, 1);
-
-        char* stringpointer = (char*)receivedmemorypointer;
-
-        printf("%s\n", *stringpointer);
+        
+        printf("%ld", client_message);
 
 
 

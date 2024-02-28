@@ -110,7 +110,7 @@ void rsend(char* hostname,
     int index = 0;
     unsigned int byteNumber = 0;
 
-    while(bytesRead < bytesToTransfer) {
+    while(1) {
         // Determine number of bytes to read
         byteNumber = (max_data_size < (bytesToTransfer - bytesRead)) ? max_data_size : (bytesToTransfer - bytesRead);
 

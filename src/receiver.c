@@ -87,10 +87,6 @@ void rrecv(unsigned short int myUDPport,
 
     printf("Listening for incoming messages...\n\n");
 
-    //Static buffer for receiving data
-    void *buffer= malloc(max_payload_size);
-    memset(buffer, 0, max_payload_size);
-
     uint8_t ack = 0;
     uint8_t fin = 0;
     int index = 0;
@@ -169,11 +165,12 @@ void rrecv(unsigned short int myUDPport,
         }
 
         // Receive sender's (client) message:
-        size_t client_message = recvfrom(socket_desc, receivedmemorypointer, max_payload_size, 0, (struct sockaddr*)&address, &client_struct_length);  
+        //size_t client_message = recvfrom(socket_desc, receivedmemorypointer, max_payload_size, 0, (struct sockaddr*)&address, &client_struct_length);  
 
-        printf("%ld", client_message);
+        //printf("%ld", client_message);
+        int client_message = 1; 
 
-        uint8_t fincomp;
+        uint8_t fincomp =1;
         uint8_t indexcomp;
         memcpy(&fincomp, (uint8_t*)finpointer, 1);
         memcpy(&indexcomp, (uint8_t*)indexpointer, 1);
@@ -191,6 +188,7 @@ void rrecv(unsigned short int myUDPport,
             printf("nack sent\n");
 
         }
+       
         else if (fincomp == 1) {
 
             printf("fin received, ending conenction\n");
@@ -203,7 +201,7 @@ void rrecv(unsigned short int myUDPport,
             sendto(socket_desc, sendmemorypointer, buffer_size, 0, (struct sockaddr*)&address, client_struct_length);
             break;
 
-        }
+        } /*
         else if(indexcomp == index) {
 
             //print received message
@@ -240,7 +238,7 @@ void rrecv(unsigned short int myUDPport,
             sendto(socket_desc, sendmemorypointer, buffer_size, 0, (struct sockaddr*)&address, client_struct_length);
             printf("nack sent\n");
 
-        }
+        }*/
 
         //increment index
         index++;

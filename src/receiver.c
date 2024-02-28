@@ -224,7 +224,7 @@ void rrecv(unsigned short int myUDPport,
             sendto(socket_desc, sendmemorypointer, buffer_size, 0, (struct sockaddr*)&address, client_struct_length);
             printf("ack sent\n");
 
-        }/*
+        }
         else {
 
             //set flag low - nack?
@@ -235,7 +235,7 @@ void rrecv(unsigned short int myUDPport,
             sendto(socket_desc, sendmemorypointer, buffer_size, 0, (struct sockaddr*)&address, client_struct_length);
             printf("nack sent\n");
 
-        }*/
+        }
 
         //increment index
         index++;

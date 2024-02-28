@@ -37,8 +37,14 @@ Sender Notes
         - create socket 
         - send the file bits over through the socket
 
+<<<<<<< Updated upstream
     wget -O sender.c https://raw.githubusercontent.com/kim-dajeong/pa1/main/src/sender.c
     wget -O readfile https://raw.githubusercontent.com/kim-dajeong/pa1/main/src/readfile
+=======
+    wget -O sender.c https://raw.githubusercontent.com/kim-dajeong/pa1/acktest/src/sender.c
+    wget -O readfile.txt https://folger-main-site-assets.s3.amazonaws.com/uploads/2022/11/romeo-and-juliet_TXT_FolgerShakespeare.txt
+    wget -O readfile https://raw.githubusercontent.com/kim-dajeong/pa1/acktest/src/readfile
+>>>>>>> Stashed changes
     gcc -o sender sender.c
     ./sender 130.127.132.208 8000 readfile 2000
 

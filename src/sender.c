@@ -90,8 +90,8 @@ void rsend(char* hostname,
     printf("Socket created successfully\n");
 
     //sender_buffer total data with header
-    void *sender_buffer = malloc(max_payload_size);
-    memset(sender_buffer, 0, max_payload_size);
+    void *sender_buffer = malloc(max_payload_size+1);
+    memset(sender_buffer, 0, max_payload_size+1);
     if (sender_buffer == NULL) {
         fprintf(stderr, "Memory allocation failed\n");
         exit(EXIT_FAILURE);
@@ -112,25 +112,26 @@ void rsend(char* hostname,
 
     while(bytesRead < bytesToTransfer) {
         // Determine number of bytes to read
-        byteNumber = (max_payload_size < (bytesToTransfer - bytesRead)) ? max_payload_size : (bytesToTransfer - bytesRead);
+        byteNumber = (max_data_size < (bytesToTransfer - bytesRead)) ? max_data_size : (bytesToTransfer - bytesRead);
 
         //initallize void pointer for sender message to get raw bytes from the file
         memset(readfile_data, 0, byteNumber);
-        memset(sender_buffer, 0, byteNumber);
+        memset(sender_buffer, 0, byteNumber+6);
 
         // Read byteNumber size of file
         fseek(read_file, bytesRead, SEEK_SET);
         fread(readfile_data, 1, byteNumber, read_file);
 
         // Copy the two uint8_t values to the start of the new buffer
-        uint8_t *ptr = (uint8_t *)sender_buffer;
-        ptr[0] = 0;
-        ptr[1] = 0;
-        memcpy(ptr + 2, readfile_data, byteNumber);
+        uint8_t *flag_ptr;
+        flag_ptr[0] = 0;
+        flag_ptr[1] = 0;
+        memcpy(sender_buffer, flag_ptr, 2);
+        memcpy(sender_buffer+2, readfile_data, byteNumber);
 
 
         // Send the message to server:
-        if(sendto(socket_desc, sender_buffer, strlen(sender_buffer), 0, (struct sockaddr*)&server_addr, struct_length)<0){
+        if(sendto(socket_desc, sender_buffer, sizeof(sender_buffer), 0, (struct sockaddr*)&server_addr, struct_length)<0){
             printf("Unable to send message\n");
             exit(EXIT_FAILURE);
         }

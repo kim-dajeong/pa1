@@ -108,7 +108,7 @@ void rsend(char* hostname,
     //initallize the sending while loop
     int bytesRead = 0;
     int index = 0;
-    int byteNumber = 0;
+    unsigned int byteNumber = 0;
 
     while(bytesRead < bytesToTransfer) {
         // Determine number of bytes to read
@@ -127,7 +127,8 @@ void rsend(char* hostname,
         flag_ptr[0] = 0;
         flag_ptr[1] = 0;
         memcpy(sender_buffer, flag_ptr, 2);
-        memcpy(sender_buffer+2, readfile_data, byteNumber);
+        memcpy(sender_buffer+2, &index, 4);
+        memcpy(sender_buffer+6, readfile_data, byteNumber);
 
 
         // Send the message to server:

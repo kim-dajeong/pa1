@@ -154,7 +154,7 @@ void rrecv(unsigned short int myUDPport,
 
     }
 
-/*
+
     while(1){ //bytesRead < bytesToTransfer
 
         memset(sendmemorypointer, 0, buffer_size);
@@ -247,7 +247,7 @@ void rrecv(unsigned short int myUDPport,
         bytesRead += byteNumber;
     
     }
-    */
+    
 
     // Must close file and socket
     fclose(write_file);

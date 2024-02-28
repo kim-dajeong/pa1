@@ -195,6 +195,8 @@ void rrecv(unsigned short int myUDPport,
             sendto(socket_desc, sendmemorypointer, buffer_size, 0, (struct sockaddr*)&address, client_struct_length);
             printf("nack sent\n");
 
+            /* if nack then slow down...     */
+
         }
 
         //increment index

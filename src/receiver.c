@@ -224,6 +224,7 @@ void rrecv(unsigned short int myUDPport,
 
         //increment index
         index++;
+        bytesRead += byteNumber;
     
     }
 

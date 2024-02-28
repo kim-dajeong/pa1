@@ -146,8 +146,6 @@ void rsend(char* hostname,
         if(*(int*)ack_buffer == 22){ 
             printf("Hello I Hear You!\n");
         }
-        
-        printf("%ld\n",strlen(sender_buffer));
 
         index++;
         bytesRead += byteNumber;

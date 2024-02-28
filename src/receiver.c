@@ -170,7 +170,7 @@ void rrecv(unsigned short int myUDPport,
 
         char* stringpointer = (char*)receivedmemorypointer;
 
-        printf("%s\n", stringpointer);
+        printf("%s\n", *stringpointer);
 
 
 

@@ -154,7 +154,11 @@ void rsend(char* hostname,
         memcpy(&ack_message, ack_buffer, 1);
         // testing an ack backbone 
         if(ack_message == 1){ 
-            printf("Hello I Hear You!\n");
+            printf("Hello I Hear You! For index: %d \n", index);
+        }
+        if(ack_message == 0){ 
+            printf("Oh No! Lost index: %d \n", index);
+            sendto(socket_desc, sender_buffer, byteNumber+6, 0, (struct sockaddr*)&server_addr, struct_length);
         }
 
         index++;

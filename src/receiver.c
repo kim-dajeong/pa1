@@ -165,10 +165,9 @@ void rrecv(unsigned short int myUDPport,
         }
 
         // Receive sender's (client) message:
-        //size_t client_message = recvfrom(socket_desc, receivedmemorypointer, max_payload_size, 0, (struct sockaddr*)&address, &client_struct_length);  
+        size_t client_message = recvfrom(socket_desc, receivedmemorypointer, max_payload_size, 0, (struct sockaddr*)&address, &client_struct_length);  
 
-        //printf("%ld", client_message);
-        int client_message = 1; 
+        printf("%ld", client_message);
 
         uint8_t fincomp =1;
         uint8_t indexcomp;

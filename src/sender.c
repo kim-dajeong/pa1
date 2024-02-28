@@ -96,12 +96,13 @@ void rsend(char* hostname,
         fprintf(stderr, "Memory allocation failed\n");
         exit(EXIT_FAILURE);
     }
-    printf("hello");
-/*
-    //initallize void pointer for sender message to get raw bytes from the file
+
+    //initallize void pointer for sender message to get raw bytes from the file (purpose is just to point to 1018 bytes of data)
     void *readfile_data = malloc(max_data_size);
     memset(readfile_data, 0, max_data_size);
+    printf("hello\n");
 
+/*
     //receive buffer setup
     void *ack_buffer= malloc(max_payload_size);
     memset(ack_buffer, 0, max_payload_size);

@@ -97,14 +97,15 @@ void rsend(char* hostname,
         exit(EXIT_FAILURE);
     }
 
+    printf("1");
     //initallize void pointer for sender message to get raw bytes from the file
     void *readfile_data = malloc(max_data_size);
     memset(readfile_data, 0, max_data_size);
-
+    printf("2");
     //receive buffer setup
     void *ack_buffer= malloc(max_payload_size);
     memset(ack_buffer, 0, max_payload_size);
-
+    printf("3");
     //initallize the sending while loop
     int bytesRead = 0;
     int index = 0;
@@ -116,8 +117,9 @@ void rsend(char* hostname,
 
         //initallize void pointer for sender message to get raw bytes from the file
         memset(readfile_data, 0, byteNumber);
+        printf("4");
         memset(sender_buffer, 0, byteNumber+6);
-
+        printf("5");
         // Read byteNumber size of file
         fseek(read_file, bytesRead, SEEK_SET);
         fread(readfile_data, 1, byteNumber, read_file);
@@ -127,9 +129,11 @@ void rsend(char* hostname,
         flag_ptr[0] = 0;
         flag_ptr[1] = 0;
         memcpy(sender_buffer, flag_ptr, 2);
+        printf("6");
         memcpy(sender_buffer+2, &index, 4);
+        printf("7");
         memcpy(sender_buffer+6, readfile_data, byteNumber);
-
+        
         printf("%d", index);
         printf("%hhn",flag_ptr);
 

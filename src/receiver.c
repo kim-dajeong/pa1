@@ -165,8 +165,8 @@ void rrecv(unsigned short int myUDPport,
 
         int fincomp;
         int indexcomp;
-        memcpy(&fincomp, finpointer, 1);
-        memcpy(&indexcomp, indexcomp, 1);
+        memcpy(&fincomp, (int*)finpointer, 1);
+        memcpy(&indexcomp, (int*)indexcomp, 1);
 
         if (client_message < 0){
 

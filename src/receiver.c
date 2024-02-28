@@ -169,7 +169,7 @@ void rrecv(unsigned short int myUDPport,
 
         printf("%ld", client_message);
 
-        uint8_t fincomp =1;
+        uint8_t fincomp;
         uint8_t indexcomp;
         memcpy(&fincomp, (uint8_t*)finpointer, 1);
         memcpy(&indexcomp, (uint8_t*)indexpointer, 1);

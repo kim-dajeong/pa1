@@ -156,8 +156,8 @@ void rrecv(unsigned short int myUDPport,
 
     while(1){ //bytesRead < bytesToTransfer
 
-        memset(sendmemorypointer, 0, byteNumber);
-        memset(receivedmemorypointer, 0, byteNumber+6);
+        memset(sendmemorypointer, 0, buffer_size);
+        memset(receivedmemorypointer, 0, buffer_size);
 
         // Determine number of bytes to read
         if (max_payload_size < (bytesToTransfer - bytesRead)){

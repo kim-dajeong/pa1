@@ -107,7 +107,7 @@ void rsend(char* hostname,
 
     //initallize the sending while loop
     int bytesRead = 0;
-    int index = 0;
+    unsigned index = 0;
     unsigned int byteNumber = 0;
 
     while(bytesRead < bytesToTransfer) {
@@ -123,12 +123,13 @@ void rsend(char* hostname,
         fread(readfile_data, 1, byteNumber, read_file);
 
         // Copy the two uint8_t values to the start of the new buffer
-        uint8_t *flag_ptr;
+        uint8_t flag_buffer[2];
+        uint8_t *flag_ptr = flag_buffer;
         flag_ptr[0] = 0;
         flag_ptr[1] = 0;
         memcpy(sender_buffer, flag_ptr, 2);
-        memcpy(sender_buffer+2, &index, 4);
-        memcpy(sender_buffer+6, readfile_data, byteNumber);
+        memcpy(sender_buffer+2, &index, sizeof(index));
+        memcpy(sender_buffer+2+sizeof(index), readfile_data, byteNumber);
 
         printf("%d", index);
         printf("%hhn",flag_ptr);

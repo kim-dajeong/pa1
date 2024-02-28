@@ -91,7 +91,7 @@ void rrecv(unsigned short int myUDPport,
     void *buffer= malloc(max_payload_size);
     memset(buffer, 0, max_payload_size);
 
-    int8_t ack = 0;
+    uint8_t ack = 0;
     uint8_t fin = 0;
     int index = 0;
     int bytesRead = 0;   
@@ -146,15 +146,15 @@ void rrecv(unsigned short int myUDPport,
 
     //end three way handshake */
 
-    while(1){
+    //while(1){
 
-        size_t client_message = recvfrom(socket_desc, receivedmemorypointer, max_payload_size, 0, (struct sockaddr*)&address, &client_struct_length);  
+    //    size_t client_message = recvfrom(socket_desc, receivedmemorypointer, max_payload_size, 0, (struct sockaddr*)&address, &client_struct_length);  
 
-        printf("%ld", client_message);
+    //    printf("%ld", client_message);
 
-    }
+    //}
 
-/*
+
     while(1){ //bytesRead < bytesToTransfer
 
         memset(sendmemorypointer, 0, buffer_size);
@@ -173,10 +173,10 @@ void rrecv(unsigned short int myUDPport,
 
         printf("%ld", client_message);
 
-        int fincomp;
-        int indexcomp;
-        memcpy(&fincomp, (int*)finpointer, 1);
-        memcpy(&indexcomp, (int*)indexpointer, 1);
+        uint8_t fincomp;
+        uint8_t indexcomp;
+        memcpy(&fincomp, (uint8_t*)finpointer, 1);
+        memcpy(&indexcomp, (uint8_t*)indexpointer, 1);
 
 
         if (client_message < 0){
@@ -197,7 +197,7 @@ void rrecv(unsigned short int myUDPport,
 
             //set flag high - acknowledge fin
             ack = 1;
-             memcpy(ackpointer, &ack, 1);
+            memcpy(ackpointer, &ack, 1);
 
             //send ack to sender and exit while loop
             sendto(socket_desc, sendmemorypointer, buffer_size, 0, (struct sockaddr*)&address, client_struct_length);
@@ -247,7 +247,7 @@ void rrecv(unsigned short int myUDPport,
         bytesRead += byteNumber;
     
     }
-    */
+    
 
     // Must close file and socket
     fclose(write_file);

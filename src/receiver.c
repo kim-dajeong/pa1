@@ -168,6 +168,12 @@ void rrecv(unsigned short int myUDPport,
         memcpy(&fincomp, (int*)finpointer, 1);
         memcpy(&indexcomp, (int*)indexpointer, 1);
 
+        char* stringpointer = (char*)receivedmemorypointer;
+
+        printf("%s\n", stringpointer);
+
+
+
         if (client_message < 0){
 
             //error receiving message

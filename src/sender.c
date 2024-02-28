@@ -155,9 +155,12 @@ void rsend(char* hostname,
     }
 
     // Terminating connection 
-    int FIN_val = 3;
-    void* terminate = &FIN_val; 
-    if (sendto(socket_desc, terminate, sizeof(terminate), 0, (struct sockaddr*)&server_addr, struct_length) < 0) {
+    void* terminate; 
+    uint8_t *flag_ptr;
+    flag_ptr[0] = 0;
+    flag_ptr[1] = 1;
+    memcpy(terminate, flag_ptr, 2);
+    if (sendto(socket_desc, terminate, 2, 0, (struct sockaddr*)&server_addr, struct_length) < 0) {
     printf("Unable to send message\n");
     exit(EXIT_FAILURE);
     }

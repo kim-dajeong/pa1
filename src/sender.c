@@ -91,6 +91,8 @@ void rsend(char* hostname,
 
     //sender_buffer total data with header
     void *sender_buffer = malloc(max_payload_size+1);
+    printf("0");
+
     memset(sender_buffer, 0, max_payload_size+1);
     if (sender_buffer == NULL) {
         fprintf(stderr, "Memory allocation failed\n");

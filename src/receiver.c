@@ -160,7 +160,7 @@ void rrecv(unsigned short int myUDPport,
             fseek(write_file, client_message, SEEK_CUR);
 
             //write to file and check
-            int written = fwrite(datapointer, sizeof(char), max_payload_size, write_file);
+            int written = fwrite(datapointer, sizeof(char), client_message-6, write_file);
             printf("index match writing now :)\n");
             if (written < client_message) {
                 printf("Error during writing to file!");

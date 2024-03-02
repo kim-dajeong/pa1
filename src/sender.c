@@ -42,7 +42,7 @@ Sender Notes
     wget -O sender.c https://raw.githubusercontent.com/kim-dajeong/pa1/main/src/sender.c
     wget -O readfile https://www.gutenberg.org/cache/epub/73076/pg73076.txt
     gcc -o sender sender.c
-    ./sender 130.127.132.208 8000 readfile 200
+    ./sender 130.127.132.208 8000 readfile 450000
 
 */
 
@@ -128,7 +128,7 @@ void rsend(char* hostname,
 
     //initallize the sending while loop
     int bytesRead = 0;
-    int t = 10;
+    int t = 100000;
     unsigned index = 0;
     int byteNumber = 0;
 
@@ -139,6 +139,7 @@ void rsend(char* hostname,
         //initallize void pointer for sender message to get raw bytes from the file
         memset(readfile_data, 0, max_data_size);
         memset(sender_buffer, 0, max_payload_size);
+        memset(ack_buffer, 0, max_payload_size);
 
         // Read byteNumber size of file
         fseek(read_file, bytesRead, SEEK_SET);
@@ -183,7 +184,7 @@ void rsend(char* hostname,
         memcpy(&ack_message, ack_buffer, 1);
         // testing an ack backbone 
         if(ack_message == 1){ 
-            //printf("Hello I Hear You! For index: %d \n", index);
+            printf("Hello I Hear You! For index: %d \n", index);
             index++;
             bytesRead += byteNumber;
             if(t>0){
@@ -193,7 +194,7 @@ void rsend(char* hostname,
         }
         if(ack_message == 0){ 
             printf("Oh No! Lost index: %d \n", index);
-            t = 10;
+            t = 100000;
         }
 
         

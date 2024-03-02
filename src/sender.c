@@ -183,7 +183,7 @@ void rsend(char* hostname,
         memcpy(&ack_message, ack_buffer, 1);
         // testing an ack backbone 
         if(ack_message == 1){ 
-            //printf("Hello I Hear You! For index: %d \n", index);
+            printf("Hello I Hear You! For index: %d \n", index);
             index++;
             bytesRead += byteNumber;
             if(t>0){

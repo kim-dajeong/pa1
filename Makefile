@@ -59,7 +59,7 @@ obj:
 send: 
 	wget -O sender.c https://raw.githubusercontent.com/kim-dajeong/pa1/main/src/sender.c
 	gcc -o sender sender.c
-	./sender 128.110.223.8 8000 readFile.txt 500
+	./sender 128.105.146.107 8000 readFile.txt 450000
 
 
 

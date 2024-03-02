@@ -155,7 +155,12 @@ void rsend(char* hostname,
         //printf("%hhn",flag_ptr);
 
         // Send the message to server:
-        //usleep(t);
+
+        if(usleep(t) == -1){
+            printf("slowstart incorrect due to usleep");
+        }
+
+
         if(sendto(socket_desc, sender_buffer, byteNumber+6, 0, (struct sockaddr*)&server_addr, struct_length)<0){
             printf("Unable to send message\n");
 

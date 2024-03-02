@@ -192,10 +192,6 @@ void rsend(char* hostname,
 
         memcpy(sender_buffer+2, &index, 4);
         memcpy(sender_buffer+6, readfile_data, byteNumber);
-        
-        //printf("index: %d\n", index);
-        //printf("bytenumber: %d\n", byteNumber);
-        //printf("%hhn",flag_ptr);
 
         // Send the message to server:
         usleep(t);
@@ -218,16 +214,16 @@ void rsend(char* hostname,
         memcpy(&ack_message, ack_buffer, 1);
         // testing an ack backbone 
         if(ack_message == 1){ 
-            printf("Hello I Hear You! For index: %d \n", index);
+            //printf("Hello I Hear You! For index: %d \n", index);
             index++;
             bytesRead += byteNumber;
             if(t>0){
                 t = t/2;
-                printf("delay: %d\n", t);
+                //printf("delay: %d\n", t);
             }
         }
         if(ack_message == 0){ 
-            printf("Oh No! Lost index: %d \n", index);
+            //printf("Oh No! Lost index: %d \n", index);
             //additive increase?
             t += 100000;
         }

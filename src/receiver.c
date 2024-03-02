@@ -116,8 +116,6 @@ void rrecv(unsigned short int myUDPport,
         // Receive sender's (client) message:
         size_t client_message = recvfrom(socket_desc, receivedmemorypointer, max_payload_size, 0, (struct sockaddr*)&address, &client_struct_length);  
 
-        //printf("client message: %ld\n", client_message);
-
         uint8_t fincomp;
         uint32_t indexcomp;
         memcpy(&fincomp, (uint8_t*)finpointer, 1);
@@ -133,7 +131,7 @@ void rrecv(unsigned short int myUDPport,
 
             //send nack to sender
             sendto(socket_desc, sendmemorypointer, buffer_size, 0, (struct sockaddr*)&address, client_struct_length);
-            printf("nack sent\n");
+            //printf("nack sent\n");
 
         }
        
@@ -151,16 +149,9 @@ void rrecv(unsigned short int myUDPport,
 
         } 
         else if(indexcomp == index) {
-
-            //print received message
-            // char *strPointer = (int *)datapointer;
-            // printf("%s\n", *strPointer);
-
-            
-
             //write to file and check
             size_t written = fwrite(datapointer, 1, client_message-6, write_file);
-            printf("index number %d matched! writing now :)\n",index);
+            //printf("index number %d matched! writing now :)\n",index);
             
             // Write only the payload data to the file
             if (written < client_message-6) {
@@ -175,7 +166,6 @@ void rrecv(unsigned short int myUDPport,
             sendto(socket_desc, sendmemorypointer, buffer_size, 0, (struct sockaddr*)&address, client_struct_length);
             //printf("ack sent\n");
             //increment index
-            //printf("ack sent\n");
             index++;
             //printf("index: %d", index);
 

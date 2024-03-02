@@ -159,6 +159,13 @@ void rsend(char* hostname,
 
         // Send the message to server:
         usleep(t);
+
+        char *str = (char *)sender_buffer;
+        // Print the string
+        printf("String: %s\n", str);
+
+
+        printf()
         send_time_start = clock();
         if(sendto(socket_desc, sender_buffer, byteNumber+6, 0, (struct sockaddr*)&server_addr, struct_length)<0){
             printf("Unable to send message\n");

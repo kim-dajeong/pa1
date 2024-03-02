@@ -1,7 +1,13 @@
 Dajeong Kim
-Ana Bandari
+    - Implemented the receiver file I/O control logic code
 
-Task 2
-Both of us worked on flowcharting, designing, and testing of the algorithm for task 2. 
-Dajeong worked on the sender function.
-Ana worked on reciever function.
+Ana Bandari
+    - Implemented the sender file I/O control logic code
+
+Collaborative Tasks
+    - Flowcharted and planned algorithms together
+    - Debugged and peer-programed in person together
+    - Tested the code individually 
+
+
+We both have a good understanding of how each component works individually as well as how the come together to send data reliably. 

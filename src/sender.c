@@ -50,6 +50,10 @@ Sender Notes
     wget -O readfile https://stuff.mit.edu/afs/sipb/contrib/pi/pi-billion.txt
     ./sender 128.189.80.174 8000 readfile 450000 
 
+    Limiting Network Performance:
+    sudo tc qdisc del dev eth0 root 2> /dev/null
+    sudo tc qdisc add dev eth0 root netem loss 20% rate 20Mbit
+
 */
 
 #define max_payload_size 1024 //! max data we can send over
@@ -100,8 +104,8 @@ void rsend(char* hostname,
 
     //resolving hostname
     struct hostent * hp = gethostbyname(hostname);
-    char ip_address[INET6_ADDRSTRLEN];
-    memset(ip_address, 0, INET6_ADDRSTRLEN); 
+    char ip_address[INET_ADDRSTRLEN];
+    memset(ip_address, 0, INET_ADDRSTRLEN); 
     struct in_addr ** p1 = NULL;
     struct in6_addr ** p2 = NULL;
 
@@ -113,15 +117,10 @@ void rsend(char* hostname,
                 inet_ntop(AF_INET, &p1[i], ip_address, INET_ADDRSTRLEN);
                 printf("sending to: %s\n", ip_address);
                 *ip_address = '\0';
-            }
-            break;
-        case AF_INET6:
-            p2 = (struct in6_addr **)hp->h_addr_list;
-            for(int i = 0; p2[i]!=NULL; i+=1) {
-                inet_ntop(AF_INET6, &p2[i], ip_address, INET6_ADDRSTRLEN);
-                printf("sending to: %s\n", ip_address);
-                *ip_address = '\0';
-            }
+                if (inet_aton(ip_address, &server_addr.sin_addr) == 0) {
+                    fprintf(stderr, "inet_aton() failed\n");
+                    exit(EXIT_FAILURE);
+                }
             break;
     }
 

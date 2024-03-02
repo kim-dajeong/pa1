@@ -128,7 +128,7 @@ void rsend(char* hostname,
 
     //initallize the sending while loop
     int bytesRead = 0;
-    int t = 100;
+    int t = 50;
     unsigned index = 0;
     int byteNumber = 0;
 
@@ -153,8 +153,8 @@ void rsend(char* hostname,
         memcpy(sender_buffer+2, &index, 4);
         memcpy(sender_buffer+6, readfile_data, byteNumber);
         
-        printf("index: %d\n", index);
-        printf("bytenumber: %d\n", byteNumber);
+        //printf("index: %d\n", index);
+        //printf("bytenumber: %d\n", byteNumber);
         //printf("%hhn",flag_ptr);
 
         // Send the message to server:
@@ -162,7 +162,7 @@ void rsend(char* hostname,
 
         char *str = (char *)sender_buffer;
         // Print the string
-        printf("String: %s\n", str);
+        //printf("String: %s\n", str);
 
 
         send_time_start = clock();
@@ -177,7 +177,7 @@ void rsend(char* hostname,
         if (client_message < 0){
             printf("Couldn't receive\n");
         }
-        printf("ack buffer client message: %ld\n", client_message);
+        //printf("ack buffer client message: %ld\n", client_message);
         
         uint8_t ack_message;
         memcpy(&ack_message, ack_buffer, 1);
@@ -187,13 +187,13 @@ void rsend(char* hostname,
             index++;
             bytesRead += byteNumber;
             if(t>0){
-                t = t - 5;
-                printf("delay: %d", t);
+                t = t - 10;
+                printf("delay: %d\n", t);
             }
         }
         if(ack_message == 0){ 
             printf("Oh No! Lost index: %d \n", index);
-            t = 100;
+            t = 50;
         }
 
         

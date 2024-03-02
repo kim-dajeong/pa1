@@ -167,7 +167,7 @@ void rsend(char* hostname,
 
     //initallize the sending while loop
     int bytesRead = 0;
-    int t = 100000;
+    int t = 1000;
     unsigned index = 0;
     int byteNumber = 0;
 
@@ -225,7 +225,9 @@ void rsend(char* hostname,
         if(ack_message == 0){ 
             //printf("Oh No! Lost index: %d \n", index);
             //additive increase?
-            t += 100000;
+            if(t<500000000) {
+                t += 1000;
+            }
         }
 
         

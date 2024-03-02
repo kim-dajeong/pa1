@@ -116,6 +116,7 @@ void rrecv(unsigned short int myUDPport,
         size_t client_message = recvfrom(socket_desc, receivedmemorypointer, max_payload_size, 0, (struct sockaddr*)&address, &client_struct_length);  
 
         printf("client message: %ld\n", client_message);
+        printf("%c", *((int*)receivedmemorypointer));
 
         uint8_t fincomp;
         uint32_t indexcomp;

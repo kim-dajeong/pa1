@@ -6,6 +6,7 @@ How to Run
  - Run the sender on one terminal (Be sure to specify a file to open (we have provided a test file called "readfile")
  - Run the receiver on another terminal
 
+
 **An Overview of Our Approach**
 
 Our approach focuses on sending packets in order and as such, does not worry about duplicate acknowledgments or out of order packets. 

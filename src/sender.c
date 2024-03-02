@@ -18,6 +18,7 @@
 #include <string.h>
 #include <arpa/inet.h>
 #include <netinet/in.h>
+#include <netdb.h>
 
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -43,6 +44,10 @@ Sender Notes
     wget -O readfile https://www.gutenberg.org/cache/epub/73076/pg73076.txt
     gcc -o sender sender.c
     ./sender 130.127.132.208 8000 readfile 450000
+
+    alternate wget:
+    wget -O readfile https://stuff.mit.edu/afs/sipb/contrib/pi/pi-billion.txt
+    ./sender 128.189.80.174 8000 readfile 450000 
 
 */
 

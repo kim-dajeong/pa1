@@ -107,7 +107,6 @@ void rsend(char* hostname,
     char ip_address[INET_ADDRSTRLEN];
     memset(ip_address, 0, INET_ADDRSTRLEN); 
     struct in_addr ** p1 = NULL;
-    struct in6_addr ** p2 = NULL;
 
     switch (hp->h_addrtype) {
         case AF_INET:
@@ -122,6 +121,7 @@ void rsend(char* hostname,
                     exit(EXIT_FAILURE);
                 }
             break;
+            }
     }
 
 

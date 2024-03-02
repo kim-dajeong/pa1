@@ -215,7 +215,7 @@ void rsend(char* hostname,
     close(socket_desc);
     socket_close_time = clock(); 
     total_socket_open_time = ((double) (socket_close_time - socket_open_time)) / CLOCKS_PER_SEC;
-    //printf("The socket has been open for: %f seconds\n", total_socket_open_time);
+    printf("The socket has been open for: %f seconds\n", total_socket_open_time);
     printf("The socket has been sending for: %f seconds\n", total_send_socket_time);
 
     fclose(read_file);

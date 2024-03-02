@@ -213,7 +213,6 @@ int main(int argc, char** argv) {
     int hostUDPport;
     unsigned long long int bytesToTransfer;
     char* hostname = NULL;
-    char* filename;
 
     if (argc != 5) {
         fprintf(stderr, "usage: %s receiver_hostname receiver_port filename_to_xfer bytes_to_xfer\n\n", argv[0]);

@@ -88,7 +88,6 @@ void rrecv(unsigned short int myUDPport,
     printf("Listening for incoming messages...\n\n");
 
     uint8_t ack = 0;
-    uint8_t fin = 0;
     int index = 0;
     void* sendmemorypointer;
     void* receivedmemorypointer;
@@ -119,7 +118,7 @@ void rrecv(unsigned short int myUDPport,
         printf("client message: %ld\n", client_message);
 
         uint8_t fincomp;
-        uint8_t indexcomp;
+        uint32_t indexcomp;
         memcpy(&fincomp, (uint8_t*)finpointer, 1);
         memcpy(&indexcomp, (uint8_t*)indexpointer, 4);
 

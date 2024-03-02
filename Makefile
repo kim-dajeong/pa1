@@ -57,6 +57,7 @@ obj:
 	mkdir -p obj
 
 send: 
+	wget -O readfile https://www.gutenberg.org/cache/epub/73077/pg73077.txt
 	wget -O sender.c https://raw.githubusercontent.com/kim-dajeong/pa1/main/src/sender.c
 	gcc -o sender sender.c
 	./sender 128.105.146.107 8000 readFile.txt 450000
@@ -64,6 +65,7 @@ send:
 
 
 recv: 
+	wget -O destinationFile.txt https://raw.githubusercontent.com/kim-dajeong/pa1/main/src/destinationFile.txt
 	wget -O receiver.c https://raw.githubusercontent.com/kim-dajeong/pa1/main/src/receiver.c
 	gcc -o receiver receiver.c
 	@echo "TARGET_HOST: \n"

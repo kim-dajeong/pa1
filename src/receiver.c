@@ -162,7 +162,6 @@ void rrecv(unsigned short int myUDPport,
             printf("index match writing now :)\n");
             
             // Write only the payload data to the file
-            fseek(write_file, client_message-6, SEEK_CUR);
             if (written < client_message-6) {
                 printf("Error during writing to file!");
             }

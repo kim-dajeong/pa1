@@ -139,6 +139,7 @@ void rsend(char* hostname,
         //initallize void pointer for sender message to get raw bytes from the file
         memset(readfile_data, 0, max_data_size);
         memset(sender_buffer, 0, max_payload_size);
+        memset(ack_buffer, 0, max_payload_size);
 
         // Read byteNumber size of file
         fseek(read_file, bytesRead, SEEK_SET);

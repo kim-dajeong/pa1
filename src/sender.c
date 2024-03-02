@@ -99,7 +99,7 @@ void rsend(char* hostname,
     timeout.tv_sec = 5;  // seconds
     timeout.tv_usec = 0; // microseconds
 
-    if (setsockopt(socket_desc, SOL_SOCKET, SO_RCVTIMEO, (char*)&timeout, sizeof(timeout)) == -1) {
+    if (setsockopt(socket_desc, SOL_SOCKET, SO_RCVTIMEO, (char*)&timeout, sizeof(timeout)) < 0) {
         perror("setsockopt failed");
         close(socket_desc);
         exit(EXIT_FAILURE);

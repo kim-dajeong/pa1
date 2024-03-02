@@ -155,7 +155,7 @@ void rsend(char* hostname,
         //printf("%hhn",flag_ptr);
 
         // Send the message to server:
-        usleep(t);
+        //usleep(t);
         if(sendto(socket_desc, sender_buffer, byteNumber+6, 0, (struct sockaddr*)&server_addr, struct_length)<0){
             printf("Unable to send message\n");
 

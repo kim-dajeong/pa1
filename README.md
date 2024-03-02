@@ -1,12 +1,12 @@
 # PA1 - Reliable UDP Data Transfer (Reinventing the Wheel At Its Finest)
 What happens when two elec students come together to code...? Magic. 
 
-How to Run: 
+How to Run 
  - Use the makefile to Make all
  - Run the sender on one terminal (Be sure to specify a file to open (we have provided a test file called "readfile")
  - Run the receiver on another terminal
 
-An Overview of Our Approach:
+#An Overview of Our Approach
 Our approach focuses on sending packets in order and as such, does not worry about duplicate acknowledgments or out of order packets. 
 
 Sender 

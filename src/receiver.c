@@ -116,7 +116,7 @@ void rrecv(unsigned short int myUDPport,
         size_t client_message = recvfrom(socket_desc, receivedmemorypointer, max_payload_size, 0, (struct sockaddr*)&address, &client_struct_length);  
 
         printf("client message: %ld\n", client_message);
-        printf("%c", *((int*)datapointer));
+        printf("%c", *((char*)datapointer));
 
         uint8_t fincomp;
         uint32_t indexcomp;
@@ -156,11 +156,14 @@ void rrecv(unsigned short int myUDPport,
             // char *strPointer = (int *)datapointer;
             // printf("%s\n", *strPointer);
 
-            // Write only the payload data to the file
-            fseek(write_file, client_message, SEEK_CUR);
+            
 
             //write to file and check
-            int written = fwrite(datapointer, sizeof(char), client_message-6, write_file);
+            int written = fwrite(datapointer, 1, client_message-6, write_file);
+            
+            // Write only the payload data to the file
+            fseek(write_file, client_message, SEEK_CUR);
+            
             printf("index match writing now :)\n");
             if (written < client_message) {
                 printf("Error during writing to file!");

@@ -90,9 +90,6 @@ void rrecv(unsigned short int myUDPport,
     uint8_t ack = 0;
     uint8_t fin = 0;
     int index = 0;
-    int bytesRead = 0;   
-    int byteNumber = 0;
-    unsigned long long int bytesToTransfer = 2000;
     void* sendmemorypointer;
     void* receivedmemorypointer;
     void* ackpointer;
@@ -111,18 +108,10 @@ void rrecv(unsigned short int myUDPport,
     datapointer = ((char*)receivedmemorypointer + 6);
 
 
-    while(1){ //bytesRead < bytesToTransfer
+    while(1){ 
 
         memset(sendmemorypointer, 0, buffer_size);
         memset(receivedmemorypointer, 0, buffer_size);
-
-        // Determine number of bytes to read
-        if (max_payload_size < (bytesToTransfer - bytesRead)){
-            byteNumber = max_payload_size;
-        }
-        else {
-            byteNumber = (bytesToTransfer - bytesRead);
-        }
 
         // Receive sender's (client) message:
         size_t client_message = recvfrom(socket_desc, receivedmemorypointer, max_payload_size, 0, (struct sockaddr*)&address, &client_struct_length);  
@@ -132,7 +121,7 @@ void rrecv(unsigned short int myUDPport,
         uint8_t fincomp;
         uint8_t indexcomp;
         memcpy(&fincomp, (uint8_t*)finpointer, 1);
-        memcpy(&indexcomp, (uint8_t*)indexpointer, 1);
+        memcpy(&indexcomp, (uint8_t*)indexpointer, 4);
 
 
         if (client_message < 0){
@@ -168,7 +157,7 @@ void rrecv(unsigned short int myUDPport,
             // printf("%s\n", *strPointer);
 
             // Write only the payload data to the file
-            fseek(write_file, bytesRead, SEEK_SET);
+            fseek(write_file, client_message, SEEK_SET);
 
             //write to file and check
             int written = fwrite(datapointer, sizeof(char), max_payload_size, write_file);
@@ -190,6 +179,7 @@ void rrecv(unsigned short int myUDPport,
             //set flag low - nack?
             ack = 0;
             memcpy(ackpointer, &ack, 1);
+            memcpy(indexpointer, &index, 4);
 
             //send nack to sender
             sendto(socket_desc, sendmemorypointer, buffer_size, 0, (struct sockaddr*)&address, client_struct_length);
@@ -201,7 +191,7 @@ void rrecv(unsigned short int myUDPport,
 
         //increment index
         index++;
-        bytesRead += byteNumber;
+        ack = 0;
     
     }
     
@@ -237,8 +227,6 @@ int main(int argc, char** argv){
         fprintf(stderr, "usage: %s UDP_port filename_to_write\n\n", argv[0]);
         exit(1);
     }
-
-    udpPort = (unsigned short int) atoi(argv[1]);
 
     // Parse the command-line arguments
     udpPort = (unsigned short int) atoi(argv[1]);

@@ -87,6 +87,17 @@ void rsend(char* hostname,
         fprintf(stderr, "inet_aton() failed\n");
         exit(EXIT_FAILURE);
     }
+
+    // Set the receive timeout
+    struct timeval timeout;
+    timeout.tv_sec = 5;  // seconds
+    timeout.tv_usec = 0; // microseconds
+
+    if (setsockopt(serverSocket, SOL_SOCKET, SO_RCVTIMEO, (char*)&timeout, sizeof(timeout)) == -1) {
+        perror("setsockopt failed");
+        close(serverSocket);
+        exit(EXIT_FAILURE);
+    }
     
     printf("Socket created successfully\n");
 

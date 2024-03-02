@@ -60,14 +60,14 @@ send:
 	wget -O readfile https://www.gutenberg.org/cache/epub/73077/pg73077.txt
 	wget -O sender.c https://raw.githubusercontent.com/kim-dajeong/pa1/main/src/sender.c
 	gcc -o sender sender.c
-	./sender 128.105.146.107 5000 readFile.txt 450000
+	./sender 128.105.146.107 5000 readfile 450000
 
 
 
 recv: 
-	wget -O destinationFile.txt https://raw.githubusercontent.com/kim-dajeong/pa1/main/src/destinationFile.txt
+	wget -O destinationFile.txt https://raw.githubusercontent.com/kim-dajeong/pa1/main/src/destinationFile
 	wget -O receiver.c https://raw.githubusercontent.com/kim-dajeong/pa1/main/src/receiver.c
 	gcc -o receiver receiver.c
 	@echo "TARGET_HOST: \n"
 	hostname -i
-	./receiver 000 destinationFile.txt
+	./receiver 5000 destinationFile

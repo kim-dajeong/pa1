@@ -45,7 +45,8 @@ Sender Notes
     gcc -o sender sender.c
     ./sender 130.127.132.208 8000 readfile 450000
 
-    alternate wget:
+    MacOs address:
+    //one million digits of pi
     wget -O readfile https://stuff.mit.edu/afs/sipb/contrib/pi/pi-billion.txt
     ./sender 128.189.80.174 8000 readfile 450000 
 
@@ -96,10 +97,34 @@ void rsend(char* hostname,
     server_addr.sin_family = AF_INET;
     server_addr.sin_port = htons(hostUDPport);
     server_addr.sin_addr.s_addr = htonl(INADDR_ANY);
-    if (inet_aton(hostname, &server_addr.sin_addr) == 0) {
-        fprintf(stderr, "inet_aton() failed\n");
-        exit(EXIT_FAILURE);
+
+    //resolving hostname
+    struct hostent * hp = gethostbyname(hostname);
+    char ip_address[INET6_ADDRSTRLEN];
+    memset(ip_address, 0, INET6_ADDRSTRLEN); 
+    struct in_addr ** p1 = NULL;
+    struct in6_addr ** p2 = NULL;
+
+    switch (hp->h_addrtype) {
+        case AF_INET:
+            p1 = (struct in_addr **)hp->h_addr_list;
+
+            for(int i = 0; p1[i]!=NULL; i+=1) {
+                inet_ntop(AF_INET, &p1[i], ip_address, INET_ADDRSTRLEN);
+                printf("sending to: %s\n", ip_address);
+                *ip_address = '\0';
+            }
+            break;
+        case AF_INET6:
+            p2 = (struct in6_addr **)hp->h_addr_list;
+            for(int i = 0; p2[i]!=NULL; i+=1) {
+                inet_ntop(AF_INET6, &p2[i], ip_address, INET6_ADDRSTRLEN);
+                printf("sending to: %s\n", ip_address);
+                *ip_address = '\0';
+            }
+            break;
     }
+
 
     // Set the receive timeout
     struct timeval timeout;
@@ -166,11 +191,6 @@ void rsend(char* hostname,
         // Send the message to server:
         usleep(t);
 
-        char *str = (char *)sender_buffer;
-        // Print the string
-        //printf("String: %s\n", str);
-
-
         send_time_start = clock();
         if(sendto(socket_desc, sender_buffer, byteNumber+6, 0, (struct sockaddr*)&server_addr, struct_length)<0){
             printf("Unable to send message\n");
@@ -199,7 +219,8 @@ void rsend(char* hostname,
         }
         if(ack_message == 0){ 
             printf("Oh No! Lost index: %d \n", index);
-            t = 100000;
+            //additive increase?
+            t = 100000+100;
         }
 
         

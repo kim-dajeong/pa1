@@ -26,6 +26,8 @@
 #include <pthread.h>
 #include <errno.h>
 
+#include <time.h>
+
 /*!
 Sender Notes
     Inputs: hostname, hostUDP port, filename, 
@@ -53,6 +55,9 @@ void rsend(char* hostname,
             char* filename, 
             unsigned long long int bytesToTransfer) {
 
+    clock_t socket_open_time, socket_close_time; 
+    double total_socket_open_time; 
+    
     // Initalizing file I/O and test that the file exists
     FILE *read_file = fopen(filename, "rb");
     if (read_file == NULL){
@@ -75,6 +80,7 @@ void rsend(char* hostname,
         printf("Error while creating socket\n");
         exit(EXIT_FAILURE);
     }
+    socket_open_time = clock();
 
     // setting up hostname connection on sender
     struct sockaddr_in address, server_addr;
@@ -190,6 +196,10 @@ void rsend(char* hostname,
 
 
     close(socket_desc);
+    socket_close_time = clock(); 
+    total_socket_open_time = ((double) (socket_close_time - socket_open_time)) / CLOCKS_PER_SEC;
+    printf("The socket has been open for: %f seconds\n", total_socket_open_time);
+
     fclose(read_file);
 
 }

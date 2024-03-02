@@ -99,9 +99,9 @@ void rsend(char* hostname,
     timeout.tv_sec = 5;  // seconds
     timeout.tv_usec = 0; // microseconds
 
-    if (setsockopt(serverSocket, SOL_SOCKET, SO_RCVTIMEO, (char*)&timeout, sizeof(timeout)) == -1) {
+    if (setsockopt(server_addr, SOL_SOCKET, SO_RCVTIMEO, (char*)&timeout, sizeof(timeout)) == -1) {
         perror("setsockopt failed");
-        close(serverSocket);
+        close(server_addr);
         exit(EXIT_FAILURE);
     }
     

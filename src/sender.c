@@ -159,12 +159,9 @@ void rsend(char* hostname,
 
         // Send the message to server:
         //usleep(t);
-        send_time_start = clock();
         if(sendto(socket_desc, sender_buffer, byteNumber+6, 0, (struct sockaddr*)&server_addr, struct_length)<0){
             printf("Unable to send message\n");
         }
-        send_time_finish = clock();
-        total_send_socket_time += ((double) (send_time_finish - send_time_start)) / CLOCKS_PER_SEC;
        
         
         size_t client_message = recvfrom(socket_desc, ack_buffer, max_payload_size, 0, (struct sockaddr*)&server_addr, &struct_length);  

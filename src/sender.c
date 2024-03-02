@@ -160,6 +160,8 @@ void rsend(char* hostname,
             printf("Unable to send message\n");
 
         }
+        printf("bytenumber: %ld", (byteNumber + 6));
+
        
         
         size_t client_message = recvfrom(socket_desc, ack_buffer, max_payload_size, 0, (struct sockaddr*)&server_addr, &struct_length);  

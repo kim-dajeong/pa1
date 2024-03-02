@@ -102,27 +102,37 @@ void rsend(char* hostname,
     server_addr.sin_port = htons(hostUDPport);
     server_addr.sin_addr.s_addr = htonl(INADDR_ANY);
 
-    //resolving hostname
-    struct hostent * hp = gethostbyname(hostname);
+    // Resolving hostname
+    struct hostent *hp = gethostbyname(hostname);
     char ip_address[INET_ADDRSTRLEN];
     memset(ip_address, 0, INET_ADDRSTRLEN); 
-    struct in_addr ** p1 = NULL;
+    struct in_addr **p1 = NULL;
 
     switch (hp->h_addrtype) {
         case AF_INET:
             p1 = (struct in_addr **)hp->h_addr_list;
 
-            for(int i = 0; p1[i]!=NULL; i+=1) {
-                inet_ntop(AF_INET, &p1[i], ip_address, INET_ADDRSTRLEN);
+            // Use only the first resolved IP address
+            if (p1[0] != NULL) {
+                inet_ntop(AF_INET, p1[0], ip_address, INET_ADDRSTRLEN);
                 printf("sending to: %s\n", ip_address);
-                *ip_address = '\0';
+            
                 if (inet_aton(ip_address, &server_addr.sin_addr) == 0) {
                     fprintf(stderr, "inet_aton() failed\n");
                     exit(EXIT_FAILURE);
                 }
-            break;
+            } 
+            else{
+            fprintf(stderr, "No IP address found for the hostname\n");
+            exit(EXIT_FAILURE);
             }
+            break;
+        
+        default:
+            fprintf(stderr, "Unsupported address type\n");
+            exit(EXIT_FAILURE);
     }
+
 
 
     // Set the receive timeout

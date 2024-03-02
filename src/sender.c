@@ -96,8 +96,8 @@ void rsend(char* hostname,
 
     // Set the receive timeout
     struct timeval timeout;
-    timeout.tv_sec = 5;  // seconds
-    timeout.tv_usec = 0; // microseconds
+    timeout.tv_sec = 0;  // seconds
+    timeout.tv_usec = 10000; // microseconds
 
     if (setsockopt(socket_desc, SOL_SOCKET, SO_RCVTIMEO, (char*)&timeout, sizeof(timeout)) < 0) {
         perror("setsockopt failed");
@@ -157,14 +157,13 @@ void rsend(char* hostname,
         // Send the message to server:
         if(sendto(socket_desc, sender_buffer, byteNumber+6, 0, (struct sockaddr*)&server_addr, struct_length)<0){
             printf("Unable to send message\n");
-            exit(EXIT_FAILURE);
+            
         }
        
         
         size_t client_message = recvfrom(socket_desc, ack_buffer, max_payload_size, 0, (struct sockaddr*)&server_addr, &struct_length);  
         if (client_message < 0){
             printf("Couldn't receive\n");
-            exit(EXIT_FAILURE);
         }
         printf("ack buffer client message: %ld\n", client_message);
         
@@ -173,14 +172,16 @@ void rsend(char* hostname,
         // testing an ack backbone 
         if(ack_message == 1){ 
             printf("Hello I Hear You! For index: %d \n", index);
+            index++;
+            bytesRead += byteNumber;
         }
         if(ack_message == 0){ 
             printf("Oh No! Lost index: %d \n", index);
-            sendto(socket_desc, sender_buffer, byteNumber+6, 0, (struct sockaddr*)&server_addr, struct_length);
+
+
         }
 
-        index++;
-        bytesRead += byteNumber;
+        
     }
 
 

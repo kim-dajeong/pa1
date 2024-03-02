@@ -66,7 +66,7 @@ send2:
 	wget -O readfile https://www.gutenberg.org/cache/epub/73077/pg73077.txt
 	wget -O sender.c https://raw.githubusercontent.com/kim-dajeong/pa1/main/src/sender.c
 	gcc -o sender sender.c
-	./sender 128.105.146.107 8000 readfile 450000
+	./sender 128.105.146.107 5000 readfile 450000
 
 
 recv: 
@@ -81,4 +81,4 @@ recv2:
 	gcc -o receiver receiver.c
 	@echo "TARGET_HOST: \n"
 	hostname -i
-	./receiver 8000 destinationFile
+	./receiver 5000 destinationFile

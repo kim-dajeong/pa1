@@ -125,6 +125,7 @@ void rsend(char* hostname,
 
     //initallize the sending while loop
     int bytesRead = 0;
+    int t = 100;
     unsigned index = 0;
     unsigned int byteNumber = 0;
 
@@ -154,9 +155,10 @@ void rsend(char* hostname,
         //printf("%hhn",flag_ptr);
 
         // Send the message to server:
+        usleep(t);
         if(sendto(socket_desc, sender_buffer, byteNumber+6, 0, (struct sockaddr*)&server_addr, struct_length)<0){
             printf("Unable to send message\n");
-            
+
         }
        
         
@@ -170,12 +172,16 @@ void rsend(char* hostname,
         memcpy(&ack_message, ack_buffer, 1);
         // testing an ack backbone 
         if(ack_message == 1){ 
-            printf("Hello I Hear You! For index: %d \n", index);
+            //printf("Hello I Hear You! For index: %d \n", index);
             index++;
             bytesRead += byteNumber;
+            if(t>0){
+                t = t - 5;
+            }
         }
         if(ack_message == 0){ 
             printf("Oh No! Lost index: %d \n", index);
+            t = 100;
 
 
         }

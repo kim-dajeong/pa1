@@ -128,7 +128,7 @@ void rsend(char* hostname,
 
     //initallize the sending while loop
     int bytesRead = 0;
-    int t = 50;
+    int t = 10;
     unsigned index = 0;
     int byteNumber = 0;
 
@@ -187,13 +187,13 @@ void rsend(char* hostname,
             index++;
             bytesRead += byteNumber;
             if(t>0){
-                t = t - 10;
+                t = t/2;
                 printf("delay: %d\n", t);
             }
         }
         if(ack_message == 0){ 
             printf("Oh No! Lost index: %d \n", index);
-            t = 50;
+            t = 10;
         }
 
         
@@ -214,8 +214,8 @@ void rsend(char* hostname,
     close(socket_desc);
     socket_close_time = clock(); 
     total_socket_open_time = ((double) (socket_close_time - socket_open_time)) / CLOCKS_PER_SEC;
-    printf("The socket has been open for: %f seconds\n", total_socket_open_time);
-    printf("The socket has been open for: %f seconds\n", total_send_socket_time);
+    //printf("The socket has been open for: %f seconds\n", total_socket_open_time);
+    printf("The socket has been sending for: %f seconds\n", total_send_socket_time);
 
     fclose(read_file);
 

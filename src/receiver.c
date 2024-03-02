@@ -193,7 +193,6 @@ void rrecv(unsigned short int myUDPport,
 
         }
 
-    
         ack = 0;
     
     }

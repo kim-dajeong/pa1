@@ -42,7 +42,7 @@ Sender Notes
     wget -O sender.c https://raw.githubusercontent.com/kim-dajeong/pa1/main/src/sender.c
     wget -O readfile https://www.gutenberg.org/cache/epub/73076/pg73076.txt
     gcc -o sender sender.c
-    ./sender 130.127.132.208 8000 readfile 400000
+    ./sender 130.127.132.208 8000 readfile 200
 
 */
 
@@ -56,6 +56,9 @@ void rsend(char* hostname,
 
     clock_t socket_open_time, socket_close_time; 
     double total_socket_open_time; 
+    
+    clock_t send_time_start, send_time_finish; 
+    double total_send_socket_time = 0; 
     
     // Initalizing file I/O and test that the file exists
     FILE *read_file = fopen(filename, "rb");
@@ -156,10 +159,12 @@ void rsend(char* hostname,
 
         // Send the message to server:
         //usleep(t);
+        send_time_start = clock();
         if(sendto(socket_desc, sender_buffer, byteNumber+6, 0, (struct sockaddr*)&server_addr, struct_length)<0){
             printf("Unable to send message\n");
-
         }
+        send_time_finish = clock();
+        total_send_socket_time += ((double) (send_time_finish - send_time_start)) / CLOCKS_PER_SEC;
        
         
         size_t client_message = recvfrom(socket_desc, ack_buffer, max_payload_size, 0, (struct sockaddr*)&server_addr, &struct_length);  
@@ -183,8 +188,6 @@ void rsend(char* hostname,
         if(ack_message == 0){ 
             printf("Oh No! Lost index: %d \n", index);
             t = 100;
-
-
         }
 
         
@@ -206,6 +209,7 @@ void rsend(char* hostname,
     socket_close_time = clock(); 
     total_socket_open_time = ((double) (socket_close_time - socket_open_time)) / CLOCKS_PER_SEC;
     printf("The socket has been open for: %f seconds\n", total_socket_open_time);
+    printf("The socket has been open for: %f seconds\n", total_send_socket_time);
 
     fclose(read_file);
 

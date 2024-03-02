@@ -177,6 +177,7 @@ void rsend(char* hostname,
             bytesRead += byteNumber;
             if(t>0){
                 t = t - 5;
+                printf("delay: %d", t);
             }
         }
         if(ack_message == 0){ 

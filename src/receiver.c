@@ -174,6 +174,7 @@ void rrecv(unsigned short int myUDPport,
             //increment index
             printf("ack sent\n");
             index++;
+            printf("index: %d", index);
 
 
         }

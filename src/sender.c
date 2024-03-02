@@ -150,8 +150,8 @@ void rsend(char* hostname,
         memcpy(sender_buffer+2, &index, 4);
         memcpy(sender_buffer+6, readfile_data, byteNumber);
         
-        printf("index: %d\n", index);
-        printf("bytenumber: %d\n", byteNumber);
+        //printf("index: %d\n", index);
+        //printf("bytenumber: %d\n", byteNumber);
         //printf("%hhn",flag_ptr);
 
         // Send the message to server:

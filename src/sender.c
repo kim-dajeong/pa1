@@ -130,7 +130,7 @@ void rsend(char* hostname,
     int bytesRead = 0;
     int t = 100;
     unsigned index = 0;
-    size_t byteNumber = 0;
+    int byteNumber = 0;
 
     while(bytesRead < bytesToTransfer) {
         // Determine number of bytes to read
@@ -153,12 +153,12 @@ void rsend(char* hostname,
         memcpy(sender_buffer+2, &index, 4);
         memcpy(sender_buffer+6, readfile_data, byteNumber);
         
-        //printf("index: %d\n", index);
-        //printf("bytenumber: %d\n", byteNumber);
+        printf("index: %d\n", index);
+        printf("bytenumber: %d\n", byteNumber);
         //printf("%hhn",flag_ptr);
 
         // Send the message to server:
-        //usleep(t);
+        usleep(t);
         send_time_start = clock();
         if(sendto(socket_desc, sender_buffer, byteNumber+6, 0, (struct sockaddr*)&server_addr, struct_length)<0){
             printf("Unable to send message\n");
@@ -171,7 +171,7 @@ void rsend(char* hostname,
         if (client_message < 0){
             printf("Couldn't receive\n");
         }
-        //printf("ack buffer client message: %ld\n", client_message);
+        printf("ack buffer client message: %ld\n", client_message);
         
         uint8_t ack_message;
         memcpy(&ack_message, ack_buffer, 1);
@@ -193,8 +193,8 @@ void rsend(char* hostname,
         
     }
 
-
     // Terminating connection 
+    memset(sender_buffer, 0, max_payload_size);
     uint8_t ack_flag = 0;
     uint8_t fin_flag = 1;
     memcpy(sender_buffer, &ack_flag, 1);

@@ -76,7 +76,7 @@ recv:
 	hostname -i
 	./receiver 5000 destinationFile
 
-recv: 
+recv2: 
 	wget -O receiver.c https://raw.githubusercontent.com/kim-dajeong/pa1/main/src/receiver.c
 	gcc -o receiver receiver.c
 	@echo "TARGET_HOST: \n"

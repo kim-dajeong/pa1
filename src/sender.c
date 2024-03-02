@@ -229,7 +229,7 @@ void rsend(char* hostname,
         if(ack_message == 0){ 
             printf("Oh No! Lost index: %d \n", index);
             //additive increase?
-            t = 100000+100;
+            t += 100000;
         }
 
         

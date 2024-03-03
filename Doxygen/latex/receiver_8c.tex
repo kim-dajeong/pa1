@@ -2,7 +2,7 @@
 \hypertarget{receiver_8c}{}\label{receiver_8c}\index{receiver.c@{receiver.c}}
 
 
-Server functionality for a more reliable file transfer using UDP Protocol.  
+Server functionality for a more reliable file transfer using UDP sockets.  
 
 
 {\ttfamily \#include $<$stdio.\+h$>$}\newline
@@ -19,27 +19,26 @@ Server functionality for a more reliable file transfer using UDP Protocol.
 \begin{DoxyCompactItemize}
 \item 
 \#define \mbox{\hyperlink{receiver_8c_a09ceb5d127c76b283eea2bdac853b70f}{max\+\_\+payload\+\_\+size}}~1024
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em the total amount of data we want to send over our UDP socket payload in one packet \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
 void \mbox{\hyperlink{receiver_8c_ab41fdd85753470e49e9439d9e096947b}{rrecv}} (unsigned short int my\+UDPport, char \texorpdfstring{$\ast$}{*}destination\+File, unsigned long long int write\+Rate)
-\item 
+\begin{DoxyCompactList}\small\item\em receiver function for receiving data packets and sending acknowledgements back to client \end{DoxyCompactList}\item 
 int \mbox{\hyperlink{receiver_8c_a3c04138a5bfe5d72780bb7e82a18e627}{main}} (int argc, char \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}argv)
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em main function to call receiver function and pass UDPport and destination filename \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
-Server functionality for a more reliable file transfer using UDP Protocol. 
-
-The server/reciever part of the reliable file transfer using UDP.
+Server functionality for a more reliable file transfer using UDP sockets. 
 
 \begin{DoxyAuthor}{Author}
 Ana Bandari (anabandari) 
+
+Dajeong Kim (dkim2)
 \end{DoxyAuthor}
 \begin{DoxyRefDesc}{Bug}
-\item[\mbox{\hyperlink{bug__bug000001}{Bug}}]Be able to recieve muliple packets End when a FIN is sent ~\newline
- \end{DoxyRefDesc}
+\item[\mbox{\hyperlink{bug__bug000001}{Bug}}]Be able to recieve muliple packets\end{DoxyRefDesc}
 
 
 \doxysubsection{Macro Definition Documentation}
@@ -49,34 +48,11 @@ Ana Bandari (anabandari)
 \doxysubsubsection{\texorpdfstring{max\_payload\_size}{max\_payload\_size}}
 {\footnotesize\ttfamily \#define max\+\_\+payload\+\_\+size~1024}
 
-Receiver Notes Inputs\+: UDP Port, pointer to destination file, write rate (assume 0 for now)
 
-Outputs\+: Write data to the destination file.
 
-Receiver Algorithm Skeleton\+:
-\begin{DoxyItemize}
-\item Open a file for writing $<$complete$>$
-\item Create large buffer $<$complete$>$
-\begin{DoxyItemize}
-\item Implementing a large static array. ~\newline
+the total amount of data we want to send over our UDP socket payload in one packet 
 
-\end{DoxyItemize}
-\item Create Socket to recieve infomration from sender $<$complete$>$
-\end{DoxyItemize}
 
-Loop\+: Start recieving packets
-\begin{DoxyItemize}
-\item Check if packet is empty
-\begin{DoxyItemize}
-\item send negative ack
-\end{DoxyItemize}
-\item Check if packet is in order
-\begin{DoxyItemize}
-\item add to buffer in correct position
-\item send ack
-\end{DoxyItemize}
-\item If nothing recieved in \{timeout (\texorpdfstring{$\sim$}{\string~}40ms)\} send an ack for the last packet it has 
-\end{DoxyItemize}
 
 \doxysubsection{Function Documentation}
 \Hypertarget{receiver_8c_a3c04138a5bfe5d72780bb7e82a18e627}\label{receiver_8c_a3c04138a5bfe5d72780bb7e82a18e627} 
@@ -85,16 +61,136 @@ Loop\+: Start recieving packets
 \doxysubsubsection{\texorpdfstring{main()}{main()}}
 {\footnotesize\ttfamily int main (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}}]{argv }\end{DoxyParamCaption})}
 
-How To Run Main On Terminal\+:
-\begin{DoxyItemize}
-\item Navigate to the repository
-\item cd to src folder
-\item compile using\+: gcc -\/o receiver \doxylink{receiver_8c}{receiver.\+c}
-\item run using\+: ./receiver $<$\+UDP port number$>$ destination\+File.\+txt
-\item hostname -\/i 
-\end{DoxyItemize}\Hypertarget{receiver_8c_ab41fdd85753470e49e9439d9e096947b}\label{receiver_8c_ab41fdd85753470e49e9439d9e096947b} 
+
+
+main function to call receiver function and pass UDPport and destination filename 
+
+
+\begin{DoxyParams}{Parameters}
+{\em arcg} & argument count, indicating number of arguments passed from the command line \\
+\hline
+{\em argv} & argument vector, pointing to an array of strings, each of which contains an argument passed from the command line\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 
+\end{DoxyReturn}
+initialize variable to hold udp\+Port name passed from the command line
+
+Check if all three arguments were passed from the command line
+
+Parse the command-\/line arguments
+
+Call the rrecv function with the provided arguments, passing 0 for write\+Rate
+
+return 0 and end\Hypertarget{receiver_8c_ab41fdd85753470e49e9439d9e096947b}\label{receiver_8c_ab41fdd85753470e49e9439d9e096947b} 
 \index{receiver.c@{receiver.c}!rrecv@{rrecv}}
 \index{rrecv@{rrecv}!receiver.c@{receiver.c}}
 \doxysubsubsection{\texorpdfstring{rrecv()}{rrecv()}}
 {\footnotesize\ttfamily void rrecv (\begin{DoxyParamCaption}\item[{unsigned short int}]{my\+UDPport,  }\item[{char \texorpdfstring{$\ast$}{*}}]{destination\+File,  }\item[{unsigned long long int}]{write\+Rate }\end{DoxyParamCaption})}
 
+
+
+receiver function for receiving data packets and sending acknowledgements back to client 
+
+
+\begin{DoxyParams}{Parameters}
+{\em my\+UDPport} & hostport \\
+\hline
+{\em destination\+FIle} & pointer to destination\+File where received ata will be written \\
+\hline
+{\em write\+Rate} & not used\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+Initalizing file I/O and test that the file exists, opening in write only mode
+
+Initalizing address struct and the structure of the clients address for receiving
+
+Create UDP socket and check it exists
+
+Bind socket to the receive address
+
+acknowledgement flag value holder, initialized to 0
+
+index for data packets, initialized to 0
+
+pointer to memory for storing data to send
+
+pointer to memory for storing data received
+
+pointer to address of acknowledgement flag
+
+pointer to address of finish flag
+
+pointer to address of data
+
+pointer to address of data index
+
+Set size of buffer and assign memory block to pointers
+
+Set acknowledgement flag pointer to first byte of memory storing data to send
+
+Set pointers to respective byte of memory storing received data
+
+While loop to continue receiving data and sending acknowledgements until a finish flag is received
+
+reset memory blocks to null
+
+Wait for sender to send message, and store size of message in variable client\+\_\+message
+
+Variable to hold value of finish flag received
+
+Variable to hold value of index received
+
+Copy data stored at address of finpointer and indexpointer into variable to use for comparisons
+
+Check if the recvfrom function received has size greater than 0
+
+Set acknowledgement to 0, indicating a nack flag meaning data transfer was not successful Copy value of acknowledgement flag into memory
+
+Send nack flag to sender
+
+Check if value of finish flag is set to 1, in which case the while loop must be exited
+
+Set acknowledgement flag high, to indicate that the finish flag was received to the sender
+
+Copy value of acknowledgement flag into memory
+
+Send the acknowledgement to the sender, then exit the while loop
+
+Check if the index of the data is equal to the index count of the receiver
+
+Write the data from the data portion of the received memory
+
+Check if write was successful
+
+Set acknowledgement flag high, to indicate that the correct index was received to the sender
+
+Copy value of acknowledgement flag into memory
+
+Send the acknowledgement to the sender
+
+Increment the index keeping count of how many successful data packets were received and written to the destination
+
+If none of the above conditions were met, assume that the index of the data packet was incorrect or no data was received during the bounds of the timeout period
+
+Set acknowledgement flag low, to indicate that an incorrect index was received to the sender
+
+Copy value of acknowledgement flag into memory
+
+Copy value of current index to be received into memory
+
+Send the nack to the sender
+
+Set the acknowledgement flag low
+
+This is the end of the while loop.
+
+Close the destination file opened for writing
+
+Close the socket conneciton
+
+Write rate not implemented

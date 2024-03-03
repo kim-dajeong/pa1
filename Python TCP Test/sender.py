@@ -34,6 +34,6 @@ receiveThread.start()
 #Send data to server
 #str.encode is used to turn the string message into bytes so it can be sent across the network
 while True:
-    for x in range(500000000):
+    for x in range(50000000000000000000):
         message = "hello world!"
         sock.sendall(str.encode(message))

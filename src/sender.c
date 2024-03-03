@@ -1,4 +1,4 @@
-/*  @file sender.c
+/**  @file sender.c
  *
  *  @brief Client side for a more reliable file transfer using UDP sockets. 
  *

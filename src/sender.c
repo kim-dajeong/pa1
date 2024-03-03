@@ -243,6 +243,8 @@ void rsend(char* hostname,
     printf("Unable to send message\n");
     exit(EXIT_FAILURE);
     }
+    
+    uint8_t ack_message;
 
     // Wait for ack from recevier
     while (ack_message != 1) {

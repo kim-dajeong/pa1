@@ -172,7 +172,7 @@ void rsend(char* hostname,
 
     //initallize the sending while loop
     int bytesRead = 0;
-    int t = 1000;
+    unsigned long t = 1000;
     unsigned index = 0;
     int byteNumber = 0;
 

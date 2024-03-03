@@ -66,7 +66,7 @@ send2:
 	wget -O readfile https://www.gutenberg.org/cache/epub/1727/pg1727.txt
 	wget -O sender.c https://raw.githubusercontent.com/kim-dajeong/pa1/main/src/sender.c
 	gcc -o sender sender.c
-	./sender 128.105.146.106 6000 readfile 700000
+	./sender 128.105.146.105 6000 readfile 700000
 
 
 recv: 

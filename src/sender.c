@@ -244,6 +244,18 @@ void rsend(char* hostname,
     exit(EXIT_FAILURE);
     }
 
+    // Wait for ack from recevier
+    while (ackmessage != 1) {
+
+        size_t client_message = recvfrom(socket_desc, ack_buffer, max_payload_size, 0, (struct sockaddr*)&server_addr, &struct_length);  
+        if (client_message < 0){
+            printf("Couldn't receive\n");
+        }
+        
+        memcpy(&ack_message, ack_buffer, 1);
+
+    }
+
 
     close(socket_desc);
     socket_close_time = clock(); 

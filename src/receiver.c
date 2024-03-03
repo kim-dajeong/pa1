@@ -164,10 +164,10 @@ void rrecv(unsigned short int myUDPport,
 
             //send ack to sender
             sendto(socket_desc, sendmemorypointer, buffer_size, 0, (struct sockaddr*)&address, client_struct_length);
-            //printf("ack sent\n");
+            printf("ack sent\n");
             //increment index
             index++;
-            //printf("index: %d", index);
+            printf("ack sent for index: %d\n", index);
 
 
         }

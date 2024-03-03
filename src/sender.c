@@ -232,9 +232,11 @@ void rsend(char* hostname,
         if(ack_message == 0){ 
             //printf("Oh No! Lost index: %d \n", index);
             //additive increase?
-            if(t<500000000) {
+            if(t<5000000) {
                 t += 1000;
             }
+            printf("new timeout: %d\n", t);
+
         }
 
         

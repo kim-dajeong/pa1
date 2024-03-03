@@ -1,0 +1,94 @@
+\doxysection{sender.\+c File Reference}
+\hypertarget{sender_8c}{}\label{sender_8c}\index{sender.c@{sender.c}}
+
+
+Client side for a more reliable file transfer using UDP Protocol.  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$arpa/inet.\+h$>$}\newline
+{\ttfamily \#include $<$netinet/in.\+h$>$}\newline
+{\ttfamily \#include $<$netdb.\+h$>$}\newline
+{\ttfamily \#include $<$sys/types.\+h$>$}\newline
+{\ttfamily \#include $<$sys/socket.\+h$>$}\newline
+{\ttfamily \#include $<$unistd.\+h$>$}\newline
+{\ttfamily \#include $<$pthread.\+h$>$}\newline
+{\ttfamily \#include $<$errno.\+h$>$}\newline
+{\ttfamily \#include $<$time.\+h$>$}\newline
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{sender_8c_a09ceb5d127c76b283eea2bdac853b70f}{max\+\_\+payload\+\_\+size}}~1024
+\item 
+\#define \mbox{\hyperlink{sender_8c_aac8008a680e11e44172cb75c9878bdbd}{max\+\_\+data\+\_\+size}}~1018
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{sender_8c_a470031165b913666b8a71d2b05ba7815}{rsend}} (char \texorpdfstring{$\ast$}{*}hostname, unsigned short int host\+UDPport, char \texorpdfstring{$\ast$}{*}filename, unsigned long long int bytes\+To\+Transfer)
+\item 
+int \mbox{\hyperlink{sender_8c_a3c04138a5bfe5d72780bb7e82a18e627}{main}} (int argc, char \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}argv)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Client side for a more reliable file transfer using UDP Protocol. 
+
+The client/sender part of the reliable file transfer using UDP.
+
+\begin{DoxyAuthor}{Author}
+Ana Bandari (abandari) Dajeong Kim
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{Bug}
+\item[\mbox{\hyperlink{bug__bug000002}{Bug}}]Steps\+:
+\begin{DoxyEnumerate}
+\item Only works for small strings, test with raw data type
+\item Currently not using the bytes to transfer.
+\item Ack and Fin functionality/struct variables (one structure) 
+\end{DoxyEnumerate}\end{DoxyRefDesc}
+
+
+\doxysubsection{Macro Definition Documentation}
+\Hypertarget{sender_8c_aac8008a680e11e44172cb75c9878bdbd}\label{sender_8c_aac8008a680e11e44172cb75c9878bdbd} 
+\index{sender.c@{sender.c}!max\_data\_size@{max\_data\_size}}
+\index{max\_data\_size@{max\_data\_size}!sender.c@{sender.c}}
+\doxysubsubsection{\texorpdfstring{max\_data\_size}{max\_data\_size}}
+{\footnotesize\ttfamily \#define max\+\_\+data\+\_\+size~1018}
+
+\Hypertarget{sender_8c_a09ceb5d127c76b283eea2bdac853b70f}\label{sender_8c_a09ceb5d127c76b283eea2bdac853b70f} 
+\index{sender.c@{sender.c}!max\_payload\_size@{max\_payload\_size}}
+\index{max\_payload\_size@{max\_payload\_size}!sender.c@{sender.c}}
+\doxysubsubsection{\texorpdfstring{max\_payload\_size}{max\_payload\_size}}
+{\footnotesize\ttfamily \#define max\+\_\+payload\+\_\+size~1024}
+
+Sender Notes Inputs\+: hostname, host\+UDP port, filename, Outputs\+: N/A
+
+Sender Algorithm Skeleton\+:
+\begin{DoxyItemize}
+\item Read from File (raw data)
+\item Splice the file into sendable bits
+\item create socket
+\item send the file bits over through the socket
+\end{DoxyItemize}
+
+wget -\/O \doxylink{sender_8c}{sender.\+c} \href{https://raw.githubusercontent.com/kim-dajeong/pa1/main/src/sender.c}{\texttt{ https\+://raw.\+githubusercontent.\+com/kim-\/dajeong/pa1/main/src/sender.\+c}} wget -\/O readfile \href{https://www.gutenberg.org/cache/epub/73076/pg73076.txt}{\texttt{ https\+://www.\+gutenberg.\+org/cache/epub/73076/pg73076.\+txt}} gcc -\/o sender \doxylink{sender_8c}{sender.\+c} ./sender 130.\+127.\+132.\+208 8000 readfile 450000
+
+Mac\+Os address\+: one million digits of pi wget -\/O readfile \href{https://stuff.mit.edu/afs/sipb/contrib/pi/pi-billion.txt}{\texttt{ https\+://stuff.\+mit.\+edu/afs/sipb/contrib/pi/pi-\/billion.\+txt}} ./sender 128.\+189.\+80.\+174 8000 readfile 450000
+
+Limiting Network Performance\+: sudo tc qdisc del dev eth0 root 2\texorpdfstring{$>$}{>} /dev/null sudo tc qdisc add dev eth0 root netem loss 20\% rate 20Mbit 
+
+\doxysubsection{Function Documentation}
+\Hypertarget{sender_8c_a3c04138a5bfe5d72780bb7e82a18e627}\label{sender_8c_a3c04138a5bfe5d72780bb7e82a18e627} 
+\index{sender.c@{sender.c}!main@{main}}
+\index{main@{main}!sender.c@{sender.c}}
+\doxysubsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}}]{argv }\end{DoxyParamCaption})}
+
+\Hypertarget{sender_8c_a470031165b913666b8a71d2b05ba7815}\label{sender_8c_a470031165b913666b8a71d2b05ba7815} 
+\index{sender.c@{sender.c}!rsend@{rsend}}
+\index{rsend@{rsend}!sender.c@{sender.c}}
+\doxysubsubsection{\texorpdfstring{rsend()}{rsend()}}
+{\footnotesize\ttfamily void rsend (\begin{DoxyParamCaption}\item[{char \texorpdfstring{$\ast$}{*}}]{hostname,  }\item[{unsigned short int}]{host\+UDPport,  }\item[{char \texorpdfstring{$\ast$}{*}}]{filename,  }\item[{unsigned long long int}]{bytes\+To\+Transfer }\end{DoxyParamCaption})}
+

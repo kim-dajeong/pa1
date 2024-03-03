@@ -25,6 +25,8 @@
 #include <time.h>
 
 
+
+
 /*
 Sender Notes
     Inputs: hostname, hostUDP port, filename, bytesToTransfer
@@ -35,20 +37,6 @@ Sender Notes
         - Splice the file into sendable bits
         - create socket 
         - send the file bits over through the socket
-
-    wget -O sender.c https://raw.githubusercontent.com/kim-dajeong/pa1/main/src/sender.c
-    wget -O readfile https://www.gutenberg.org/cache/epub/73076/pg73076.txt
-    gcc -o sender sender.c
-    ./sender 130.127.132.208 8000 readfile 450000
-
-    MacOs address:
-    //one million digits of pi
-    wget -O readfile https://stuff.mit.edu/afs/sipb/contrib/pi/pi-billion.txt
-    ./sender 128.189.80.174 8000 readfile 450000 
-
-    Limiting Network Performance:
-    sudo tc qdisc del dev eth0 root 2> /dev/null
-    sudo tc qdisc add dev eth0 root netem loss 20% rate 20Mbit
 
 
 */

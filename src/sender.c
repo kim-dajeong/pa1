@@ -253,7 +253,7 @@ void rsend(char* hostname,
     }
     
     /// Instantializing the ack_message variable outside of the while loop
-    uint8_t ack_message;
+    uint8_t ack_message = 0;
 
     /// Waiting for a FIN ack from recevier
     while (ack_message != 1) {

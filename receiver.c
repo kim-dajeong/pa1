@@ -42,6 +42,11 @@ Loop: Start recieving packets
         - send ack
     - If nothing recieved in {timeout (~40ms)} send an ack for the last packet it has 
 
+    for macOs: curl ifconfig.me
+    wget -O receiver.c https://raw.githubusercontent.com/kim-dajeong/pa1/main/src/receiver.c
+    gcc -o receiver receiver.c
+    ./receiver 8000 destinationFile
+
 
 */
 

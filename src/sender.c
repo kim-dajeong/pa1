@@ -143,8 +143,6 @@ void rsend(char* hostname,
     struct timeval start, end;
     double elapsed_time;
 
-    gettimeofday(&start, NULL); 
-
     if (setsockopt(socket_desc, SOL_SOCKET, SO_RCVTIMEO, (char*)&timeout, sizeof(timeout)) < 0) {
         perror("setsockopt failed");
         close(socket_desc);
@@ -269,7 +267,6 @@ void rsend(char* hostname,
 
 
     close(socket_desc);
-    gettimeofday(&end, NULL); // Record the ending time
     socket_close_time = clock(); 
     total_socket_open_time = ((double) (socket_close_time - socket_open_time)) / CLOCKS_PER_SEC;
     printf("The socket has been open for: %f seconds\n", total_socket_open_time);

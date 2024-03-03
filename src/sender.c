@@ -1,38 +1,34 @@
-/** @file sender.c
- *  @brief Client side for a more reliable file transfer using UDP Protocol. 
+/*@file sender.c
  *
- *  The client/sender part of the reliable file transfer using UDP. 
+ *  @brief Client side for a more reliable file transfer using UDP sockets. 
  *
  *  @author Ana Bandari (abandari)
- *          Dajeong Kim 
+ *  @author Dajeong Kim (dkim2)
  * 
- *  @bug Steps: 
- *        1. Only works for small strings, test with raw data type
- *        2. Currently not using the bytes to transfer.
- *        3. Ack and Fin functionality/struct variables (one structure)
+ *  @bug No known bugs
+ * 
  */
 
 
+/*   Includes   */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <arpa/inet.h>
 #include <netinet/in.h>
 #include <netdb.h>
-
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <unistd.h>
-
 #include <pthread.h>
 #include <errno.h>
-
 #include <time.h>
 
-/*!
+
+/*
 Sender Notes
-    Inputs: hostname, hostUDP port, filename, 
-    Outputs: N/A
+    Inputs: hostname, hostUDP port, filename, bytesToTransfer
+    Outputs: no outputs
 
     Sender Algorithm Skeleton: 
         - Read from File (raw data)
@@ -53,6 +49,7 @@ Sender Notes
     Limiting Network Performance:
     sudo tc qdisc del dev eth0 root 2> /dev/null
     sudo tc qdisc add dev eth0 root netem loss 20% rate 20Mbit
+
 
 */
 

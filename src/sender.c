@@ -92,7 +92,7 @@ void rsend(char* hostname,
         printf("Error while creating socket\n");
         exit(EXIT_FAILURE);
     }
-    socket_open_time = clock();
+    //socket_open_time = clock();
 
     // setting up hostname connection on sender
     struct sockaddr_in address, server_addr;
@@ -175,6 +175,8 @@ void rsend(char* hostname,
     int t = 1000;
     unsigned index = 0;
     int byteNumber = 0;
+
+    socket_open_time = clock();
 
     while(bytesRead < bytesToTransfer) {
         // Determine number of bytes to read

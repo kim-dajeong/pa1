@@ -5,7 +5,7 @@
  *  @author Ana Bandari (anabandari)
  *  @author Dajeong Kim (dkim2)
  * 
- *  @bug Be able to recieve muliple packets
+ *  @bug No writeRate implemented
  * 
  */
 

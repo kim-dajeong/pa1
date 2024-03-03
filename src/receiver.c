@@ -73,6 +73,9 @@ void rrecv(unsigned short int myUDPport,
         exit(EXIT_FAILURE);
     }
 
+    /// Check if socket was created successfully
+    printf("Socket binding successful!");
+
     /// acknowledgement flag value holder, initialized to 0
     uint8_t ack = 0;
     /// index for data packets, initialized to 0
@@ -196,6 +199,7 @@ void rrecv(unsigned short int myUDPport,
     fclose(write_file);
     /// Close the socket conneciton
     close(socket_desc);
+    printf("Socket closed");
 
     /// Write rate not implemented
     if(writeRate != 0){

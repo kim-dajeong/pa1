@@ -1,5 +1,4 @@
 # PA1 - Reliable UDP Data Transfer (Reinventing the Wheel At Its Finest)
-What happens when two elec students come together to code...? Magic. 
 
 How to Run 
  - Use the makefile to Make all

@@ -245,7 +245,7 @@ void rsend(char* hostname,
     }
 
     // Wait for ack from recevier
-    while (ackmessage != 1) {
+    while (ack_message != 1) {
 
         size_t client_message = recvfrom(socket_desc, ack_buffer, max_payload_size, 0, (struct sockaddr*)&server_addr, &struct_length);  
         if (client_message < 0){

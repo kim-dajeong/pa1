@@ -77,6 +77,9 @@ $(function() {
   <div class="headertitle"><div class="title">sender.c File Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Client side for a more reliable file transfer using UDP sockets.  
+<a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;stdio.h&gt;</code><br />
 <code>#include &lt;stdlib.h&gt;</code><br />
 <code>#include &lt;string.h&gt;</code><br />
@@ -106,7 +109,15 @@ Functions</h2></td></tr>
 <tr class="memdesc:a3c04138a5bfe5d72780bb7e82a18e627"><td class="mdescLeft">&#160;</td><td class="mdescRight">main function made to allow for the invoking of the file transfer from the command line  <br /></td></tr>
 <tr class="separator:a3c04138a5bfe5d72780bb7e82a18e627"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Macro Definition Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Client side for a more reliable file transfer using UDP sockets. </p>
+<dl class="section author"><dt>Author</dt><dd>Ana Bandari (abandari) </dd>
+<dd>
+Dajeong Kim (dkim2)</dd></dl>
+<dl class="bug"><dt><b><a class="el" href="bug.html#_bug000002">Bug</a></b></dt><dd><p class="startdd">When sending two competing UDP protocols, the second socket entering experiences delays and a greater timeout. </p>
+<p class="enddd">Only accepts IPV4 Addresses, in whatever form they may be. Not meant for IPV6. </p>
+</dd></dl>
+</div><h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="aac8008a680e11e44172cb75c9878bdbd" name="aac8008a680e11e44172cb75c9878bdbd"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aac8008a680e11e44172cb75c9878bdbd">&#9670;&#160;</a></span>max_data_size</h2>
 

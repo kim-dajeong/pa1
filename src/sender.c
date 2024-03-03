@@ -5,7 +5,7 @@
  *  @author Ana Bandari (abandari)
  *  @author Dajeong Kim (dkim2)
  * 
- *  @bug When sending two competing UDP protocols, the second socket entering experiences delays and a greater timeout. 
+ *  @bug When sending two competing UDP protocols in a lossy/noisy channel, the second socket entering experiences delays and a greater timeout. Works fine for no loss. 
  *  @bug Only accepts IPV4 Addresses, in whatever form they may be. Not meant for IPV6. 
  * 
  */

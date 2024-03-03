@@ -1,10 +1,5 @@
 \doxysection{sender.\+c File Reference}
 \hypertarget{sender_8c}{}\label{sender_8c}\index{sender.c@{sender.c}}
-
-
-Client side for a more reliable file transfer using UDP Protocol.  
-
-
 {\ttfamily \#include $<$stdio.\+h$>$}\newline
 {\ttfamily \#include $<$stdlib.\+h$>$}\newline
 {\ttfamily \#include $<$string.\+h$>$}\newline
@@ -28,26 +23,9 @@ Client side for a more reliable file transfer using UDP Protocol.
 \begin{DoxyCompactItemize}
 \item 
 void \mbox{\hyperlink{sender_8c_a470031165b913666b8a71d2b05ba7815}{rsend}} (char \texorpdfstring{$\ast$}{*}hostname, unsigned short int host\+UDPport, char \texorpdfstring{$\ast$}{*}filename, unsigned long long int bytes\+To\+Transfer)
-\item 
+\begin{DoxyCompactList}\small\item\em \doxylink{sender_8c_a470031165b913666b8a71d2b05ba7815}{rsend()} sends data reliably using UDP Sockets \end{DoxyCompactList}\item 
 int \mbox{\hyperlink{sender_8c_a3c04138a5bfe5d72780bb7e82a18e627}{main}} (int argc, char \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}argv)
-\end{DoxyCompactItemize}
-
-
-\doxysubsection{Detailed Description}
-Client side for a more reliable file transfer using UDP Protocol. 
-
-The client/sender part of the reliable file transfer using UDP.
-
-\begin{DoxyAuthor}{Author}
-Ana Bandari (abandari) Dajeong Kim
-\end{DoxyAuthor}
-\begin{DoxyRefDesc}{Bug}
-\item[\mbox{\hyperlink{bug__bug000002}{Bug}}]Steps\+:
-\begin{DoxyEnumerate}
-\item Only works for small strings, test with raw data type
-\item Currently not using the bytes to transfer.
-\item Ack and Fin functionality/struct variables (one structure) 
-\end{DoxyEnumerate}\end{DoxyRefDesc}
+\begin{DoxyCompactList}\small\item\em main function made to allow for the invoking of the file transfer from the command line \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Macro Definition Documentation}
@@ -63,21 +41,7 @@ Ana Bandari (abandari) Dajeong Kim
 \doxysubsubsection{\texorpdfstring{max\_payload\_size}{max\_payload\_size}}
 {\footnotesize\ttfamily \#define max\+\_\+payload\+\_\+size~1024}
 
-Sender Notes Inputs\+: hostname, host\+UDP port, filename, Outputs\+: N/A
 
-Sender Algorithm Skeleton\+:
-\begin{DoxyItemize}
-\item Read from File (raw data)
-\item Splice the file into sendable bits
-\item create socket
-\item send the file bits over through the socket
-\end{DoxyItemize}
-
-wget -\/O \doxylink{sender_8c}{sender.\+c} \href{https://raw.githubusercontent.com/kim-dajeong/pa1/main/src/sender.c}{\texttt{ https\+://raw.\+githubusercontent.\+com/kim-\/dajeong/pa1/main/src/sender.\+c}} wget -\/O readfile \href{https://www.gutenberg.org/cache/epub/73076/pg73076.txt}{\texttt{ https\+://www.\+gutenberg.\+org/cache/epub/73076/pg73076.\+txt}} gcc -\/o sender \doxylink{sender_8c}{sender.\+c} ./sender 130.\+127.\+132.\+208 8000 readfile 450000
-
-Mac\+Os address\+: one million digits of pi wget -\/O readfile \href{https://stuff.mit.edu/afs/sipb/contrib/pi/pi-billion.txt}{\texttt{ https\+://stuff.\+mit.\+edu/afs/sipb/contrib/pi/pi-\/billion.\+txt}} ./sender 128.\+189.\+80.\+174 8000 readfile 450000
-
-Limiting Network Performance\+: sudo tc qdisc del dev eth0 root 2\texorpdfstring{$>$}{>} /dev/null sudo tc qdisc add dev eth0 root netem loss 20\% rate 20Mbit 
 
 \doxysubsection{Function Documentation}
 \Hypertarget{sender_8c_a3c04138a5bfe5d72780bb7e82a18e627}\label{sender_8c_a3c04138a5bfe5d72780bb7e82a18e627} 
@@ -86,9 +50,134 @@ Limiting Network Performance\+: sudo tc qdisc del dev eth0 root 2\texorpdfstring
 \doxysubsubsection{\texorpdfstring{main()}{main()}}
 {\footnotesize\ttfamily int main (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}}]{argv }\end{DoxyParamCaption})}
 
-\Hypertarget{sender_8c_a470031165b913666b8a71d2b05ba7815}\label{sender_8c_a470031165b913666b8a71d2b05ba7815} 
+
+
+main function made to allow for the invoking of the file transfer from the command line 
+
+\begin{DoxyReturn}{Returns}
+Returns an int of 1 if there is an error 
+\end{DoxyReturn}
+Get values from commandline
+
+Call sender function\Hypertarget{sender_8c_a470031165b913666b8a71d2b05ba7815}\label{sender_8c_a470031165b913666b8a71d2b05ba7815} 
 \index{sender.c@{sender.c}!rsend@{rsend}}
 \index{rsend@{rsend}!sender.c@{sender.c}}
 \doxysubsubsection{\texorpdfstring{rsend()}{rsend()}}
 {\footnotesize\ttfamily void rsend (\begin{DoxyParamCaption}\item[{char \texorpdfstring{$\ast$}{*}}]{hostname,  }\item[{unsigned short int}]{host\+UDPport,  }\item[{char \texorpdfstring{$\ast$}{*}}]{filename,  }\item[{unsigned long long int}]{bytes\+To\+Transfer }\end{DoxyParamCaption})}
 
+
+
+\doxylink{sender_8c_a470031165b913666b8a71d2b05ba7815}{rsend()} sends data reliably using UDP Sockets 
+
+Inputs\+: hostname, host\+UDP port, filename, bytes\+To\+Transfer Outputs\+: Void
+
+Sender Algorithm Skeleton\+:
+\begin{DoxyItemize}
+\item Read from File (raw data).
+\item Splice the file into sendable bits.
+\item Create socket.
+\item Send the file bits over through the socket.
+\item Check for ack and increase index, repeat if nack received.
+\item Terminate connection and close socket and file.
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em hostname} & The hostname can be an IP Address or a fully-\/qualified name. \\
+\hline
+{\em host\+UDPport} & The port which you are sending data over. \\
+\hline
+{\em filename} & The a char pointer to the file you are reading from. \\
+\hline
+{\em bytes\+To\+Transfer} & The number of bytes you want to read from filename. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+Initializing a timer for measuring the total length of time the socket has been open for
+
+Initalizing file I/O and test that the file exists
+
+Determining the maximum value of the readfile to check that bytestotransfer doesnt exceed the file
+
+Creating the socket
+
+Initializing the structures needed for the socket connection
+
+Here we resolve the hostname if it is fully defined
+
+Only accepts IPV4 Addresses
+
+Making sure to only use the first resolved IP address
+
+Inet\+\_\+aton turns the IP address into bytes and adds it to the structure
+
+Initalizing a structure for timeout values
+
+seconds
+
+microseconds
+
+Utilizing the setsockopt() function to set a time out for the recvfrom
+
+Initializing a sender buffer of max payload size which is the total data send with a header of 6 bytes
+
+Initializing a void pointer for sender message to get raw bytes from the file (It\textquotesingle{}s purpose is to point at 1018 bytes of data)
+
+Initializing a buffer of the maximum payload size to receieve acknowladgements from the receiver
+
+Initallizing variables that will be used in the while loop below
+
+Number of bytes already read from the file
+
+Time to wait in microseconds
+
+The index of the packet. It needs to send and receive the index in order.
+
+Number of bytes to read in the current iteration of the while loop
+
+While the number of bytes already read is less than the number of bytes to transfer exectute the sending loop
+
+Determine number of bytes to read based on how many unread bytes remain
+
+Initialize void pointers to contain values of zero for every iteration of the loop
+
+Read \textquotesingle{}byte\+Number\textquotesingle{} of bytes from the read\+\_\+file ~\newline
+
+
+Copy the two uint8\+\_\+t values to the start of the new buffer that will be used to send data
+
+Copy the current index and the data to the file
+
+Slows down how fast our data is being sent
+
+Sends a message to the receiver
+
+Waits to receive an acknowlegement for the defined recvfrom timeout time specified prior
+
+Instantializes a variable for checking the ack\+\_\+message from the received ack\+\_\+buffer
+
+Testing if the ack\+\_\+message and only moving onto the next index if they match
+
+Incrementing index if the ack messages match
+
+Stating the bytes read from the file
+
+Using a multiplicative decrease to reduce our socket waiting time.
+
+If a negative acknowlegement is recieved then it will resend the current packet until it gets a positive acknowladgement
+
+We implement an additive increase to reduce the sending time if there is packet loss to try and mitigate packet loss. Note that these times are in microseconds
+
+Setting up all the variables needed to terminate the connection
+
+Raising FIN Flag HIGH
+
+Sending the FIN message over through the socket to terminate the connection
+
+Instantializing the ack\+\_\+message variable outside of the while loop
+
+Waiting for a FIN ack from recevier
+
+Closing socket and file and noting the time the socket was open for

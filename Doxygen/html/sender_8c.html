@@ -77,9 +77,6 @@ $(function() {
   <div class="headertitle"><div class="title">sender.c File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-
-<p>Client side for a more reliable file transfer using UDP Protocol.  
-<a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;stdio.h&gt;</code><br />
 <code>#include &lt;stdlib.h&gt;</code><br />
 <code>#include &lt;string.h&gt;</code><br />
@@ -103,21 +100,13 @@ Macros</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a470031165b913666b8a71d2b05ba7815" id="r_a470031165b913666b8a71d2b05ba7815"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a470031165b913666b8a71d2b05ba7815">rsend</a> (char *hostname, unsigned short int hostUDPport, char *filename, unsigned long long int bytesToTransfer)</td></tr>
+<tr class="memdesc:a470031165b913666b8a71d2b05ba7815"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="#a470031165b913666b8a71d2b05ba7815" title="rsend() sends data reliably using UDP Sockets">rsend()</a> sends data reliably using UDP Sockets  <br /></td></tr>
 <tr class="separator:a470031165b913666b8a71d2b05ba7815"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3c04138a5bfe5d72780bb7e82a18e627" id="r_a3c04138a5bfe5d72780bb7e82a18e627"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3c04138a5bfe5d72780bb7e82a18e627">main</a> (int argc, char **argv)</td></tr>
+<tr class="memdesc:a3c04138a5bfe5d72780bb7e82a18e627"><td class="mdescLeft">&#160;</td><td class="mdescRight">main function made to allow for the invoking of the file transfer from the command line  <br /></td></tr>
 <tr class="separator:a3c04138a5bfe5d72780bb7e82a18e627"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Client side for a more reliable file transfer using UDP Protocol. </p>
-<p>The client/sender part of the reliable file transfer using UDP.</p>
-<dl class="section author"><dt>Author</dt><dd>Ana Bandari (abandari) Dajeong Kim</dd></dl>
-<dl class="bug"><dt><b><a class="el" href="bug.html#_bug000002">Bug</a></b></dt><dd>Steps:<ol type="1">
-<li>Only works for small strings, test with raw data type</li>
-<li>Currently not using the bytes to transfer.</li>
-<li>Ack and Fin functionality/struct variables (one structure) </li>
-</ol>
-</dd></dl>
-</div><h2 class="groupheader">Macro Definition Documentation</h2>
+<h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="aac8008a680e11e44172cb75c9878bdbd" name="aac8008a680e11e44172cb75c9878bdbd"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aac8008a680e11e44172cb75c9878bdbd">&#9670;&#160;</a></span>max_data_size</h2>
 
@@ -143,16 +132,6 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Sender Notes Inputs: hostname, hostUDP port, filename, Outputs: N/A</p>
-<p>Sender Algorithm Skeleton:</p><ul>
-<li>Read from File (raw data)</li>
-<li>Splice the file into sendable bits</li>
-<li>create socket</li>
-<li>send the file bits over through the socket</li>
-</ul>
-<p>wget -O <a class="el" href="sender_8c.html" title="Client side for a more reliable file transfer using UDP Protocol.">sender.c</a> <a href="https://raw.githubusercontent.com/kim-dajeong/pa1/main/src/sender.c">https://raw.githubusercontent.com/kim-dajeong/pa1/main/src/sender.c</a> wget -O readfile <a href="https://www.gutenberg.org/cache/epub/73076/pg73076.txt">https://www.gutenberg.org/cache/epub/73076/pg73076.txt</a> gcc -o sender <a class="el" href="sender_8c.html" title="Client side for a more reliable file transfer using UDP Protocol.">sender.c</a> ./sender 130.127.132.208 8000 readfile 450000</p>
-<p>MacOs address: one million digits of pi wget -O readfile <a href="https://stuff.mit.edu/afs/sipb/contrib/pi/pi-billion.txt">https://stuff.mit.edu/afs/sipb/contrib/pi/pi-billion.txt</a> ./sender 128.189.80.174 8000 readfile 450000</p>
-<p>Limiting Network Performance: sudo tc qdisc del dev eth0 root 2&gt; /dev/null sudo tc qdisc add dev eth0 root netem loss 20% rate 20Mbit </p>
 
 </div>
 </div>
@@ -175,6 +154,11 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>main function made to allow for the invoking of the file transfer from the command line </p>
+<dl class="section return"><dt>Returns</dt><dd>Returns an int of 1 if there is an error </dd></dl>
+<p>Get values from commandline</p>
+<p>Call sender function</p>
 
 </div>
 </div>
@@ -206,6 +190,71 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p><a class="el" href="#a470031165b913666b8a71d2b05ba7815" title="rsend() sends data reliably using UDP Sockets">rsend()</a> sends data reliably using UDP Sockets </p>
+<p>Inputs: hostname, hostUDP port, filename, bytesToTransfer Outputs: Void</p>
+<p>Sender Algorithm Skeleton:</p><ul>
+<li>Read from File (raw data).</li>
+<li>Splice the file into sendable bits.</li>
+<li>Create socket.</li>
+<li>Send the file bits over through the socket.</li>
+<li>Check for ack and increase index, repeat if nack received.</li>
+<li>Terminate connection and close socket and file.</li>
+</ul>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">hostname</td><td>The hostname can be an IP Address or a fully-qualified name. </td></tr>
+    <tr><td class="paramname">hostUDPport</td><td>The port which you are sending data over. </td></tr>
+    <tr><td class="paramname">filename</td><td>The a char pointer to the file you are reading from. </td></tr>
+    <tr><td class="paramname">bytesToTransfer</td><td>The number of bytes you want to read from filename. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
+<p>Initializing a timer for measuring the total length of time the socket has been open for</p>
+<p>Initalizing file I/O and test that the file exists</p>
+<p>Determining the maximum value of the readfile to check that bytestotransfer doesnt exceed the file</p>
+<p>Creating the socket</p>
+<p>Initializing the structures needed for the socket connection</p>
+<p>Here we resolve the hostname if it is fully defined</p>
+<p>Only accepts IPV4 Addresses</p>
+<p>Making sure to only use the first resolved IP address</p>
+<p>Inet_aton turns the IP address into bytes and adds it to the structure</p>
+<p>Initalizing a structure for timeout values</p>
+<p>seconds</p>
+<p>microseconds</p>
+<p>Utilizing the setsockopt() function to set a time out for the recvfrom</p>
+<p>Initializing a sender buffer of max payload size which is the total data send with a header of 6 bytes</p>
+<p>Initializing a void pointer for sender message to get raw bytes from the file (It's purpose is to point at 1018 bytes of data)</p>
+<p>Initializing a buffer of the maximum payload size to receieve acknowladgements from the receiver</p>
+<p>Initallizing variables that will be used in the while loop below</p>
+<p>Number of bytes already read from the file</p>
+<p>Time to wait in microseconds</p>
+<p>The index of the packet. It needs to send and receive the index in order.</p>
+<p>Number of bytes to read in the current iteration of the while loop</p>
+<p>While the number of bytes already read is less than the number of bytes to transfer exectute the sending loop</p>
+<p>Determine number of bytes to read based on how many unread bytes remain</p>
+<p>Initialize void pointers to contain values of zero for every iteration of the loop</p>
+<p>Read 'byteNumber' of bytes from the read_file <br  />
+</p>
+<p>Copy the two uint8_t values to the start of the new buffer that will be used to send data</p>
+<p>Copy the current index and the data to the file</p>
+<p>Slows down how fast our data is being sent</p>
+<p>Sends a message to the receiver</p>
+<p>Waits to receive an acknowlegement for the defined recvfrom timeout time specified prior</p>
+<p>Instantializes a variable for checking the ack_message from the received ack_buffer</p>
+<p>Testing if the ack_message and only moving onto the next index if they match</p>
+<p>Incrementing index if the ack messages match</p>
+<p>Stating the bytes read from the file</p>
+<p>Using a multiplicative decrease to reduce our socket waiting time.</p>
+<p>If a negative acknowlegement is recieved then it will resend the current packet until it gets a positive acknowladgement</p>
+<p>We implement an additive increase to reduce the sending time if there is packet loss to try and mitigate packet loss. Note that these times are in microseconds</p>
+<p>Setting up all the variables needed to terminate the connection</p>
+<p>Raising FIN Flag HIGH</p>
+<p>Sending the FIN message over through the socket to terminate the connection</p>
+<p>Instantializing the ack_message variable outside of the while loop</p>
+<p>Waiting for a FIN ack from recevier</p>
+<p>Closing socket and file and noting the time the socket was open for</p>
 
 </div>
 </div>

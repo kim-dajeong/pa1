@@ -55,30 +55,3 @@ obj/%.o: src/%.c
 	$(CC) $(COMPILERFLAGS) -c -o $@ $<
 obj:
 	mkdir -p obj
-
-send: 
-	wget -O readfile https://www.gutenberg.org/cache/epub/1727/pg1727.txt
-	wget -O sender.c https://raw.githubusercontent.com/kim-dajeong/pa1/main/src/sender.c
-	gcc -o sender sender.c
-	./sender 128.105.146.107 8000 readfile 700000
-
-send2: 
-	wget -O readfile https://www.gutenberg.org/cache/epub/1727/pg1727.txt
-	wget -O sender.c https://raw.githubusercontent.com/kim-dajeong/pa1/main/src/sender.c
-	gcc -o sender sender.c
-	./sender 128.105.146.107 8001 readfile 700000
-
-
-recv: 
-	wget -O receiver.c https://raw.githubusercontent.com/kim-dajeong/pa1/main/src/receiver.c
-	gcc -o receiver receiver.c
-	@echo "TARGET_HOST: \n"
-	hostname -i
-	./receiver 8000 destinationFile
-
-recv2: 
-	wget -O receiver.c https://raw.githubusercontent.com/kim-dajeong/pa1/main/src/receiver.c
-	gcc -o receiver receiver.c
-	@echo "TARGET_HOST: \n"
-	hostname -i
-	./receiver 8001 destinationFile

@@ -1,0 +1,24 @@
+/**
+
+@mainpage ELEC 331 Programming Assignment 1
+
+@author Ana Bandari
+@author Dajeong Kim
+
+Bugs will arise when packet drops are introduced between two competing instances of our file transfer 
+protocol. Other than that it should work smooth as butter over a lossless high performance network or 
+running alone without a competing instance of another UDP reliable transfer protocol. It works fine with 
+TCP as well. Have fun testing it! 
+
+The project was fun! But difficult! Testing it seemed to be a challenge as we haven't learnt much about
+network testing in C or industry practice for testing other than the labs (which were in python). It 
+would have been nice to have some autograded prarielearn tests just for base testing. Overall, 
+we had fun but the project was a lot of hard work. 
+
+Please refer two the attached png files in the doxygen directory that show our wireshark tests for E3 and E4 
+with no dropped packets. 
+
+![Test for E3](https://github.com/kim-dajeong/pa1/main/Doxygen/TestE3.png?raw=true)
+![Test for E4 with no packet Drops](https://github.com/kim-dajeong/pa1/main/Doxygen/TestE4(NPD).png?raw=true)
+
+*/
